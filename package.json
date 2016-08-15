@@ -1,0 +1,22 @@
+{
+  "name": "swdn-p1",
+  "version": "1.0.0",
+  "description": "Senior Web Developer Nanodegree Project 1",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gurujilove108/SWDN-P1.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gurujilove108/SWDN-P1/issues"
+  },
+  "homepage": "https://github.com/gurujilove108/SWDN-P1#readme",
+  "devDependencies": {
+    "gulp": "^3.9.1"
+  }
+}
