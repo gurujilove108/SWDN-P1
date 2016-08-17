@@ -14,9 +14,6 @@ handlers:
 - url: /views
   static_dir: static/views
 
-- url: /fonts
-  static_dir: static/fonts
-
 - url: /img
   static_dir: static/img
 
