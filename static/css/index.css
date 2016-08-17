@@ -1,0 +1,262 @@
+
+
+#menu-toggle:hover {
+
+}
+
+#mobileDropdownMenuParent.closed {
+
+}
+
+#mobileDropdownMenuParent.open {
+    /*margin-top: 17%;*/
+    width: 0;
+
+}
+
+#mobileDropdownMenuParent.open ul {
+    width: 100%;
+    z-index: 1002;
+    position: absolute;
+    display: block;
+    margin-top: 30px;
+}
+
+#mobileDropdownMenuParent.open ul li {
+    /*height: 0;*/
+}
+
+#menu-toggle {
+    color: #337ab7;
+    border: 1px solid #337ab7;
+    background-color: white;
+}
+
+#wrapper.toggled #menu-toggle {
+    color: #337ab7;
+    border: 1px solid #337ab7;
+    background-color: #001233;
+}
+
+#wrapper.toggled #menu-toggle:hover {
+    color: #00bbff;
+    border-color: #00bbff;
+}
+
+#login-dropdown {
+    position: absolute;
+    right: 15%;
+    margin-top: auto;
+    height: 53px;
+}
+
+#login-dropdown button {
+    background: none;
+    color: #00bbff;
+    border: 1px solid #00bbff;
+    position: relative;
+    left: 0;
+    right: 100px;
+    height: 100%;
+    font-size: 105%;
+}
+
+.open .dropdown-menu {
+    height: 300px;
+    width: 100px;
+    margin-right: 10%;
+    border: none;
+    box-shadow: none;
+    margin-top: 20%;
+}
+
+.open .dropdown-menu li a {
+    padding-left: 44px;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    color: floralwhite;
+    box-shadow: 1px 1px 1px gray;
+    margin-top: 10%;
+    background: #262626;
+}
+
+.dropdown-menu li a:hover {
+    cursor: pointer;
+    background: #262626;
+}
+.fa-google-plus-square {
+    color: #d34836;
+}
+
+.fa-twitter-square {
+    color: #4099FF;
+}
+
+.fa-facebook-square {
+    color: #3b5998;
+}
+
+.nav-item .navbar-brand {
+    background: none;
+    color: #00bbff;
+}
+
+.nav-item .navbar-brand:hover {
+    background: #00131a;
+}
+
+.navbar-brand {
+    font-size: 175%;
+}
+
+.nav-item .navlink {
+    font-size: 125%;
+}
+
+.udacity-logo {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    position: absolute;
+    left: 2%;
+
+    -webkit-transition: all 0.8s ease-in;
+    -moz-transition: all 0.8s ease-in;
+    -o-transition: all 0.8s ease-in;
+    transition: all 0.8s ease-in;
+}
+
+.twilio-logo {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    position: absolute;
+    left: 2%;
+
+    -webkit-transition: all 0.8s ease-in;
+    -moz-transition: all 0.8s ease-in;
+    -o-transition: all 0.8s ease-in;
+    transition: all 0.8s ease-in;
+}
+
+.code-icon {
+    position: absolute;
+    left: -6%;
+    color: deepskyblue;
+}
+
+.rss-feed-icon {
+    position: absolute;
+    left: -5%;
+    color: red;
+}
+
+.about-icon {
+    position: absolute;
+    left: -5%;
+    color: cyan;
+}
+
+.contact-icon {
+    position: absolute;
+    left: -5%;
+    color: brown;
+}
+
+@media only screen and (max-width: 1260px) {
+    #wrapper.toggled #sidebar-wrapper {
+        width: 204px;
+    }
+    #wrapper.toggled #page-content-wrapper .navbar-fixed-top {
+        margin-left: 204px;
+    }
+}
+
+@media only screen and (max-width: 767px) {
+    #login-dropdown {
+        right: 0;
+    }
+
+    .menu-toggle-parent {
+        float: left;
+    }
+
+    .navbar-nav {
+        margin: 0;
+    }
+
+    .navbar-nav>li>a {
+        padding-top: 15px;
+        padding-bottom: 15px;
+    }
+}
+
+@media only screen and (max-width: 672px) {
+    #sidebar-wrapper {
+        display: none;
+    }
+
+    #wrapper.toggled #page-content-wrapper .navbar-fixed-top {
+        margin-left: 0;
+    }
+}
+
+@media only screen and (max-width: 490px) {
+    .open .dropdown-menu {
+        display: inline-flex;
+    }
+
+    #login-dropdown {
+        top: 53px;
+        left: 0;
+        background: #001233;
+    }
+
+    #dropdownMenuButton {
+        width: 100%;
+    }
+
+    #mobileDropdownMenuParent.open ul {
+        margin-top: 85px;
+    }
+}
+
+@media only screen and (max-width: 320px) {
+    #nav-brand-custom .navbar-brand {
+        padding: 15px 0 15px 15px;
+    }
+
+    .nav > li > a {
+        padding-left: 15px;
+    }
+
+    .navbar-brand {
+        padding-left: 15px;
+        padding-top: 15px;
+    }
+}
+
+@media only screen and (min-width: 1261px) {
+    #wrapper.toggled #sidebar-wrapper {
+        width: 17%;
+        max-width: 305px;
+    }
+
+    #wrapper.toggled #page-content-wrapper .navbar-nav {
+        margin-left: 17%
+    }
+}
+
+@media only screen and (min-width: 1800px) {
+    #wrapper.toggled #page-content-wrapper .navbar-nav {
+        margin-left: 305px;
+    }
+}
+
+/*[ng\:cloak], [ng-cloak], .ng-cloak {
+  display: none !important;
+}
+
+[ng\:if], [ng-if], .ng-if {
+  display: none !important;
+}*/

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<script type="text/javascript">var t1 = performance.now()</script>
+<!-- Bootstrap the angular app after the Google Java Script libraries are loaded. -->
+<html lang="en">
+<head>
+    <title>Dylan's Profile</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:title" content="Dylans Coder Profile">
+    <meta property="og:type" content="Content Data">
+    <meta property="og:description" content="Profile web app as a resume.">
+    <meta property="og:image" content="/img/CloudPlatform_logo.png">
+    <meta property="og:site_name" content="A web app powered by Google App Engine. Specifically the technologies I am utilizing  is 'python google cloud endpoints', 'AngularJS', obviously HTML5 Semantics along with css3 to make a super well designed dynamic profile about my programming journey! Enjoy.">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/sidenav.css">
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-social/5.0.0/bootstrap-social.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/index.css">
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular-route.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.10.0/ui-bootstrap-tpls.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="/js/config.js"></script>
+    <script src="/js/utils.js"></script>
+    <script src="/js/app.js"></script>
+    <script src="/js/controllers.js"></script>
+    <script src="/js/index.js"></script>
+    <script>
+        function init() {
+            var rootPath = '//' + window.location.host + '/_ah/api';
+            gapi.client.load('user_endpoint', 'v1', function () {gapi.client.setApiKey("AIzaSyDXCZc6vEZQf6i_2ofwOE1mLYqzTS6EAWk")}, rootPath);
+            gapi.client.load('oauth2', 'v2', null);
+        };
+    </script>
+    <script src="//apis.google.com/js/client:plusone.js?onload=init"></script>
+</head>
+
+    <body ng-controller="RootController as rc" ng-init="">
+        <div id="wrapper" class="toggled">
+            <div class="container-fluid">
+
+                <!-- Sidebar -->
+                <div id="sidebar-wrapper">
+                    <ul class="sidebar-nav" id="logo-nav"></ul>
+                    <ul class="sidebar-nav text-left">
+                        <li class="nav-item"><img src="/img/udacity-logo-2.png" class="udacity-logo" alt="+"><a href="/nanodegrees">Udacity</a></li>
+                        <li class="nav-item"><img src="/img/twilio-logo-2.png" class="twilio-logo" alt="+"><a href="/twilio_dashbard">Twilio</a></li>
+                        <li class="nav-item"><i class="fa fa-code fa-3x code-icon" aria-hidden="true"></i><a href="/code_forums">Coder Forums</a></li>
+                        <li class="nav-item"><i class="fa fa-rss-square fa-3x rss-feed-icon" aria-hidden="true"></i><a href="/rss_feeds">Rss Feeds</a></li>
+                        <li class="nav-item"><i class="fa fa-file-text fa-3x about-icon"></i><a href="/about">About</a></li>
+                        <li class="nav-item"><i class="fa fa-envelope fa-3x contact-icon"></i><a href="/contact">Contact</a></li>
+                    </ul>
+                </div>
+                <!-- /sidebar-wrapper -->
+
+
+                <!-- Page Content -->
+                <div id="page-content-wrapper" class="pcw-custom">
+
+                    <nav class="navbar navbar-fixed-top navbar-dark bg-inverse" style="background: #001233;" >
+                        <ul class="nav navbar-nav">
+                            <li class="nav-item menu-toggle-parent">
+                                <a id="menu-toggle" class="btn btn-default btn-primary" type="button" ng-click="toggleMenuAngular()">
+                                    <span class="fa fa-list fa-1x" aria-hidden="true"></span>
+                                </a>
+                            </li>
+                            <li id="nav-brand-custom" class="nav-item"><a class="navbar-brand" href="/">Dylan's Coder Profiles</a></li>
+                            <li ng-if="!rc.getSignedInState" id="login-dropdown" class="dropdown" ng-cloak>
+                                <button class="btn dropdown-toggle nav-item" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-2x">Login</i> <i class="fa fa-sign-in fa-2x"></i></button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <li><a><i class="fa fa-google-plus-square fa-4x"></i></a></li>
+                                    <li><a><i class="fa fa-twitter-square fa-4x"></i></a></li>
+                                    <li><a><i class="fa fa-facebook-square fa-4x"></i></a></li>
+                                </ul>
+                            </li>
+                            <li id="mobileDropdownMenuParent" class="dropdown closed">
+                                <ul id="mobileDropdownMenu" class="dropdown-menu">
+                                    <li class="dynamicallySetWidth"><!-- <img src="/img/udacity-logo-2.png" class="udacity-logo" alt="+"> --><a href="/nanodegrees">Udacity</a></li>
+                                    <li class="dynamicallySetWidth"><!-- <img src="/img/twilio-logo-2.png" class="twilio-logo" alt="+"> --><a href="/twilio_dashbard">Twilio</a></li>
+                                    <li class="dynamicallySetWidth"><!-- <i class="fa fa-code fa-3x code-icon" aria-hidden="true"></i> --><a href="/code_forums">Coder Forums</a></li>
+                                    <li class="dynamicallySetWidth"><!-- <i class="fa fa-rss-square fa-3x rss-feed-icon" aria-hidden="true"> --></i><a href="/rss_feeds">Rss Feeds</a></li>
+                                    <li class="dynamicallySetWidth"><!-- <i class="fa fa-file-text fa-3x about-icon"></i> --><a href="/about">About</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <!-- <span id="signin-btn" class="" ng-if="!rt.getSignedInState"><a class="navlink" href="">Sign In Options</a></span> -->
+                    </nav>
+
+                </div>
+                <!-- /#page-content-wrapper -->
+
+            </div>
+            <!-- / .container-fluid -->
+
+        </div>
+        <!-- / #wrapper -->
+
+        <script>
+        </script>
+    </body>
+</html>
