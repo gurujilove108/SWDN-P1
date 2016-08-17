@@ -6,6 +6,10 @@ function timeNow() {
     return performance.now();
 }
 
+function timeDifference(t2, t1) {
+	return t2-t1;
+}
+
 function round(value, decimals) {
     return Number(Math.round(value+'e'+decimals)+'e-'+decimals);
 }

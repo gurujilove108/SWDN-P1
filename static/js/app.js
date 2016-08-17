@@ -1,28 +1,11 @@
 'use strict';
 
-var app = angular.module('dylansProfileApp', ['dylansProfileControllers', 'ngRoute', 'ui.bootstrap']);
-app.config([
-    "$routeProvider", function ($routeProvider) {
-        $routeProvider.when('/udacity', {
-            templateUrl: '/views/udacity.html',
-            controller: 'NandegreeController'
-        });
-        $routeProvider.when('/twilio_dashbard', {
-            templateUrl: '/views/twilio_dashbard.html',
-            controller: 'TwilioController'
-        });
-        $routeProvider.when('/code_forums', {
-            templateUrl: '/views/code_forums.html',
-            controller: 'CodeForumsController',
-        });
-        $routeProvider.when('/rss_feeds', {
-            templateUrl: '/views/rss_feeds.html',
-            controller: 'RssFeedController'
+var app = angular.module('swdnP1App', ['swdnP1AppControllers', 'ngRoute', 'ui.bootstrap']);
 
-        });
-        $routeProvider.otherwise({
-            redirectTo: '/'
-        });
+app.config(["$routeProvider", function ($routeProvider) {
+    $routeProvider.otherwise({
+        redirectTo: '/'
+    });
 }]);
 
 app.filter('startFrom', function () {
@@ -38,7 +21,7 @@ app.constant('HTTP_ERRORS', {
 
 app.factory('oauth2Provider', function ($modal) {
     var oauth2Provider = {
-        CLIENT_ID: '39830639023-6ijh10vnoq4cdgkoh4me2btt4sfjgqco.apps.googleusercontent.com',
+        CLIENT_ID: '39830639023-6ijh10vnoq4cdgkoh4me2btt4sfjgqco.apps.googleusercontent.com', //replace me with new one, this is from different app
         SCOPES: 'email profile',
         signedIn: false
     }
