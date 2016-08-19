@@ -19,4 +19,7 @@ from endpoint_apis.user_endpoint import UserEndpoint
 import endpoints
 import logging
 
-api = endpoints.api_server([GreetingEndpoint, UserEndpoint])
+api = endpoints.api_server([
+			GreetingEndpoint, 
+			UserEndpoint
+		])

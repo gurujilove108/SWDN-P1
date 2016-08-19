@@ -1,5 +1,9 @@
 controllers.controller('RootController', function ($scope, $location, oauth2Provider) {
-	$scope.sayHello = function() {
-		console.log("Alright lets do this");
+	$scope.toggleMenu = function() { 
+		jQuery('#wrapper').toggleClass('toggled');
+	}
+
+	$scope.userSignedIn = function() {
+		return false;
 	}
 });

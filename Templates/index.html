@@ -41,6 +41,58 @@
     </head>
 
     <body ng-controller="RootController as rc" ng-init="">
-        <h1 class="header">Hello bitches</h1>
-    </body>
+        <div id="wrapper" class="toggled">
+            <div class="container-fluid">
+
+                <!-- Sidebar -->
+                <div id="sidebar-wrapper">
+                    <ul class="sidebar-nav" id="logo-nav"></ul>
+                    <ul class="sidebar-nav text-left">
+                        <li class="nav-item"><a href="/all_events">See All Events</a></li>
+                        <li class="nav-item"><a href="/create_event">Create New Event</a></li>
+                        <li class="nav-item"><a href="/events_and_locations">Find Event Locations</a></li>
+                        <li class="nav-item"><i class="fa fa-file-text fa-3x about-icon"></i><a href="/about">About</a></li>
+                        <li class="nav-item"><i class="fa fa-envelope fa-3x contact-icon"></i><a href="/contact">Contact</a></li>
+                    </ul>
+                </div>
+                <!-- /sidebar-wrapper -->
+
+
+                <!-- Page Content -->
+                <div id="page-content-wrapper" class="pcw-custom">
+                    <nav class="navbar navbar-fixed-top navbar-dark bg-inverse" style="background: #001233;" >
+                        <ul class="nav navbar-nav header-nav">
+                            <li class="nav-item menu-toggle-parent">
+                                <a id="menu-toggle" class="btn btn-default btn-primary menu-button" type="button" ng-click="toggleMenu()">
+                                    <span class="fa fa-list fa-1x" aria-hidden="true"></span>
+                                </a>
+                            </li>
+                            <li id="nav-brand-custom" class="nav-item"><a class="navbar-brand page-title" href="/">Event Manager</a></li>
+                            <li id="login-btn" class="login-btn-container">
+                                <a href="#">
+                                    <i class="fa-2x login-text">login</i>
+                                    <i class="fa fa-sign-in fa-2x"></i>
+                                </a>
+                                <a href="#">
+                                    <i class="fa-2x signup-text">signup</i>
+                                    <i class="fa fa-user-plus fa-2x"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+                <!-- /#page-content-wrapper -->
+
+            </div>
+            <!-- / .container-fluid -->
+
+        </div>
+        <!-- / #wrapper -->
+
+        <script>
+            loadStyleSheetsAsync();
+            var t2 = performance.now();
+            var pageLoadMiliseconds = round(t2-t1, 2);
+            logReplaced("ms", pageLoadMiliseconds, "It took approximately ms miliseconds to load the page");
+        </script>
 </html>
