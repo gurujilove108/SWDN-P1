@@ -1,27 +1,18 @@
 @media only screen and (max-width: 768px) {
-
 	.navbar-powers {
 		width: 100%;
-	}
-
-	.page-title {
-		
 	}
 
 	.menu-button {
 		width: 7%;
 		margin-left: auto;
 	}
-
-	.menu-toggle-parent {
-
-	}
 	
 }
 
 body {
 	height: 100%;
-	height: 100%;
+	width: 100%;
 }
 
 .page-title {
@@ -29,6 +20,10 @@ body {
     text-align: center;
     font-size: 250%;
     padding: 5%;
+}
+
+.page-title-parent .page-title:hover {
+	background: black;
 }
 
 .header-nav {
@@ -53,7 +48,7 @@ body {
 }
 
 .login-btn-container {
-	margin-left: 50%;
+	margin-left: 3%;
 }
 
 .login-btn-container a {
@@ -62,13 +57,31 @@ body {
 
 .login-btn-container a:nth-child(1) {
 	float: left;
+	border: 1px groove #337ab7;
+	border-radius: 10px;
 }
 
+.login-btn-container a:nth-child(1):hover {
+	border: 2px solid #337ab7;
+	background: ghostwhite;
+}
 .login-btn-container a:nth-child(2) {
 	float: right;
 }
 
-.navbar-nav li a:hover {
-	border:1px groove #337ab7;
+.login-btn-container a:nth-child(2):hover {
+	border-radius: 10px
 }
 
+.search-form-container {
+	width: 30%;
+	margin-left: 4%;
+	padding-top: 10px;
+}
+
+.site-search {
+	font-size: 120%;
+    font-weight: bold;
+    color: deepskyblue;
+    background: black;
+}
