@@ -51,8 +51,8 @@
                         <li class="nav-item"><a href="/all_events">See All Events</a></li>
                         <li class="nav-item"><a href="/create_event">Create New Event</a></li>
                         <li class="nav-item"><a href="/events_and_locations">Find Event Locations</a></li>
-                        <li class="nav-item"><i class="fa fa-file-text fa-3x about-icon"></i><a href="/about">About</a></li>
-                        <li class="nav-item"><i class="fa fa-envelope fa-3x contact-icon"></i><a href="/contact">Contact</a></li>
+                        <li class="nav-item"><a href="/about">About</a></li>
+                        <li class="nav-item"><a href="/contact">Contact</a></li>
                     </ul>
                 </div>
                 <!-- /sidebar-wrapper -->
@@ -70,10 +70,11 @@
                             <li id="nav-brand-custom" class="nav-item page-title-parent">
                                 <a class="navbar-brand page-title" href="/">Mr. Event Manager</a>
                             </li>
-                            <li class="search-form-container">
+                            <li class="nav-item search-icon-parent"><span class="search-text">search</span><i id="search-icon" ng-click="toggleSearch()" class="fa fa-search fa-2x search-icon"></i></li>
+                            <li class="search-form-container hidden fade-in fade-in-one">
                                 <form id="search-form" class="search-form">
                                     <div class="form-group">
-                                        <input type="text" class="form-control site-search" id="search" placeholder="Search The Event Manager Robot">
+                                        <input type="text" class="form-control site-search" id="search" placeholder="Search Terms">
                                     </div>
                                 </form>
                             </li>
