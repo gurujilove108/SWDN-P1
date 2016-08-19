@@ -70,7 +70,7 @@
                             <li id="nav-brand-custom" class="nav-item page-title-parent">
                                 <a class="navbar-brand page-title" href="/">Mr. Event Manager</a>
                             </li>
-                            <li class="nav-item search-icon-parent"><span class="search-text">search</span><i id="search-icon" ng-click="toggleSearch()" class="fa fa-search fa-2x search-icon"></i></li>
+                            <li class="nav-item search-icon-parent" ng-if="userSignedIn()" ng-cloak><span class="search-text">search</span><i id="search-icon" ng-click="toggleSearch()" class="fa fa-search fa-2x search-icon"></i></li>
                             <li class="search-form-container hidden fade-in fade-in-one">
                                 <form id="search-form" class="search-form">
                                     <div class="form-group">
@@ -78,7 +78,7 @@
                                     </div>
                                 </form>
                             </li>
-                            <li id="login-btn" class="login-btn-container">
+                            <li id="login-btn" class="login-btn-container" ng-if="!userSignedIn()" ng-cloak>
                                 <a href="#">
                                     <i class="fa-2x login-text">login</i>
                                     <i class="fa fa-sign-in fa-2x"></i>
@@ -90,6 +90,9 @@
                             </li>
                         </ul>
                     </nav>
+                    <div id="alert-not-logged-in" class="alert alert-warning fade hidden">
+                        <strong>You must be logged in to view this Content</strong>
+                    </div>
                 </div>
                 <!-- /#page-content-wrapper -->
 

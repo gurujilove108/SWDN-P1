@@ -4,7 +4,12 @@ controllers.controller('RootController', function ($scope, $location, oauth2Prov
 	}
 
 	$scope.toggleSearch = function() {
-		jQuery('.search-form-container').toggleClass("hidden");
+		var searchForm = jQuery('.search-form-container');
+		searchForm.toggleClass("hidden");
+		searchForm.hide();
+		searchForm.fadeIn('slow/400/fast', function() {
+			
+		});
 	}
 
 	$scope.userSignedIn = function() {
