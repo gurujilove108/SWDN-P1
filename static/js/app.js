@@ -3,6 +3,10 @@
 var app = angular.module('swdnP1App', ['swdnP1AppControllers', 'ngRoute', 'ui.bootstrap']);
 
 app.config(["$routeProvider", function ($routeProvider) {
+    $routeProvider.when('/all_events', {
+        templateUrl: '/static/views/all_events.html',
+        controller: 'EventController'
+    });
     $routeProvider.otherwise({
         redirectTo: '/'
     });
@@ -16,7 +20,7 @@ app.filter('startFrom', function () {
 });
 
 app.constant('HTTP_ERRORS', {
-    'UNAUTHORIZED': 401
+    'UNAUTHORIZED': 401 
 });
 
 app.factory('oauth2Provider', function ($modal) {

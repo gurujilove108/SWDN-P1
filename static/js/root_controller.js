@@ -13,6 +13,7 @@ controllers.controller('RootController', function ($scope, $location, oauth2Prov
 	}
 
 	$scope.userSignedIn = function() {
-		return false;
+		return oauth2Provider.signedIn;
 	}
+
 });
