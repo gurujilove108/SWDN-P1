@@ -1,15 +1,50 @@
 <style>
-	
+
+    .login-form {
+        margin-top: 4%;
+        margin-left: 5%;
+        width: 25%;
+    }
+
+    .form-group input {
+        width: 100%;
+        padding: 1.2%;
+    }
+
+    .btn-login {
+        width: 100%;
+        margin-top: 2%;
+        background: #002e4d;
+        color: white;
+    }
+
+    .btn-login:hover {
+        color: black;
+    }
+
+    .error-box {
+      color: #800000;
+      border: 1px solid #800000;
+      background: #ffe6e6;
+    }
+
 </style>
 
 <form id="login-form" class="login-form">
-  <div class="form-group">
-    <label for="exampleInputEmail1">Email address</label>
-    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
-    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-  </div>
-  <div class="form-group">
-    <label for="exampleInputPassword1">Password</label>
-    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-  </div>
+    <div class="form-group">
+      <div class="error-box" hidden></div>
+    </div>
+    <div class="form-group">
+      <label for="email-login">Email address</label><span id="email-error" class="email-login-error"></span>
+      <input type="email" class="form-control" id="email-login" placeholder="Enter email" required>
+    </div>
+    <div class="form-group">
+      <label for="login-password">Password</label><span id="password-error" class="password-login-error"></span>
+      <input type="password" class="form-control" id="login-password" placeholder="Password" required>
+    </div>
+    <div class="form-group">
+      <button class="btn btn-login" disabled>Login</button>
+    </div>
 </form>
+
+
