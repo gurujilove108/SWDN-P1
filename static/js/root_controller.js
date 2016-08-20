@@ -16,4 +16,8 @@ controllers.controller('RootController', function ($scope, $location, oauth2Prov
 		return oauth2Provider.signedIn;
 	}
 
+	$scope.sayHello = function() {
+		log("hello");
+	}
+
 });

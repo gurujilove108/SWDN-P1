@@ -4,24 +4,33 @@ var app = angular.module('swdnP1App', ['swdnP1AppControllers', 'ngRoute', 'ui.bo
 
 app.config(["$routeProvider", function ($routeProvider) {
     $routeProvider.when('/all_events', {
-        templateUrl: '/static/views/all_events.html',
+        templateUrl: '../views/all_events.html',
         controller: 'EventController'
+    });
+    $routeProvider.when('/create_event', {
+        templateUrl: '../views/create_event.html',
+        controller: 'EventController'
+    });
+    $routeProvider.when('/contact', {
+        templateUrl: '../views/contact.html',
+        controller: 'ContactController'
+    });
+    $routeProvider.when('/about', {
+        templateUrl: '../views/about.html',
+        controller: 'AboutController'
+    });
+    $routeProvider.when('/login', {
+        templateUrl: '../views/login.html',
+        controller: 'LoginController'
+    });
+    $routeProvider.when('/signup', {
+        templateUrl: '../views/signup.html',
+        controller: 'SignupController'
     });
     $routeProvider.otherwise({
         redirectTo: '/'
     });
 }]);
-
-app.filter('startFrom', function () {
-    var filter = function (data, start) {
-        return data.slice(start);
-    }
-    return filter;
-});
-
-app.constant('HTTP_ERRORS', {
-    'UNAUTHORIZED': 401 
-});
 
 app.factory('oauth2Provider', function ($modal) {
     var oauth2Provider = {
@@ -29,6 +38,7 @@ app.factory('oauth2Provider', function ($modal) {
         SCOPES: 'email profile',
         signedIn: false
     }
+
     oauth2Provider.signIn = function (callback) {
         gapi.auth.signIn({
             'clientid': oauth2Provider.CLIENT_ID,
@@ -60,4 +70,15 @@ app.factory('oauth2Provider', function ($modal) {
     };
 
     return oauth2Provider;
+});
+
+app.filter('startFrom', function () {
+    var filter = function (data, start) {
+        return data.slice(start);
+    }
+    return filter;
+});
+
+app.constant('HTTP_ERRORS', {
+    'UNAUTHORIZED': 401 
 });

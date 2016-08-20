@@ -1,0 +1,50 @@
+<style>
+
+	.signup-form {
+		margin-top: 4%;
+		margin-left: 5%;
+	}
+
+	.form-group input {
+		width: 25%;
+		padding: 1.2%;
+	}
+
+	.btn-signup {
+		width: 25%;
+		margin-top: 2%;
+		background: #002e4d;
+		color: white;
+	}
+
+	.btn-signup:hover {
+		color: black;
+	}
+
+</style>
+<form id="signup-form" class="signup-form">
+	<div class="form-group row">
+		<h1 class="form-header">Create Account - <i>It's Free!</i></h1>
+	</div>
+	<div class="form-group">
+    	<label for="name">Account Name</label>
+    	<input type="text" class="form-control" id="name" placeholder="Enter name">
+    	<small id="nickname-help" class="form-text text-muted">Use a nickname if you like</small>
+  	</div>
+	<div class="form-group">
+    	<label for="email-signup">Email address</label>
+    	<input type="email" class="form-control" id="email-signup" aria-describedby="emailHelp" placeholder="Enter email">
+    	<small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+  	</div>
+  	<div class="form-group">
+    	<label for="password-signup">Password</label>
+    	<input type="password" class="form-control" id="password-signup" placeholder="Password">
+  	</div>
+  	<div class="form-group">
+    	<label for="phone">Phone</label>
+    	<input type="tel" class="form-control" id="phone" placeholder="Phone number">
+  	</div>
+  	<div class="form-group">
+  		<button class="btn btn-signup" disabled>Sign up</button>
+  	</div>
+</form>

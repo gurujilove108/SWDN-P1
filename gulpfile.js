@@ -8,7 +8,9 @@ gulp.task('default', function() {
 
     gulp.watch("static/js/*.js").on('change', browserSync.reload);
     gulp.watch("static/css/*.css").on('change', browserSync.reload);
+    gulp.watch("static/views/*.html").on('change', browserSync.reload);
     gulp.watch("templates/*.html").on('change', browserSync.reload);
+
 });
 
 
