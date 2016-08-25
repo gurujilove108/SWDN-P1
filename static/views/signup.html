@@ -1,7 +1,7 @@
 <style>
 
-	.signup-form {
-		margin-top: 4%;
+	.row-form {
+		margin-top: 8%;
 		margin-left: 5%;
 	}
 
@@ -22,48 +22,55 @@
 		background: black;
 	}
 
-	.account_name_success {
-
+	.account-name-error, .email-error, .password-error, .phone-error {
+		color: red;
 	}
+
 
 	.check-icon {
+		margin-left: 5%;
 		width: 18%;
-	    position: absolute;
-	    margin-left: 5%;
-	    color: #009933;
+		color: #00e600;
+		position: absolute;
+		left: 60%;
+		bottom: 70%;
 	}
+
+	.form-group:nth-child(2) {
+		margin-top: 10%;
+	}
+	
 
 </style>
 
-<div class="row">
+<div class="row row-form">
 	<div class="col-md-6">
 		<form id="signup-form" class="signup-form" ng-submit="submitSignupForm()">
 			<div class="form-group">
 				<h1 class="form-header">Create Account - <i>It's Free!</i></h1>
 			</div>
 			<div class="form-group">
-		    	<label for="name">Account Name</label>
+		    	<label for="name">Account Name <i class="account-name-status"></i></label>
 
 		    	<!-- Important Notes Here. adding ng-onchange requires ng-model. if you set ng-model="variable" then you have access to $scope.variable which is the current input of the name input -->
-		    	<input type="text" class="form-control" id="account_name" placeholder="Enter name" autocomplete="name" ng-focus="onAccountNameFocus()" ng-change="onAccountNameChange()" ng-model="account_name"  ng-mouseleave="onAccountNameMouseLeave()" required>
-		    	<span class="account_name_input_error"></span>
+		    	<input type="text" class="form-control" id="account_name" placeholder="Enter name" min="3" autocomplete="name" ng-focus="onAccountNameFocus()" ng-change="onAccountNameChange()" ng-model="account_name"  ng-mouseleave="onAccountNameMouseLeave()" required>
 		    	<small id="nickname-help" class="form-text text-muted">Use a nickname if you like</small>
 		  	</div>
 			<div class="form-group">
-		    	<label for="email-signup">Email address </label>
+		    	<label for="email-signup">Email address <i class="email-status"></i></label>
 		    	<input type="email" class="form-control" id="email-signup" placeholder="Enter email" autocomplete="email" ng-focus="onEmailFocus()" ng-change="onEmailChange()" ng-model="email" ng-mouseleave="onEmailMouseLeave()"required>
 		    	<small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
 		  	</div>
 		  	<div class="form-group">
-		    	<label for="password-signup">Password</label>
-		    	<input type="password" class="form-control" id="password-signup" placeholder="Enter Password" ng-focus="onPasswordFocus()" ng-change="onPasswordChange()" ng-model="password" ng-mouseleave="onPasswordMouseLeave" required>
+		    	<label for="password-signup">Password <i class="password-status"></i></label>
+		    	<input type="password" class="form-control" id="password-signup" placeholder="Enter Password" ng-focus="onPasswordFocus()" ng-change="onPasswordChange()" ng-model="password" ng-mouseleave="onPasswordMouseLeave()" required>
 		  	</div>
 		  	<div class="form-group">
-		    	<label for="phone">Phone</label>
-		    	<input type="tel" class="form-control" id="phone" name="phone" placeholder="Phone number" autocomplete="tel" ng-focus="onPhoneFocus()" ng-change="onPhoneChange()" ng-model="phone_number" ng-mouseleave="onPhoneMouseLeave" required>
+		    	<label for="phone">Phone <i class="phone-status"></i></label>
+		    	<input type="tel" class="form-control" id="phone" name="phone" placeholder="(555)555-5555" autocomplete="tel" ng-focus="onPhoneFocus()" ng-change="onPhoneChange()" ng-model="phone_number" ng-mouseleave="onPhoneMouseLeave()" required>
 		  	</div>
 		  	<div class="form-group">
-		  		<button type="submit" class="btn btn-signup">Sign up</button>
+		  		<button type="submit" class="btn btn-signup" disabled="disabled">Sign up</button>
 		  	</div>
 		</form>
 	</div>
