@@ -94,7 +94,6 @@ controllers.controller('SignupController', function ($scope, $location, oauth2Pr
 		}
 
 		$scope.checkAllFieldsValid();
-		
 	}
 
 	/* 
@@ -124,12 +123,28 @@ controllers.controller('SignupController', function ($scope, $location, oauth2Pr
   	 * Of every form onChange. if Their all valid then we enable the button to sign up
 	 */
 	 $scope.checkAllFieldsValid = function() {
-	 	if ($scope.allFieldsValid())
+	 	if ($scope.allFieldsValid()) {
 	 		$scope.signup_btn.attr("disabled", null);
-	 	else 
+	 		return true;
+	 	} else {
 	 		$scope.signup_btn.attr("disabled", true);
-
+	 		return false;
+	 	}
 	 }
+
+	 /* 
+	  * Now for our submit form function.
+	  * So In case the user is trying to hack the form and removes the required attributes
+	  * And un-disables the button, we still make sure to check if all the fields are valid 
+	  * When we submit the form
+	  */
+	  $scope.submitSignupForm = function() {
+	  	if ($scope.checkAllFieldsValid()) {
+	  		log("signing up user");
+	  	} else {
+	  		log("not signin up the form, btnshould be disabled");
+	  	}
+	  }
 });
 	/* 
 		the ng-models will be adding the following variables to the $scope object
