@@ -20,7 +20,7 @@ controllers.controller('SignupController', function ($scope, $location, oauth2Pr
 	$scope.$password_label 		= jQuery('.password-status');
 	$scope.$phone_label 		= jQuery('.phone-status');
 
-	/* finally we get the signup button so we dont have to get it everytime */
+	/* finally we get the signup button so we dont have to get it everytime in the correlated functions */
 	$scope.signup_btn = jQuery('.btn-signup');
 
 	/*
@@ -35,9 +35,7 @@ controllers.controller('SignupController', function ($scope, $location, oauth2Pr
 	 $scope.is_password_valid 		= false;
 	 $scope.is_phone_valid 			= false;
 
-	/* 
-	 * Methods for account name input events 
-	 */
+	/* Methods for account name input events, focus and unfocus */
 	$scope.onAccountNameChange = function() {
 		if(validAccountName($scope.account_name)) {
 			$scope.$account_name_label.text($scope.account_name_valid_msg).css("color", "green");
@@ -47,11 +45,21 @@ controllers.controller('SignupController', function ($scope, $location, oauth2Pr
 			$scope.is_account_name_valid = false;
 		}
 
-		$scope.checkAllFieldsValid();
+		$scope.onAccountNameUnfocus = function() {
+			log("leaving focus of input");
+		}
 	}
 
-	/*
-	 * Methods for email input events
+	/* Method for when the user leaves focus of the account name input box
+	 * We have to check to see if the account name is valid and we will do the same 
+	 * for the other input form fields
+	 * 	 
+	 */
+	 
+	/* Methods for email input events */
+
+	/* Every time the user changes the input in the email input box
+	 * This method gets called
 	 */
 	$scope.onEmailChange = function(){
 		if(validEmail($scope.email)) {
@@ -64,7 +72,6 @@ controllers.controller('SignupController', function ($scope, $location, oauth2Pr
 
 		$scope.checkAllFieldsValid();
 	}
-
 	/* 
 	 * Methods for password input events
 	 * Ok I have just experienced an interesting problem.
@@ -152,5 +159,19 @@ controllers.controller('SignupController', function ($scope, $location, oauth2Pr
 		$scope.email;
 		$scope.password;
 		$scope.phone_number;
+		$scope.employer;
+	*/
+
+	/* 
+	Also because of how much extra un-required functionality I am adding to this application,
+	   I am not going to add any public bio information even though it would be really easy. Obviously if there are any problems 
+	   Udacity will let me know. Thanks,
+	*/
+
+
+	/* notes 
+		everything must be responsive
+		make sure forms are understandable while using a screen reader and figure out twhat that is
+		make sure the the touches run on mobile devices
 	*/
 

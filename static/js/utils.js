@@ -33,15 +33,19 @@ function validAccountName(account_name) {
 }
 
 function validEmail(email) {
-	return regExpMatch(config.regexp.email, email);
+	return regExpMatch(config.regexp.email, email.trim());
 }
 
 function validPassword(password_value) {
-    return regExpMatch(config.regexp.password, password_value);
+    return regExpMatch(config.regexp.password, password_value.trim());
 }
 
 function validPhone(phone_value) {
-	return regExpMatch(config.regexp.phone, phone_value);
+	return regExpMatch(config.regexp.phone, phone_value.trim());
+}
+
+function validEmployer(employer_value) {
+    return employer_value.length.trim() >= 3;
 }
 
 function removeDisabledAttr(string_selector) {
