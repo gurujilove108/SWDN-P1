@@ -1,9 +1,11 @@
 controllers.controller('SignupController', function ($scope, $location, oauth2Provider) {
 
-   /* 
-	* constants for input error messages and success messages
+   /* constants for input error messages and success messages
 	* Constants for the html error containers
 	* Because getting them on every event being fired is a waste
+	* finally we get the form signup button so we dont have to get it everytime in the correlated functions 
+	* I have a rule that is you use the same code twice, then you should create a function for it
+	* however there are some exceptions
 	*/
 	$scope.account_name_error 		= "Account name must be at least 3 characters";
 	$scope.email_error 				= "Email must meet the following requirements, Some letters, an @ sign, some letters, a period, some letters";
@@ -15,16 +17,14 @@ controllers.controller('SignupController', function ($scope, $location, oauth2Pr
 	$scope.password_valid_msg 		= "Password is valid";
 	$scope.phone_valid_msg 			= "Phone is valid";
 
-	$scope.$account_name_label 	= jQuery('.account-name-status');
-	$scope.$email_label 		= jQuery('.email-status');
-	$scope.$password_label 		= jQuery('.password-status');
-	$scope.$phone_label 		= jQuery('.phone-status');
+	$scope.$account_name_status 	= jQuery('.account-name-status');
+	$scope.$email_status 			= jQuery('.email-status');
+	$scope.$password_status 		= jQuery('.password-status');
+	$scope.$phone_status 			= jQuery('.phone-status');
 
-	/* finally we get the signup button so we dont have to get it everytime in the correlated functions */
 	$scope.signup_btn = jQuery('.btn-signup');
 
-	/*
-	 * In order to enable the sign up button, all input fields must be true and 
+	/* In order to enable the sign up button, all input fields must be true and 
 	 * That's what I'm declaring right here. initializing every input field variable to be false
 	 * and then when the onchange event fires the corresponding input variable will be set to true
 	 * At the end ofthe script we will only enable the button if all of these variables are true.
@@ -38,10 +38,10 @@ controllers.controller('SignupController', function ($scope, $location, oauth2Pr
 	/* Methods for account name input events, focus and unfocus */
 	$scope.onAccountNameChange = function() {
 		if(validAccountName($scope.account_name)) {
-			$scope.$account_name_label.text($scope.account_name_valid_msg).css("color", "green");
+			$scope.$account_name_status.text($scope.account_name_valid_msg).css("color", "green");
 			$scope.is_account_name_valid = true;
 		} else {
-			$scope.$account_name_label.text($scope.account_name_error).css("color", "red");
+			$scope.$account_name_status.text($scope.account_name_error).css("color", "red");
 			$scope.is_account_name_valid = false;
 		}
 
@@ -52,8 +52,7 @@ controllers.controller('SignupController', function ($scope, $location, oauth2Pr
 
 	/* Method for when the user leaves focus of the account name input box
 	 * We have to check to see if the account name is valid and we will do the same 
-	 * for the other input form fields
-	 * 	 
+	 * for the other input form fields as well
 	 */
 	 
 	/* Methods for email input events */
@@ -63,10 +62,10 @@ controllers.controller('SignupController', function ($scope, $location, oauth2Pr
 	 */
 	$scope.onEmailChange = function(){
 		if(validEmail($scope.email)) {
-			$scope.$email_label.text($scope.email_valid_msg).css("color", "green");
+			$scope.$email_status.text($scope.email_valid_msg).css("color", "green");
 			$scope.is_email_valid = true;
 		} else {
-			$scope.$email_label.text($scope.email_error).css("color", "red");
+			$scope.$email_status.text($scope.email_error).css("color", "red");
 			$scope.is_email_valid = false;
 		}
 
@@ -81,10 +80,10 @@ controllers.controller('SignupController', function ($scope, $location, oauth2Pr
 	 */
 	$scope.onPasswordChange = function() {
 		if(validPassword($scope.password)) {
-			$scope.$password_label.text($scope.password_valid_msg).css("color", "green");
+			$scope.$password_status.text($scope.password_valid_msg).css("color", "green");
 			$scope.is_password_valid = true;
 		} else {
-			$scope.$password_label.text($scope.password_error).css("color", "red");
+			$scope.$password_status.text($scope.password_error).css("color", "red");
 			$scope.is_password_valid = false;
 		}
 
@@ -93,10 +92,10 @@ controllers.controller('SignupController', function ($scope, $location, oauth2Pr
 
 	$scope.onPhoneChange = function() {
 		if(validPhone($scope.phone_number)) {
-			$scope.$phone_label.text($scope.phone_valid_msg).css("color", "green");
+			$scope.$phone_status.text($scope.phone_valid_msg).css("color", "green");
 			$scope.is_phone_valid = true;
 		} else {
-			$scope.$phone_label.text($scope.phone_error).css("color", "red");
+			$scope.$phone_status.text($scope.phone_error).css("color", "red");
 			$scope.is_phone_valid = false;
 		}
 
