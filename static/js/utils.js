@@ -14,14 +14,14 @@ function round(value, decimals) {
     return Number(Math.round(value+'e'+decimals)+'e-'+decimals);
 }
 
-function logReplaced(symbol, replacement_str, message) {
-    log(message.replace(symbol, replacement_str));
-}
-
 function loadStyleSheetsAsync() {
     config.stylesheetsAsyncLoad.forEach(function(link, index, args) {
         jQuery("head").append(link);
     });
+}
+
+function defined(val) {
+    return (val !== undefined);
 }
 
 function regExpMatch(regexp, value) {
@@ -29,23 +29,23 @@ function regExpMatch(regexp, value) {
 }
 
 function validAccountName(account_name) {
-	return (account_name !== undefined && account_name.length >= 3);
+	return (defined(account_name) && account_name.trim().length >= 3);
 }
 
 function validEmail(email) {
-	return regExpMatch(config.regexp.email, email.trim());
+	return (defined(email) && regExpMatch(config.regexp.email, email.trim()));
 }
 
 function validPassword(password_value) {
-    return regExpMatch(config.regexp.password, password_value.trim());
+    return (defined(password_value) && regExpMatch(config.regexp.password, password_value.trim()));
 }
 
 function validPhone(phone_value) {
-	return regExpMatch(config.regexp.phone, phone_value.trim());
+	return (defined(phone_value) && regExpMatch(config.regexp.phone, phone_value.trim()));
 }
 
 function validEmployer(employer_value) {
-    return employer_value.length.trim() >= 3;
+    return employer_value.trim().length >= 3;
 }
 
 function removeDisabledAttr(string_selector) {

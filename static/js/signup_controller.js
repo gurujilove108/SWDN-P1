@@ -11,16 +11,19 @@ controllers.controller('SignupController', function ($scope, $location, oauth2Pr
 	$scope.email_error 				= "Email must meet the following requirements, Some letters, an @ sign, some letters, a period, some letters";
 	$scope.password_error 			= "Password must be 8 characters in length and include 1 lowercase and 1 uppercase letter";
 	$scope.phone_error 				= "Phone must be in format (555)555-5555";
+	$scope.employer_error			= "Employer name must be at least 3 characters";
 
 	$scope.account_name_valid_msg 	= "Account name is valid";
 	$scope.email_valid_msg 			= "Email is valid";
 	$scope.password_valid_msg 		= "Password is valid";
 	$scope.phone_valid_msg 			= "Phone is valid";
+	$scope.employer_valid_msg		= "Employer is valid";			
 
 	$scope.$account_name_status 	= jQuery('.account-name-status');
 	$scope.$email_status 			= jQuery('.email-status');
 	$scope.$password_status 		= jQuery('.password-status');
 	$scope.$phone_status 			= jQuery('.phone-status');
+	$scope.$employer_status			= jQuery(".employer-status");
 
 	$scope.signup_btn = jQuery('.btn-signup');
 
@@ -45,17 +48,26 @@ controllers.controller('SignupController', function ($scope, $location, oauth2Pr
 			$scope.is_account_name_valid = false;
 		}
 
-		$scope.onAccountNameUnfocus = function() {
-			log("leaving focus of input");
-		}
+		$scope.checkAllFieldsValid();
 	}
 
 	/* Method for when the user leaves focus of the account name input box
 	 * We have to check to see if the account name is valid and we will do the same 
 	 * for the other input form fields as well
 	 */
+	$scope.onAccountNameUnfocus = function() {
+		if (!validAccountName($scope.account_name)) {
+			$scope.$account_name_status.text($scope.account_name_error).css("color", "red");
+			$scope.is_account_name_valid = false;
+		} else {
+			$scope.$account_name_status.text($scope.account_name_valid_msg).css("color", "green");
+			$scope.is_account_name_valid = true;
+		}
+
+		$scope.checkAllFieldsValid();
+	}
 	 
-	/* Methods for email input events */
+	/* Methods for email input events, onChange and OnBlur */
 
 	/* Every time the user changes the input in the email input box
 	 * This method gets called
@@ -71,6 +83,36 @@ controllers.controller('SignupController', function ($scope, $location, oauth2Pr
 
 		$scope.checkAllFieldsValid();
 	}
+
+	$scope.onEmailUnfocus = function(){
+		if(validEmail($scope.email)) {
+			$scope.$email_status.text($scope.email_valid_msg).css("color", "green");
+			$scope.is_email_valid = true;
+		} else {
+			$scope.$email_status.text($scope.email_error).css("color", "red");
+			$scope.is_email_valid = false;
+		}
+
+		$scope.checkAllFieldsValid();
+	}
+
+
+	/*
+     * When a user clicks the password box and neither of the account name or
+     * email is valid then we will display the error message for those inputs		
+	 */
+	 $scope.onPasswordFocus = function() {
+	 	if (!validAccountName($scope.account_name)) {
+	 		$scope.$account_name_status.text($scope.account_name_error).css("color", "red");
+			$scope.is_account_name_valid = false;
+	 	}
+
+	 	if (!validEmail($scope.email)) {
+	 		$scope.$email_status.text($scope.email_error).css("color", "red");
+			$scope.is_email_valid = false;
+	 	}
+	 }
+
 	/* 
 	 * Methods for password input events
 	 * Ok I have just experienced an interesting problem.
@@ -90,6 +132,27 @@ controllers.controller('SignupController', function ($scope, $location, oauth2Pr
 		$scope.checkAllFieldsValid();
 	}
 
+	/*
+		Here we are going to do the same thing as the onPasswordFocus except
+		We are going to include the password field as well 
+	*/
+	$scope.onPhoneFocus = function() {
+		if (!validAccountName($scope.account_name)) {
+	 		$scope.$account_name_status.text($scope.account_name_error).css("color", "red");
+			$scope.is_account_name_valid = false;
+	 	}
+
+	 	if (!validEmail($scope.email)) {
+	 		$scope.$email_status.text($scope.email_error).css("color", "red");
+			$scope.is_email_valid = false;
+	 	}
+
+	 	if (!validPassword($scope.password)) {
+	 		$scope.$password_status.text($scope.password_error).css("color", "red");
+			$scope.is_password_valid = false;
+	 	}
+	}
+
 	$scope.onPhoneChange = function() {
 		if(validPhone($scope.phone_number)) {
 			$scope.$phone_status.text($scope.phone_valid_msg).css("color", "green");
@@ -100,6 +163,28 @@ controllers.controller('SignupController', function ($scope, $location, oauth2Pr
 		}
 
 		$scope.checkAllFieldsValid();
+	}
+
+	$scope.onEmployerFocus = function() {
+		if (!validAccountName($scope.account_name)) {
+	 		$scope.$account_name_status.text($scope.account_name_error).css("color", "red");
+			$scope.is_account_name_valid = false;
+	 	}
+
+	 	if (!validEmail($scope.email)) {
+	 		$scope.$email_status.text($scope.email_error).css("color", "red");
+			$scope.is_email_valid = false;
+	 	}
+
+	 	if (!validPassword($scope.password)) {
+	 		$scope.$password_status.text($scope.password_error).css("color", "red");
+			$scope.is_password_valid = false;
+	 	}
+
+	 	if(!validPhone($scope.phone_number)) {
+	 		$scope.$phone_status.text($scope.phone_error).css("color", "red");
+			$scope.is_phone_valid = false;
+	 	}
 	}
 
 	/* 
@@ -116,7 +201,9 @@ controllers.controller('SignupController', function ($scope, $location, oauth2Pr
 			if ($scope.is_email_valid) 
 				if ($scope.is_password_valid)
 					if ($scope.is_phone_valid) 
-						return true;
+						if ($scope.is_mployer_valid)
+							return true;
+						return false;
 					return false;
 				return false;
 			return false;
@@ -159,16 +246,11 @@ controllers.controller('SignupController', function ($scope, $location, oauth2Pr
 		$scope.password;
 		$scope.phone_number;
 		$scope.employer;
+		Very Important Note 1. If there is no value inside the input box, $scope.value will be undefined opposed to ""
 	*/
 
 	/* 
-	Also because of how much extra un-required functionality I am adding to this application,
-	   I am not going to add any public bio information even though it would be really easy. Obviously if there are any problems 
-	   Udacity will let me know. Thanks,
-	*/
-
-
-	/* notes 
+		notes 
 		everything must be responsive
 		make sure forms are understandable while using a screen reader and figure out twhat that is
 		make sure the the touches run on mobile devices
