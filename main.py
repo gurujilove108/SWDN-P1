@@ -14,12 +14,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from endpoint_apis.greeting_endpoint import GreetingEndpoint
 from endpoint_apis.user_endpoint import UserEndpoint
 import endpoints
 import logging
 
 api = endpoints.api_server([
-			GreetingEndpoint, 
-			UserEndpoint
-		])
+	UserEndpoint
+])

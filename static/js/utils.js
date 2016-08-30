@@ -28,24 +28,29 @@ function regExpMatch(regexp, value) {
 	return regexp.test(value);
 }
 
+function trim(value) {
+    /* The built in trim function doesn't permanently trim the value, so we might as well do it while were here instead of in signup form */
+    value = value.trim();
+    return value;
+}
 function validAccountName(account_name) {
-	return (defined(account_name) && account_name.trim().length >= 3);
+	return (defined(account_name) && trim(account_name).length >= 3);
 }
 
 function validEmail(email) {
-	return (defined(email) && regExpMatch(config.regexp.email, email.trim()));
+	return (defined(email) && regExpMatch(config.regexp.email, trim(email)));
 }
 
 function validPassword(password_value) {
-    return (defined(password_value) && regExpMatch(config.regexp.password, password_value.trim()));
+    return (defined(password_value) && regExpMatch(config.regexp.password, trim(password_value)));
 }
 
 function validPhone(phone_value) {
-	return (defined(phone_value) && regExpMatch(config.regexp.phone, phone_value.trim()));
+	return (defined(phone_value) && regExpMatch(config.regexp.phone, trim(phone_value)));
 }
 
 function validEmployer(employer_value) {
-    return employer_value.trim().length >= 3;
+    return (defined(employer_value) && trim(employer_value).length >= 3);
 }
 
 function removeDisabledAttr(string_selector) {

@@ -37,10 +37,11 @@ controllers.controller('SignupController', function ($scope, $location, oauth2Pr
 	 $scope.is_email_valid 			= false;
 	 $scope.is_password_valid 		= false;
 	 $scope.is_phone_valid 			= false;
+	 $scope.is_employer_valid 		= false;
 
 	/* Methods for account name input events, focus and unfocus */
 	$scope.onAccountNameChange = function() {
-		if(validAccountName($scope.account_name)) {
+		if (validAccountName($scope.account_name)) {
 			$scope.$account_name_status.text($scope.account_name_valid_msg).css("color", "green");
 			$scope.is_account_name_valid = true;
 		} else {
@@ -59,15 +60,8 @@ controllers.controller('SignupController', function ($scope, $location, oauth2Pr
 		if (!validAccountName($scope.account_name)) {
 			$scope.$account_name_status.text($scope.account_name_error).css("color", "red");
 			$scope.is_account_name_valid = false;
-		} else {
-			$scope.$account_name_status.text($scope.account_name_valid_msg).css("color", "green");
-			$scope.is_account_name_valid = true;
 		}
-
-		$scope.checkAllFieldsValid();
 	}
-	 
-	/* Methods for email input events, onChange and OnBlur */
 
 	/* Every time the user changes the input in the email input box
 	 * This method gets called
@@ -85,17 +79,11 @@ controllers.controller('SignupController', function ($scope, $location, oauth2Pr
 	}
 
 	$scope.onEmailUnfocus = function(){
-		if(validEmail($scope.email)) {
-			$scope.$email_status.text($scope.email_valid_msg).css("color", "green");
-			$scope.is_email_valid = true;
-		} else {
+		if (!validEmail($scope.email)) {
 			$scope.$email_status.text($scope.email_error).css("color", "red");
 			$scope.is_email_valid = false;
 		}
-
-		$scope.checkAllFieldsValid();
 	}
-
 
 	/*
      * When a user clicks the password box and neither of the account name or
@@ -110,6 +98,13 @@ controllers.controller('SignupController', function ($scope, $location, oauth2Pr
 	 	if (!validEmail($scope.email)) {
 	 		$scope.$email_status.text($scope.email_error).css("color", "red");
 			$scope.is_email_valid = false;
+	 	}
+	 }
+
+	 $scope.onPasswordUnfocus = function() {
+	 	if (!validPassword($scope.password)) {
+	 		$scope.$password_status.text($scope.password_error).css("color", "red");
+			$scope.is_password_valid = false;
 	 	}
 	 }
 
@@ -153,6 +148,13 @@ controllers.controller('SignupController', function ($scope, $location, oauth2Pr
 	 	}
 	}
 
+	$scope.onPhoneUnfocus = function() {
+		if (!validPhone($scope.phone_number)) {
+	 		$scope.$phone_status.text($scope.phone_error).css("color", "red");
+			$scope.is_phone_valid = false;
+	 	}
+	}
+
 	$scope.onPhoneChange = function() {
 		if(validPhone($scope.phone_number)) {
 			$scope.$phone_status.text($scope.phone_valid_msg).css("color", "green");
@@ -187,6 +189,24 @@ controllers.controller('SignupController', function ($scope, $location, oauth2Pr
 	 	}
 	}
 
+	$scope.onEmployerUnfocus = function() {
+		if (!validEmployer($scope.employer)) {
+			$scope.$employer_status.text($scope.employer_error).css("color", "red");
+			$scope.is_employer_valid = false;
+		}
+	}
+
+	$scope.onEmployerChange = function() {
+		if (validEmployer($scope.employer)) {
+			$scope.$employer_status.text($scope.employer_valid_msg).css("color", "green");
+			$scope.is_employer_valid = true;
+		} else {
+			$scope.$employer_status.text($scope.employer_error).css("color", "red");
+			$scope.is_employer_valid = false;
+		}
+
+		$scope.checkAllFieldsValid();
+	}
 	/* 
 	 * method that will be run on every onchange of every input 
 	 * returns true if every input validation has been satisfied
@@ -201,7 +221,7 @@ controllers.controller('SignupController', function ($scope, $location, oauth2Pr
 			if ($scope.is_email_valid) 
 				if ($scope.is_password_valid)
 					if ($scope.is_phone_valid) 
-						if ($scope.is_mployer_valid)
+						if ($scope.is_employer_valid)
 							return true;
 						return false;
 					return false;
@@ -225,18 +245,60 @@ controllers.controller('SignupController', function ($scope, $location, oauth2Pr
 	 	}
 	 }
 
+
+	 /*  
+	  * Function for collecting all the form input values to send as a rpc message to 
+	  * our user endpoint
+	  */
+	  $scope.collectFormObject = function() {	  	
+	  	var signupFormObjectRPC = {
+	  		account_name: 	jQuery("#account_name").val(),
+	  		email: 			jQuery("#email-signup").val(),
+	  		password: 		jQuery("#password-signup").val(),
+	  		phone: 			jQuery("#phone").val(),
+	  		employer: 		jQuery("#employer").val()  		
+				  	
+	  	};
+	  	return signupFormObjectRPC;
+	  }
+
+
 	 /* 
 	  * Now for our submit form function.
 	  * So In case the user is trying to hack the form and removes the required attributes
 	  * And un-disables the button, we still make sure to check if all the fields are valid 
-	  * When we submit the form
+	  * When we submit the form. What would also be cool is to check to see if
+	  * Any of the required attributes have been remove. I'm definitely going to implement
+	  * That on my next project
 	  */
 	  $scope.submitSignupForm = function() {
+	  	log("attempting to sign up user");
 	  	if ($scope.checkAllFieldsValid()) {
-	  		log("signing up user");
+	  		var rpcFormObject = $scope.collectFormObject();
+	  		log("all fields are valid");
+	  		log("logging form object to send to google cloud endpoint");
+	  		log(rpcFormObject);
+
+	  		var request = $scope.getSignupEndpointRequest(rpcFormObject);
+	  		log("current request object: ")
+	  		log(rpcFormObject);
+
+	  		request.execute(function(response) {
+	  			log(response);
+	  			if (response.user_stored === "0") {
+	  				$scope.$account_name_status.text("Account name already exists, please choose another").css("color", "red");
+	  			}
+
+	  		});
+
 	  	} else {
-	  		log("not signin up the form, btnshould be disabled");
+	  		log("not signin up the form, btn should be disabled");
 	  	}
+	  }
+
+	  $scope.getSignupEndpointRequest = function(rpcFormObject) {
+	  	var request = gapi.client.user_endpoint.user_signup(rpcFormObject);
+		return request;
 	  }
 });
 	/* 
@@ -247,12 +309,5 @@ controllers.controller('SignupController', function ($scope, $location, oauth2Pr
 		$scope.phone_number;
 		$scope.employer;
 		Very Important Note 1. If there is no value inside the input box, $scope.value will be undefined opposed to ""
-	*/
-
-	/* 
-		notes 
-		everything must be responsive
-		make sure forms are understandable while using a screen reader and figure out twhat that is
-		make sure the the touches run on mobile devices
 	*/
 

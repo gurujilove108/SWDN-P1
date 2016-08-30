@@ -1,14 +1,28 @@
 import endpoints
-from request_models.user_rpc_messages import *
-from protorpc import remote
-from settings import WEB_CLIENT_ID
+import logging
+from models.models 						import *
+from protorpc 							import remote
+from endpoints_proto_datastore.ndb		import EndpointsModel
+from settings 							import WEB_CLIENT_ID
+from request_models.user_rpc_messages 	import *
 
 EMAIL_SCOPE = endpoints.EMAIL_SCOPE
 API_EXPLORER_CLIENT_ID = endpoints.API_EXPLORER_CLIENT_ID
 
-@endpoints.api(name="user_endpoint", version="v1", allowed_client_ids=[WEB_CLIENT_ID, API_EXPLORER_CLIENT_ID], scopes=[EMAIL_SCOPE], description="Endpoint for managing user functions")
+@endpoints.api(name="user_endpoint", version="v1", allowed_client_ids=[WEB_CLIENT_ID, API_EXPLORER_CLIENT_ID], scopes=[EMAIL_SCOPE], description="Endpoint for managing user login and signup")
 class UserEndpoint(remote.Service):
-    @endpoints.method(UserCredentialsMessage, UserCredentialsMessage, path="modify_user_credentials", http_method="POST", name="modify_credentials")
-    def modify_user_credentials(self, user_credentials):
-        user_credentials.username *= 2
-        return user_credentials
+
+    @endpoints.method(UserSignupData, UserSignupResponse, path="user_signup_path", http_method="POST", name="user_signup")
+    def store_user(self, user_data):
+    	user_stored = User.store_user(user_data)
+    	if user_stored:
+    		return UserSignupResponse(user_stored=1, error_msg="no error")
+    	elif not user_stored:
+    		return UserSignupResponse(user_stored=0, error_msg="users account name already exists")
+   
+
+        
+
+""" 
+For a void return type, use message_types.VoidMessage
+"""
