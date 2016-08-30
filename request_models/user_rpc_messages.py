@@ -11,7 +11,13 @@ class UserSignupResponse(messages.Message):
     user_stored = messages.IntegerField(1, required=True)
     error_msg   = messages.StringField(2)
 
+class UserLoginData(messages.Message):
+    account_name = messages.StringField(1, required=True)
+    password     = messages.StringField(2, required=True)
 
+class UserLoginResponse(messages.Message):
+    successful = messages.IntegerField(1, required=True)
+    error_msg = messages.StringField(2)
 
 """
 In case I wanted to send requests manualy opposed to using gapi.client.apiname.methodname

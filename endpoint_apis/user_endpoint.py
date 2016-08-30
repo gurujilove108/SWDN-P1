@@ -19,9 +19,18 @@ class UserEndpoint(remote.Service):
     		return UserSignupResponse(user_stored=1, error_msg="no error")
     	elif not user_stored:
     		return UserSignupResponse(user_stored=0, error_msg="users account name already exists")
-   
+    
+    @endpoints.method(UserLoginData, UserLoginResponse, path="user_login_path", http_method="POST", name="user_login")
+    def logged_in(self, user_login_data):
+    	user_logged_in, msg = User.login_user(user_login_data)
+    	if user_logged_in:
+    		return UserLoginResponse(successful=1)
+    	else:
+    		return UserLoginResponse(successful=0, error_msg=msg)
 
-        
+
+
+    
 
 """ 
 For a void return type, use message_types.VoidMessage

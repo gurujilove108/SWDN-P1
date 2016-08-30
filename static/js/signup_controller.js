@@ -272,28 +272,20 @@ controllers.controller('SignupController', function ($scope, $location, oauth2Pr
 	  * That on my next project
 	  */
 	  $scope.submitSignupForm = function() {
-	  	log("attempting to sign up user");
 	  	if ($scope.checkAllFieldsValid()) {
 	  		var rpcFormObject = $scope.collectFormObject();
-	  		log("all fields are valid");
-	  		log("logging form object to send to google cloud endpoint");
-	  		log(rpcFormObject);
-
-	  		var request = $scope.getSignupEndpointRequest(rpcFormObject);
-	  		log("current request object: ")
-	  		log(rpcFormObject);
+	  		var request = $scope.getSignupEndpointRequest(rpcFormObject)
 
 	  		request.execute(function(response) {
 	  			log(response);
 	  			if (response.user_stored === "0") {
 	  				$scope.$account_name_status.text("Account name already exists, please choose another").css("color", "red");
-	  			}
-
+	  			} else if (response.user_stored === "1") { 
+					$("#alert-msg").removeClass("hidden");
+					window.scrollTo(10, 10);
+				}	  			
 	  		});
-
-	  	} else {
-	  		log("not signin up the form, btn should be disabled");
-	  	}
+	  	} 
 	  }
 
 	  $scope.getSignupEndpointRequest = function(rpcFormObject) {
