@@ -1,1 +1,111 @@
-<h1>Create an Event Bro</h1>
+<style>
+	.row-form {
+		margin-top: 7%;
+		margin-left: 5%;
+	}
+
+	.guestlist {
+		display: block;
+	}
+
+	.btn-default {
+		margin-left: 6%;
+	}
+
+	.btn-primary {
+		width: 25%;
+	}
+	.add-guest-link {
+		margin-left: 10%;
+	}
+
+	.guest-message {
+		display: block;
+		float: left;
+	}
+
+	
+</style>
+<!-- Name of the event
+Type of the event (birthday party, conference talk, wedding, etc.)
+Event host (could be an individual’s name or an organization)
+Event start date and time
+Event end date and time
+Guest list
+Location
+Optional message to the guests with additional information about the event
+ -->
+
+<form class="create-event-form row-form" ng-submit="createEvent()">
+	<div class="alert alert-warning hidden">
+		<Strong>Error</Strong><i id="error-msg"></i>
+	</div>
+	<div class="row">
+		<h1 class="col-md-6 title text-left">Create an Event </h1>
+	</div>
+	<div class="row form-group">
+		<div class="col-md-3">
+			<label for="event-name">Event name <i class="event-name-status"></i></label>
+		    <input type="text" class="form-control" id="event-name" placeholder="event name"
+		    	ng-change="onEventNameChange()"
+		    	ng-model="event_name"
+		    	required
+		    >	
+		</div>
+		<div class="col-md-3">
+			<label for="event-type">Event type <i class="event-type-status"></i></label>
+		    <input type="text" class="form-control" id="event-type" placeholder="event type"
+		    	ng-change="onEventTypeChange()"
+		    	ng-model="event_type"
+		    	required
+		    >	
+		</div>
+		<div class="col-md-3">
+			<label for="event-host">Event host <i class="event-host-status"></i></label>
+		    <input type="text" class="form-control" id="event-host" placeholder="event host"
+		    	ng-change="onEventHostChange()"
+		    	ng-model="event_host"
+		    	required
+		    >	
+		</div>
+	</div>
+	
+	<div class="row form-group">
+		<div class="col-md-3">
+			<label for="event-datetime-start">Event Start Date and Time <i class="event-datetime-start-status"></i></label>
+		    <input type="datetime-local" class="form-control" id="event-datetime-start" placeholder="event date and Time"
+		    	ng-change="onEventDateTimeStartChange()"
+		    	ng-model="event_datetime_start"
+		    	required
+		    >	
+		</div>
+		<div class="col-md-3">
+			<label for="event-datetime-end">Event End Date and Time<i class="event-datetime-end-status"></i></label>
+		    <input type="datetime-local" class="form-control" id="event-datetime-end" placeholder="event date and Time"
+		    	ng-change="onEventDateTimeEndChange()"
+		    	ng-model="event_datetime_end"
+		    	required
+		    >	
+		</div>
+		<div class="col-md-3">
+			<label for="event-guestlist">Guest List</label><a class="add-guest-link" href="" ng-click="addGuest()">add guest</a>
+			<input id="event-guestlist" class="guestlist form-control" list="guestlist"
+				ng-change="guestInputOnChange()"
+				ng-model="current_guest"
+			>
+		    <datalist id="guestlist"></datalist>
+
+		</div>
+	</div>
+	<div class="row form-group">
+		<div class="col-md-4">
+			<label for="guest-message">Optional message for all guests</label>
+			<textarea id="guest-message" class="guest-message" cols="50" rows="20"></textarea>
+		</div>
+		<div class="col-md-4">
+			<button class="btn btn-primary" type="submit">Create Event </button>
+		</div>
+	</div>
+
+
+</form>

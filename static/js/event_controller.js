@@ -1,15 +1,24 @@
 controllers.controller('EventController', function ($scope, $location, oauth2Provider) {
-	$scope.sup = function() {
-		log("sup");
-	}
 
 	$scope.userSignedIn = function() {
 		return oauth2Provider.signedIn;
 	}
 
-	$scope.alertWarning = function() {
-		$("")
+	$scope.createEvent = function() {
+		if($scope.eventFormValid()) {
+			sendGapiCreateForm();
+		} 
 	}
 
-	$scope.name = "Dylan"
+	$scope.eventFormValid = function() {
+
+	}
+
+	$scope.addGuest = function() {
+		if (defined($scope.current_guest)) {
+			jQuery("#guestlist").append(
+				"<option value='%s'>".replace("%s", $scope.current_guest)
+			);
+		}
+	}
 });
