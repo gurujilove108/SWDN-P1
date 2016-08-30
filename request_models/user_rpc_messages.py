@@ -16,8 +16,25 @@ class UserLoginData(messages.Message):
     password     = messages.StringField(2, required=True)
 
 class UserLoginResponse(messages.Message):
-    successful = messages.IntegerField(1, required=True)
-    error_msg = messages.StringField(2)
+    successful  = messages.IntegerField(1, required=True)
+    error_msg   = messages.StringField(2)
+
+class UserEventRequest(messages.Message):
+    event_name         = messages.StringField(1, required=True)
+    event_type         = messages.StringField(2, required=True)
+    event_host         = messages.StringField(3, required=True)
+    event_start        = messages.StringField(4, required=True)
+    event_end          = messages.StringField(5, required=True)
+    event_guestlist    = messages.StringField(6, repeated=True)
+    event_guestmessage = messages.StringField(7)
+
+class UserEventResponse(messages.Message):
+    successful = messages.StringField(1, required=True)
+    error_msg  = messages.StringField(2)
+
+
+class Events(messages.Message):
+    pass
 
 """
 In case I wanted to send requests manualy opposed to using gapi.client.apiname.methodname

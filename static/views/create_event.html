@@ -13,7 +13,7 @@
 	}
 
 	.btn-primary {
-		width: 25%;
+		width: 50%;
 	}
 	.add-guest-link {
 		margin-left: 10%;
@@ -21,7 +21,22 @@
 
 	.guest-message {
 		display: block;
-		float: left;
+		width: 74%;
+		height: 50%;
+		border: 1px solid silver;
+	}
+
+	.guestlist-label {
+		width: 100%;
+	}
+
+	.dylans-btn {
+		position: absolute;
+		right: 8%;
+		border-radius: 5px;
+		background-color: #00001a;
+		color: white;
+		border: 1px solid #00001a; 
 	}
 
 	
@@ -37,13 +52,21 @@ Optional message to the guests with additional information about the event
  -->
 
 <form class="create-event-form row-form" ng-submit="createEvent()">
+
+	<!-- any error messages pop up here -->
 	<div class="alert alert-warning hidden">
 		<Strong>Error</Strong><i id="error-msg"></i>
 	</div>
+
+	<!-- header row -->
 	<div class="row">
 		<h1 class="col-md-6 title text-left">Create an Event </h1>
 	</div>
+
+	<!-- form events inputs row -->
 	<div class="row form-group">
+
+		<!-- event name input -->
 		<div class="col-md-3">
 			<label for="event-name">Event name <i class="event-name-status"></i></label>
 		    <input type="text" class="form-control" id="event-name" placeholder="event name"
@@ -52,6 +75,8 @@ Optional message to the guests with additional information about the event
 		    	required
 		    >	
 		</div>
+
+		<!-- event type input -->
 		<div class="col-md-3">
 			<label for="event-type">Event type <i class="event-type-status"></i></label>
 		    <input type="text" class="form-control" id="event-type" placeholder="event type"
@@ -60,6 +85,8 @@ Optional message to the guests with additional information about the event
 		    	required
 		    >	
 		</div>
+
+		<!-- event host input -->
 		<div class="col-md-3">
 			<label for="event-host">Event host <i class="event-host-status"></i></label>
 		    <input type="text" class="form-control" id="event-host" placeholder="event host"
@@ -70,7 +97,10 @@ Optional message to the guests with additional information about the event
 		</div>
 	</div>
 	
+	<!-- form inputs row for dates and guest list -->
 	<div class="row form-group">
+
+		<!-- datetime start input -->
 		<div class="col-md-3">
 			<label for="event-datetime-start">Event Start Date and Time <i class="event-datetime-start-status"></i></label>
 		    <input type="datetime-local" class="form-control" id="event-datetime-start" placeholder="event date and Time"
@@ -79,6 +109,8 @@ Optional message to the guests with additional information about the event
 		    	required
 		    >	
 		</div>
+
+		<!-- datetime end input -->
 		<div class="col-md-3">
 			<label for="event-datetime-end">Event End Date and Time<i class="event-datetime-end-status"></i></label>
 		    <input type="datetime-local" class="form-control" id="event-datetime-end" placeholder="event date and Time"
@@ -87,8 +119,10 @@ Optional message to the guests with additional information about the event
 		    	required
 		    >	
 		</div>
+
+		<!-- event guest list input -->
 		<div class="col-md-3">
-			<label for="event-guestlist">Guest List</label><a class="add-guest-link" href="" ng-click="addGuest()">add guest</a>
+			<label for="event-guestlist" class="guestlist-label">Guest List</label><button type="button" class="dylans-btn" ng-click="addGuest()">add guest</button>
 			<input id="event-guestlist" class="guestlist form-control" list="guestlist"
 				ng-change="guestInputOnChange()"
 				ng-model="current_guest"
@@ -97,15 +131,17 @@ Optional message to the guests with additional information about the event
 
 		</div>
 	</div>
+
+	<!-- form group for guest message and form submit button -->
 	<div class="row form-group">
-		<div class="col-md-4">
+		<div class="col-md-12">
 			<label for="guest-message">Optional message for all guests</label>
-			<textarea id="guest-message" class="guest-message" cols="50" rows="20"></textarea>
-		</div>
-		<div class="col-md-4">
-			<button class="btn btn-primary" type="submit">Create Event </button>
+			<textarea id="guest-message" class="guest-message"></textarea>
 		</div>
 	</div>
-
-
+	<div class="row">
+		<div class="col-md-6">
+			<button class="btn btn-primary">Create Event</button>
+		</div>
+	</div>
 </form>

@@ -1,7 +1,7 @@
 import endpoints
 import logging
 from models.models 						import *
-from protorpc 							import remote
+from protorpc 							import remote, message_types
 from endpoints_proto_datastore.ndb		import EndpointsModel
 from settings 							import WEB_CLIENT_ID
 from request_models.user_rpc_messages 	import *
@@ -27,6 +27,17 @@ class UserEndpoint(remote.Service):
     		return UserLoginResponse(successful=1)
     	else:
     		return UserLoginResponse(successful=0, error_msg=msg)
+
+
+    @endpoints.method(UserEventRequest, UserEventResponse, path="create_event_path", http_method="POST", name="create_event")
+    def create_event(self, event_data):
+    	event_stored, msg = Event.store_event(event_data)
+    	return UserEventResponse(successful="1", error_msg="no error")
+    	
+
+    @endpoints.method(message_types.VoidMessage,message_types.VoidMessage,path="get_events", http_method="POST", name="all_events")
+    def return_events(self):
+    	return Event.all()
 
 
 

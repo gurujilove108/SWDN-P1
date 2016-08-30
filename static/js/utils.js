@@ -60,3 +60,8 @@ function removeDisabledAttr(string_selector) {
 function addDisabledAttr(string_selector) {
 	jQuery(string_selector).attr("disabled", true);
 }
+
+/* @param a hashtag for id, or a period for a class*/
+function clearInput(string_selector) {
+   jQuery(string_selector).val('');   
+}
