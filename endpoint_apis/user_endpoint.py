@@ -32,12 +32,28 @@ class UserEndpoint(remote.Service):
     @endpoints.method(UserEventRequest, UserEventResponse, path="create_event_path", http_method="POST", name="create_event")
     def create_event(self, event_data):
     	event_stored, msg = Event.store_event(event_data)
-    	return UserEventResponse(successful="1", error_msg="no error")
+    	if event_stored:
+    		return UserEventResponse(successful="1", error_msg="no error")
+    	return UserEventResponse(successful="0", error_msg="something went wrong, ypur fault")
     	
 
-    @endpoints.method(message_types.VoidMessage,message_types.VoidMessage,path="get_events", http_method="POST", name="all_events")
-    def return_events(self):
-    	return Event.all()
+    @endpoints.method(message_types.VoidMessage,EventsList,path="get_events", http_method="POST", name="all_events")
+    def return_events(self, request):
+    	events = []
+    	for event in Event.query():
+    		eventRpcMessage = UserEventRequest(
+    			event_name 			= event.event_name,  
+				event_type			= event.event_type,
+				event_host  		= event.event_host,
+				event_start 		= event.event_start,
+				event_end         	= event.event_end,
+				event_guestlist  	= event.event_guestlist,
+				event_guestmessage 	= event.event_guestmessage
+    		)
+
+    		events.append(eventRpcMessage)
+    		events_list = EventsList(events=events)
+    	return events_list
 
 
 

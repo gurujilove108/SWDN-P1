@@ -33,10 +33,11 @@ class UserEventResponse(messages.Message):
     error_msg  = messages.StringField(2)
 
 
-class Events(messages.Message):
-    pass
+class EventsList(messages.Message):
+    events = messages.MessageField(UserEventRequest, 1, repeated=True)
 
 """
+34:40
 In case I wanted to send requests manualy opposed to using gapi.client.apiname.methodname
 I could just use the path 
 "http://localhost:8080/_ah/api/endpoint_name/v1/path

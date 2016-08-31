@@ -54,13 +54,13 @@ class Event(ndb.Expando):
             event_guestlist = event_data.event_guestlist,
             event_guestmessage = event_data.event_guestmessage
         )
-        
+
         key = new_event.put()
         logging.info("key and new_event")
         logging.info(key)
         logging.info(new_event)
 
-        return (True, "event store")
+        return (True, "event stored")
 
 
         
