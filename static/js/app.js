@@ -3,6 +3,10 @@
 var app = angular.module('swdnP1App', ['swdnP1AppControllers', 'ngRoute', 'ui.bootstrap']);
 
 app.config(["$routeProvider", function ($routeProvider) {
+    $routeProvider.when('/events', {
+        templateUrl: '../views/events.html',
+        controller: 'EventController'
+    });
     $routeProvider.when('/create_event', {
         templateUrl: '../views/create_event.html',
         controller: 'EventController'
@@ -15,7 +19,7 @@ app.config(["$routeProvider", function ($routeProvider) {
         templateUrl: '../views/signup.html',
         controller: 'SignupController'
     });
-    $routeProvider.when('/intro', {
+    $routeProvider.when('/into', {
         templateUrl: '../views/intro.html'
     });
     $routeProvider.otherwise({

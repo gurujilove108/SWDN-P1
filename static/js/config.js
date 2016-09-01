@@ -5,8 +5,6 @@ var config = {
 		password : new RegExp(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/),
 		phone    : new RegExp(/^((((\(\d{3}\))|(\d{3}-))\d{3}-\d{4})|(\+?\d{2}((-| )\d{1,8}){1,5}))(( x| ext)\d{1,5}){0,1}$/)
 	},
+	
     stylesheetsAsyncLoad: [],
-    specialTemplates: {
-    	events: "../views/all_events.html"
-    },
 }

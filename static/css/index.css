@@ -161,9 +161,13 @@ body {
 	color: cornflowerblue;
 }
 
-.events-wrapper-container {
-	margin-left: 10%;
-	margin-top: 10%;
+.events-container-wrapper {
+	margin-left: 5%;
+	margin-top: 5%;
+}
+
+.events-header {
+	color: #001a33;
 }
 
 	

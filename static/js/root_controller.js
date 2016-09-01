@@ -1,22 +1,24 @@
 controllers.controller('RootController', function ($scope, $location, oauth2Provider) {
+
+	/* Pretty self explanatory of what this function does */
 	$scope.toggleMenu = function() { 
 		jQuery('#wrapper').toggleClass('toggled');
 	}
 
+	/* 
+	 * Not actually using this function other then to always return false, I have all the tools
+	 * To implement google login but I'll save it for the next project
+	*/
 	$scope.userSignedIn = function() {
 		return oauth2Provider.signedIn;
 	}
 
-	$scope.events = [];
-
-	$scope.getEvents = function() {
-		log("hello");
-		var request = gapi.client.user_endpoint.all_events();
-		request.execute(function(response) {
-			for (var i=0, len=response.events.length; i < len; i++) {
-				$scope.events.push(response.events[i]);
-			}
-		});
+	$scope.loadInitialPage = function(){
+		$location.path("/events");
 	}
+
+	/* load all the events when the user first visits the page */
+	$scope.loadInitialPage();
+
 });
 
