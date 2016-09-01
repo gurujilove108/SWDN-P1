@@ -54,26 +54,43 @@ controllers.controller('EventController', function ($scope, $location, oauth2Pro
 	}
 
 
-	$scope.container = jQuery("#events-container-wrapper");
+	$scope.container = jQuery(".events-container-wrapper");
 
-	$scope.createNameMarkup = function(name) {
-		<div class="row">
-			<div class="col-md-3 text-left">
-				<label for="event_name">Name of Event:</label><span class="event-names" id="event_name" name</span>
-			
+	$scope.createDataList = function(guests, index) {
+		if (guests.length > 0) {
+			var datalist_input = "<input list='%s'>".replace("%s", "guestlist"+index);
+			var datalist = "<datalist id='%s'>".replace("%s", "guestlist"+index )
+			guests.forEach(function(element, index) {
+				datalist += "<option value='%s'>".replace("%s", element);
+			});
+			datalist += "</datalist>";
+			return {input: datalist_input, datalist: datalist}
+		} else {
+			return {input: "no", datalist: "guests lol"}
+		}
 	}
-
 	$scope.loadAllEventsOntoPage = function() {
+		var datalist, html, datalist_input, datalist_list, row1, row2, row3, row4, row5, row6, row7;
 		var request = gapi.client.user_endpoint.all_events();
 		request.execute(function(response){
-			response.events.forEach(function(element, index) { 
-				event_name = $scope.createNameMarkup(element.event_name);
-				event_type = $scope.createTypeMarkup(element.event_type);
-				event_host = $scope.createHostMarkup(element.event_host);
-				event_start = $scope.createStartTimeMarkup(element.event_start);
-				event_end = $scope.createEndTimeMarkup(element.event_end);
-				event_guestlist = $scope.createGuestlistMarkup(element.event_guestlist);
-				event_message = $scope.createGuestMessageMarkup(element.event_guestmessage);
+			response.events.forEach(function(element1, index) { 
+				datalist = $scope.createDataList(element1.event_guestlist, index);
+				element1.datalist_input = datalist.input;
+				element1.datalist_list = datalist.datalist;
+				log(element1)
+				row1 = "<div class='row'><div class='col-md-3 text-left'><label for='event_name'>Name of Event: </label><span id='event_name'> {{event_name}}</span></div></div> ";
+				row2 = "<div class='row'><div class='col-md-3 text-center'><label for='event_type'>Type of Event: </label><span id='event_type'> {{event_type}}</span></div></div> "; 
+				row3 = "<div class='row'><div class='col-md-3 text-right'><label for='event_host'>Host of Event: </label><span id='event_host'> {{event_host}}</span></div></div> "; 
+				row4 = "<div class='row'><div class='col-md-4 text-right'><label for='event_start'>Event Start Date: </label><span id='event_start'> {{event_start}}</span></div></div> "; 
+				row5 = "<div class='row'><div class='col-md-5 text-right'><label for='event_end'>Event End Date: </label><span id='event_end'> {{event_end}}</span></div></div> "; 
+				row6 = "<div class='row'><div class='col-md-6 text-right'><label for='event_guestlist'>Event Guest list: </label><span id='event_guestlist' class='event_guestlist_unbelievable'> </span></div></div> "; 
+				row7 = "<div class='row'><div class='col-md-7 text-right'><label for='event_guestmessage'>Message for Guests: </label><span id='event_guestmessage'> {{event_guestmessage}}</span></div></div><hr> "; 
+				
+				[row1, row2, row3, row4, row5, row6, row7].forEach(function(element2, index){
+					html = Mustache.to_html(element2, element1);
+					$scope.container.append(html);
+					
+				});
 			});
 		});
 	}
