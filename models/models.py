@@ -16,8 +16,6 @@ class User(ndb.Expando):
         else:
             new_user_object = User(account_name = user_data.account_name,email = user_data.email,password = user_data.password,phone = user_data.phone,employer = user_data.phone)
             key = new_user_object.put()
-            logging.info(key)
-            logging.info(key.id())
             return True
 
     @classmethod
@@ -56,10 +54,6 @@ class Event(ndb.Expando):
         )
 
         key = new_event.put()
-        logging.info("key and new_event")
-        logging.info(key)
-        logging.info(new_event)
-
         return (True, "event stored")
 
 

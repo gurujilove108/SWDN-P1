@@ -30,10 +30,10 @@ controllers.controller('LoginController', function ($scope, $location, oauth2Pro
 
 	$scope.onAccountNameChange = function() {
 		if (validAccountName($scope.account_name)) {
-			jQuery(".account-name-login-status").text("Account name valid").css("color", "green");
+			jQuery(".account-name-login-status").text(" Account name valid").css("color", "green");
 			$scope.account_name_valid = true;
 		} else {
-			jQuery(".account-name-login-status").text("Account name invalid").css("color", "red");
+			jQuery(".account-name-login-status").text("Password invalid").css("color", "red");
 			$scope.account_name_valid = false;
 		}
 	}

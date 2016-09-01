@@ -18,5 +18,8 @@
   "homepage": "https://github.com/gurujilove108/SWDN-P1#readme",
   "devDependencies": {
     "gulp": "^3.9.1"
+  },
+  "dependencies": {
+    "angular-loading-bar": "^0.9.0"
   }
 }

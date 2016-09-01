@@ -3,21 +3,9 @@
 var app = angular.module('swdnP1App', ['swdnP1AppControllers', 'ngRoute', 'ui.bootstrap']);
 
 app.config(["$routeProvider", function ($routeProvider) {
-    $routeProvider.when('/all_events', {
-        templateUrl: '../views/all_events.html',
-        controller: 'EventController'
-    });
     $routeProvider.when('/create_event', {
         templateUrl: '../views/create_event.html',
         controller: 'EventController'
-    });
-    $routeProvider.when('/contact', {
-        templateUrl: '../views/contact.html',
-        controller: 'ContactController'
-    });
-    $routeProvider.when('/about', {
-        templateUrl: '../views/about.html',
-        controller: 'AboutController'
     });
     $routeProvider.when('/login', {
         templateUrl: '../views/login.html',
@@ -26,6 +14,9 @@ app.config(["$routeProvider", function ($routeProvider) {
     $routeProvider.when('/signup', {
         templateUrl: '../views/signup.html',
         controller: 'SignupController'
+    });
+    $routeProvider.when('/intro', {
+        templateUrl: '../views/intro.html'
     });
     $routeProvider.otherwise({
         redirectTo: '/'
@@ -56,9 +47,8 @@ app.factory('oauth2Provider', function ($modal) {
         oauth2Provider.signedIn = false;
     };
 
-    /**
+    /*
      * Shows the modal with Google+ sign in button.
-     *
      * @returns {*|Window}
      */
     oauth2Provider.showLoginModal = function() {

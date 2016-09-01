@@ -52,13 +52,4 @@ controllers.controller('EventController', function ($scope, $location, oauth2Pro
 			guestlist.val('');
 		}
 	}
-
-	$scope.getEvents = function() {
-		var request = gapi.client.user_endpoint.all_events();
-		request.execute(function(response) {
-			log(response);
-		});
-	}
-
-
 });

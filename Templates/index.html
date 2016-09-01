@@ -24,49 +24,74 @@
         <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular-route.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.10.0/ui-bootstrap-tpls.js"></script>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+        <script src="/js/config.js"></script>
+        <script src="/js/utils.js"></script>
+        <script src="/js/app.js"></script>
         <script>
             function init() {
                 var rootPath = '//' + window.location.host + '/_ah/api';
-                gapi.client.load('user_endpoint', 'v1', function () {gapi.client.setApiKey("AIzaSyDXCZc6vEZQf6i_2ofwOE1mLYqzTS6EAWk")}, rootPath);
-                gapi.client.load('oauth2', 'v2', null);
+
+                gapi.client.load('user_endpoint', 'v1', function () {
+                    gapi.client.setApiKey("AIzaSyDXCZc6vEZQf6i_2ofwOE1mLYqzTS6EAWk"
+                )}, rootPath);
+
+                gapi.client.load('oauth2', 'v2', function() {
+                    
+                });
             };
         </script>
         <script src="//apis.google.com/js/client:plusone.js?onload=init"></script>
     </head>
 
-    <body ng-controller="RootController as rc" ng-init="">
+    <!-- /*
+     * I learned that routeprovider is for fetching templates from the server, but apparently if 
+     * Those templates use ng-repeat there can be problems. I was having a problem where my all_events.html
+     * Template would load in all the events but only one time and If I switched views and then switched
+     * back to the all_events.html the events wouldnt load so I'm
+     * putting that functionality into my root controller.
+     * 
+        
+    */ -->
+    <body ng-controller="RootController as rc">
         <div id="wrapper" class="toggled">
             <div class="container-fluid">
 
-                <!-- Sidebar -->
+                <!-- Sidebar --> 
                 <div id="sidebar-wrapper">
                     <ul class="sidebar-nav" id="logo-nav"></ul>
-                    <ul class="sidebar-nav text-left">
-                        <li class="nav-item"><a href="/#/all_events">See All Events</a></li>
-                        <li class="nav-item"><a href="/#/create_event">Create New Event</a></li>
-                        <li class="nav-item"><a href="/#/about">About</a></li>
-                        <li class="nav-item"><a href="/#/contact">Contact</a></li>
+                    <ul class="sidebar-nav text-left" autofocus>
+                        <li class="nav-item"><i class="fa fa-database fa-2x db-icon"></i><a href="#" ng-click="getEvents()" ng-cloak>See All Events</a></li>
+                        <li class="nav-item"><i class="fa fa-plus-circle fa-2x plus-icon"></i><a href="/#/create_event">Create New Event</a></li>
                     </ul>
                 </div>
                 <!-- /sidebar-wrapper -->
 
-
                 <!-- Page Content -->
                 <div id="page-content-wrapper" class="pcw-custom">
+
+                    <!-- navbar at the top -->
                     <nav class="navbar navbar-fixed-top navbar-dark bg-inverse" style="background: #001233;" >
                         <ul class="nav navbar-nav header-nav">
+
+                            <!-- The navbar button icon for toggling the sidenav -->
                             <li class="nav-item menu-toggle-parent">
                                 <a id="menu-toggle" class="btn btn-default btn-primary menu-button" type="button" ng-click="toggleMenu()">
                                     <span class="fa fa-list fa-1x" aria-hidden="true"></span>
                                 </a>
                             </li>
+
+                            <!-- The nvbar header -->
                             <li id="nav-brand-custom" class="nav-item page-title-parent">
                                 <a class="navbar-brand page-title" href="/">Mr. Event Manager</a>
                             </li>
+
+                            <!-- A search icon and search-text that remains hidden until a user is signed in -->
                             <li class="nav-item search-icon-parent" ng-if="userSignedIn()" ng-cloak>
                                 <span class="search-text">search</span>
                                 <i id="search-icon" class="fa fa-search fa-2x search-icon" ng-click="toggleSearch()"></i>
                             </li>
+
+                            <!-- the search box that opens when you click the icon above, that is only available when the user is signed in -->
                             <li class="search-form-container hidden fade-in fade-in-one">
                                 <form id="search-form" class="search-form">
                                     <div class="form-group">
@@ -74,6 +99,8 @@
                                     </div>
                                 </form>
                             </li>
+
+                            <!-- Login and Signup buttons on navbar-->
                             <li id="login-btn" class="login-btn-container" ng-if="!userSignedIn()" ng-cloak>
                                 <a href="/#/login">
                                     <i class="fa-1x login-text">login</i>
@@ -86,7 +113,15 @@
                             </li>
                         </ul>
                     </nav>
+                    <!-- End nav -->
+                
+                    <div class="events-wrapper-container">
+                        <div class="row" ng-repeat="event in events">
+                            <div class="col-md-6">{{event.event_type}}, </div>
+                        </div>
+                    </div>
 
+                    <!-- Where partial templates will be loaded into, Initially the intro page will be loaded in -->
                     <ng-view></ng-view>
 
                 </div>
@@ -97,16 +132,11 @@
 
         </div>
         <!-- / #wrapper -->
-        <script src="/js/config.js"></script>
-        <script src="/js/utils.js"></script>
-        <script src="/js/app.js"></script>
         <script src="/js/controllers_init.js"></script>
         <script src="/js/root_controller.js"></script>
         <script src="/js/event_controller.js"></script>
         <script src="/js/login_controller.js"></script>
         <script src="/js/signup_controller.js"></script>
-        <script src="/js/about_controller.js"></script>
-        <script src="/js/contact_controller.js"></script>
         <script src="/js/index.js"></script>
         <script>
             console.log("loaded the page in " + (Math.round(performance.now() - t1)) + " milliseconds");

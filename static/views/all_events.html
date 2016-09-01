@@ -1,8 +1,20 @@
 <style>
-	
+
+	.events-wrapper {
+		margin-left: 5%;
+		margin-top: 10%;
+	}
+
 </style>
 
 
-<div class="wrapper">
-	<button class="page-title" ng-click="getEvents()">load events</button>
+<div class="events-wrapper" ng-init="getEvents()">
+	<div class="event-rows-cotainers" ng-repeat="event in events">
+		<div class="row">
+			hello
+			<div class="col-md-6 text-left">
+				<h1 class="event-type">{{event.event_type}}</h1>
+			</div>
+		</div>
+	</div>
 </div>

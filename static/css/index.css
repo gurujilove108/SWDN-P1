@@ -47,13 +47,11 @@ body {
 
 .login-btn-container a:nth-child(1) {
 	float: left;
-	border: 1px groove #337ab7;
-	border-radius: 10px;
 }
 
 .login-btn-container a:nth-child(1):hover {
-	border: 2px solid #337ab7;
-	background: ghostwhite;
+	border-radius: 10px
+	background: white;
 }
 .login-btn-container a:nth-child(2) {
 	float: right;
@@ -61,6 +59,7 @@ body {
 
 .login-btn-container a:nth-child(2):hover {
 	border-radius: 10px
+	background: white;
 }
 
 .search-form-container {
@@ -147,4 +146,26 @@ body {
 	border: 1px solid #333;
 	background: #999;
 }
+
+.db-icon {
+	position: absolute;
+	left: 5px;
+	top: 3px;
+	color: cornflowerblue;
+}
+
+.plus-icon {
+	position: absolute;
+	left: 5px;
+	top: 62%;
+	color: cornflowerblue;
+}
+
+.events-wrapper-container {
+	margin-left: 10%;
+	margin-top: 10%;
+}
+
+	
+
 

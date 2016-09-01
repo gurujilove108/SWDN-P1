@@ -43,7 +43,8 @@
 }
 
 #wrapper.toggled #sidebar-wrapper {
-    width: 17%;
+    width: 242px;
+    margin-top: 55px;
 }
 
 #page-content-wrapper {
