@@ -32,8 +32,7 @@
             function init() {
                 var rootPath = '//' + window.location.host + '/_ah/api';
 
-                gapi.client.load('user_endpoint', 'v1', function () {
-                    gapi.client.setApiKey("AIzaSyDh6rs60yyoubWqIS_IeIQmzpwWKWpIKYc");
+                gapi.client.load('user_endpoint', 'v1', function() {
                     angular.bootstrap(document, ['swdnP1App']);
                 }, rootPath);
 
