@@ -48,7 +48,10 @@ controllers.controller('EventController', function ($scope, $location, oauth2Pro
 
 		var request = gapi.client.user_endpoint.create_event(formObject);
 		request.execute(function(response){
-			log(response)
+			if (response.successful === "1") {
+				jQuery("#event-create-success").removeClass("hidden");
+				jQuery("#eventname").text("Your Event");
+			}
 		});
 
 	}
