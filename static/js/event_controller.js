@@ -14,6 +14,11 @@ controllers.controller('EventController', function ($scope, $location, oauth2Pro
 		return true;
 	}
 
+	$scope.deleteEventInfo = function() {
+		jQuery(".event-info-row").remove();
+		
+	}
+
 	/*
 	 * method to create the form rpc object to pass in to our create event api method
 	 * the keys in tje object must have the same name as the keys in the rpc object that is beint accepted by the api endpoint 
@@ -51,11 +56,10 @@ controllers.controller('EventController', function ($scope, $location, oauth2Pro
 	/* This function allows a user to add a guest to the data list */
 	$scope.addGuest = function() {
 		if (defined($scope.current_guest)) {
-			var guestlist = jQuery("#guestlist");
-			guestlist.append(
-				"<option value='%s'>".replace("%s", $scope.current_guest)
-			);
-			guestlist.val('');
+			var guestlist_datalist = jQuery("#guestlist");
+			var guestlist_input    = jQuery("#event-guestlist");
+			guestlist_datalist.append("<option value='%s'>".replace("%s", $scope.current_guest));
+			guestlist_input.val('');
 		}
 	}
 
@@ -92,34 +96,41 @@ controllers.controller('EventController', function ($scope, $location, oauth2Pro
 	$scope.loadAllEventsOntoPage = function() {
 
 		// Declare our variables here so we dont have to keep re-creating objects which is more effient
-		var datalist, html, datalist_input, datalist_list, row1, row2, row3, row4, row5, row6, row7;
+		var datalist, html, row1, row2, row3, row4, row5, row6, row7;
 		var request = gapi.client.user_endpoint.all_events();
 
 		// Start loading in events
 		request.execute(function(response){
+			log(response);
+			// if there are no events then there will be no events object in response we will add a msg to the events.html page to link them to create an event
+			if (!response.events) {
+				jQuery(".no-events").text('There are currently no events, to create an event click');
+				jQuery('.no-events').append(" <a href='/#/create_event'>create an event</a>");
+			} else {
 
-			// Iterate through the events
-			response.events.forEach(function(element1, index) { 
+				// Iterate through the events
+				response.events.forEach(function(element1, index) { 
 
-				// For each event, re-create our datalist, since each datalist has two tags, an input and datalist
-				// this datalist will be an object containing two keys which correspond to the two tags, datalist.input, datalist.datalist
-				datalist = $scope.createDataList(element1.event_guestlist, index);
+					// For each event, re-create our datalist, since each datalist has two tags, an input and datalist
+					// this datalist will be an object containing two keys which correspond to the two tags, datalist.input, datalist.datalist
+					datalist = $scope.createDataList(element1.event_guestlist, index);
 
-				// now for each event key we create the html to display them using mustache to replace the values from out event objects
-				row1 = "<div class='row'><div class='col-md-3 text-left'><label for='event_name'>Name of Event: </label><span id='event_name'> {{event_name}}</span></div></div> ";
-				row2 = "<div class='row'><div class='col-md-3 text-left'><label for='event_type'>Type of Event: </label><span id='event_type'> {{event_type}}</span></div></div> "; 
-				row3 = "<div class='row'><div class='col-md-3 text-left'><label for='event_host'>Host of Event: </label><span id='event_host'> {{event_host}}</span></div></div> "; 
-				row4 = "<div class='row'><div class='col-md-3 text-left'><label for='event_start'>Event Start Date: </label><span id='event_start'> {{event_start}}</span></div></div> "; 
-				row5 = "<div class='row'><div class='col-md-3 text-left'><label for='event_end'>Event End Date: </label><span id='event_end'> {{event_end}}</span></div></div> "; 
-				row6 = "<div class='row'><div class='col-md-3 text-left'><label for='event_guestlist'>Event Guest list: </label><span id='event_guestlist' class='event_guestlist_unbelievable'>doit </span></div></div> ".replace("doit", datalist.input + datalist.datalist); 
-				row7 = "<div class='row'><div class='col-md-3 text-left'><label for='event_guestmessage'>Message for Guests: </label><span id='event_guestmessage'> {{event_guestmessage}}</span></div></div><hr> "; 
-				
-				// iterate through all the rows, use mustache to make the html and then add it onto the events container
-				[row1, row2, row3, row4, row5, row6, row7].forEach(function(element2, index){
-					html = Mustache.to_html(element2, element1);
-					$scope.container.append(html);
+					// now for each event key we create the html to display them using mustache to replace the values from out event objects
+					row1 = "<div class='row text-center'><div class='col-xs-12'><label for='event_name'>Name of Event: </label><span id='event_name'> {{event_name}}</span></div></div> ";
+					row2 = "<div class='row text-center'><div class='col-xs-12'><label for='event_type'>Type of Event: </label><span id='event_type'> {{event_type}}</span></div></div> "; 
+					row3 = "<div class='row text-center'><div class='col-xs-12'><label for='event_host'>Host of Event: </label><span id='event_host'> {{event_host}}</span></div></div> "; 
+					row4 = "<div class='row text-center'><div class='col-xs-12'><label for='event_start'>Event Start Date: </label><span id='event_start'> {{event_start}}</span></div></div> "; 
+					row5 = "<div class='row text-center'><div class='col-xs-12'><label for='event_end'>Event End Date: </label><span id='event_end'> {{event_end}}</span></div></div> "; 
+					row6 = "<div class='row text-center'><div class='col-xs-12'><label for='event_guestlist'>Event Guest list: </label><span id='event_guestlist' class='event_guestlist_unbelievable'>doit </span></div></div> ".replace("doit", datalist.input + datalist.datalist); 
+					row7 = "<div class='row text-center'><div class='col-xs-12'><label for='event_guestmessage'>Message for Guests: </label><span id='event_guestmessage'> {{event_guestmessage}}</span></div></div><hr> "; 
+					
+					// iterate through all the rows, use mustache to make the html and then add it onto the events container
+					[row1, row2, row3, row4, row5, row6, row7].forEach(function(element2, index){
+						html = Mustache.to_html(element2, element1);
+						$scope.container.append(html);
+					});
 				});
-			});
+			}
 		});
 	}
 });

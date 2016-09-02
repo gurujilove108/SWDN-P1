@@ -1,25 +1,8 @@
-@media only screen and (max-width: 768px) {
-	.menu-button {
-		width: 7%;
-		margin-left: auto;
-	}
-	
-}
+
 
 body {
 	height: 100%;
 	width: 100%;
-}
-
-.page-title {
-	width: 100%;
-    text-align: center;
-    font-size: 250%;
-    padding: 5%;
-}
-
-.page-title-parent .page-title:hover {
-	background: black;
 }
 
 .header-nav {
@@ -37,66 +20,7 @@ body {
 	font-style: normal;
 }
 
-.login-btn-container {
-	margin-left: 15%;
-}
-
-.login-btn-container a {
-	color: #337ab7;
-}
-
-.login-btn-container a:nth-child(1) {
-	float: left;
-}
-
-.login-btn-container a:nth-child(1):hover {
-	border-radius: 10px
-	background: white;
-}
-.login-btn-container a:nth-child(2) {
-	float: right;
-}
-
-.login-btn-container a:nth-child(2):hover {
-	border-radius: 10px
-	background: white;
-}
-
-.search-form-container {
-	width: 20%;
-	padding-top: 10px;
-}
-
-.site-search {
-	font-size: 120%;
-    font-weight: bold;
-    color: deepskyblue;
-    background: black;
-}
-
-.search-icon {
-	float: left;
-	position: relative;
-	color: white;
-	cursor: pointer;
-	margin-right: 6%;
-}
-
-.search-icon-parent {
-	margin-top:1%;
-	margin-left: 5%;
-	width: 9%;
-
-}
-
-.search-text {
-	font-size: 1.3em;
-	color: white;	
-}
-
 /* Animation and Fade Effects */
-
-
 /* make keyframes that tell the start state and the end state of our object */
 
 @-webkit-keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
@@ -136,17 +60,6 @@ body {
 	animation-delay: 1.6s;
 }
 
-/*---make a basic box ---*/
-.box {
-	width: 200px;
-	height: 200px;
-	position: relative;
-	margin: 10px;
-	float: left;
-	border: 1px solid #333;
-	background: #999;
-}
-
 .db-icon {
 	position: absolute;
 	left: 5px;
@@ -161,15 +74,40 @@ body {
 	color: cornflowerblue;
 }
 
-.events-container-wrapper {
-	margin-left: 5%;
+.dylans-btn {
+	width: 100%;
+	border-radius: 5px;
+	border: 1px solid #337ab7;
+	color: #337ab7;
+	background: honeydew;
+	height: 30px;
+}
+
+.guest-message {
+	border:1px solid lightseagreen;
+	border-radius: 5px;
+	width: 100%;
+}
+
+.create-event-title {
+	display: inline;
+}
+
+.create-event-form {
 	margin-top: 5%;
 }
 
-.events-header {
-	color: #001a33;
+.inputs {
+	margin-top: 5%;
+}
+.guest-list {
+	
 }
 
-	
+
+
+
+
+
 
 

@@ -16,7 +16,7 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-social/5.0.0/bootstrap-social.min.css">
-        <link rel="stylesheet" href="/css/index.css">
+        <link rel="stylesheet" href="/css/index.css" media="all">
         <link rel="stylesheet" href="/css/sidenav.css">
         <link rel="shortcut icon" href="/img/favicon.ico">
 
@@ -43,15 +43,15 @@
     </head>
 
     <body ng-controller="RootController as rc">
-        <div id="wrapper" class="toggled">
+        <div id="wrapper">
             <div class="container-fluid">
 
                 <!-- Sidebar --> 
                 <div id="sidebar-wrapper">
                     <ul class="sidebar-nav" id="logo-nav"></ul>
                     <ul class="sidebar-nav text-left" autofocus>
-                        <li class="nav-item"><i class="fa fa-database fa-2x db-icon"></i><a href="/#/events">See All Events</a></li>
-                        <li class="nav-item"><i class="fa fa-plus-circle fa-2x plus-icon"></i><a href="/#/create_event">Create New Event</a></li>
+                        <li class="nav-item"><i class="fa fa-database fa-2x db-icon"></i><a href="/#/events" ng-click="toggleMenu()">See All Events</a></li>
+                        <li class="nav-item"><i class="fa fa-plus-circle fa-2x plus-icon"></i><a href="/#/create_event" ng-click="toggleMenu()">Create New Event</a></li>
                     </ul>
                 </div>
                 <!-- /sidebar-wrapper -->
@@ -60,8 +60,8 @@
                 <div id="page-content-wrapper" class="pcw-custom">
 
                     <!-- navbar at the top -->
-                    <nav class="navbar navbar-fixed-top navbar-dark bg-inverse" style="background: #001233;" >
-                        <ul class="nav navbar-nav header-nav">
+                    <nav class="navbar navbar-fixed-top" style="position:relative; z-index:1">
+                        <ul class="nav navbar-nav">
 
                             <!-- The navbar button icon for toggling the sidenav -->
                             <li class="nav-item menu-toggle-parent">
@@ -71,32 +71,21 @@
                             </li>
 
                             <!-- The nvbar header -->
-                            <li id="nav-brand-custom" class="nav-item page-title-parent">
-                                <a class="navbar-brand page-title" href="/intro">Mr. Event Manager</a>
+                            <li id="nav-brand-custom" class="nav-item">
+                                <a class="navbar-brand" href="/#/events">Mr. Event Manager</a>
                             </li>
-
-                            <!-- A search icon and search-text that remains hidden until a user is signed in -->
-                            <li class="nav-item search-icon-parent" ng-if="userSignedIn()" ng-cloak>
-                                <span class="search-text">search</span>
-                                <i id="search-icon" class="fa fa-search fa-2x search-icon" ng-click="toggleSearch()"></i>
-                            </li>
-
-                            <!-- the search box that opens when you click the icon above, that is only available when the user is signed in -->
-                            <li class="search-form-container hidden fade-in fade-in-one">
-                                <form id="search-form" class="search-form">
-                                    <div class="form-group">
-                                        <input type="text" class="form-control site-search" id="search" placeholder="Search Terms">
-                                    </div>
-                                </form>
-                            </li>
+                        </ul>
+                        <ul class="nav navbar-nav navbar-right" style="margin-right: 5%">
 
                             <!-- Login and Signup buttons on navbar-->
-                            <li id="login-btn" class="login-btn-container" ng-if="!userSignedIn()" ng-cloak>
-                                <a href="/#/login">
+                            <li id="login-btn" class="nav-item" ng-if="!userSignedIn()" ng-cloak>
+                                <a class="nav-link" href="/#/login">
                                     <i class="fa-1x login-text">login</i>
                                     <i class="fa fa-sign-in fa-2x"></i>
                                 </a>
-                                <a href="/#/signup">
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/#/signup">
                                     <i class="fa-1x signup-text">signup</i>
                                     <i class="fa fa-user-plus fa-2x"></i>
                                 </a>

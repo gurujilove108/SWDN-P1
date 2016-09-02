@@ -52,7 +52,7 @@ class UserEndpoint(remote.Service):
     		)
 
     		events.append(eventRpcMessage)
-    		events_list = EventsList(events=events)
+    	events_list = EventsList(events=events)
     	return events_list
 
 
