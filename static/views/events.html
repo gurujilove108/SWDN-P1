@@ -1,0 +1,26 @@
+<div class="events-container-wrapper">
+	
+	<div class="row event-info-row">
+		<div class="col-md-12 text-center">
+			<div class="alert alert-info fade in">
+
+				<!-- None of these button attrs are working so Im going to delete the box with angular ng-click -->
+				<button class="close" ng-click="deleteEventInfo()">&times;</button>
+				<strong class="lead">Info! </strong><span> In case you don't see your event, sometimes they might not show up immediately</span>
+			</div>
+		</div>
+	</div>
+	<!-- on loading page, start loading events and adding the markup to the page -->
+	<div class="row" ng-init="loadAllEventsOntoPage()">
+		<div class="col-xs-12 col-sm-12 col-md-12 text-center">
+			<header><h1 class="events-header">Welcome to the events page</h1></header>
+			<div class="no-events"></div>
+		</div>
+	</div>
+	<div style="margin-top:5%"></div>
+	<!-- 
+		This is where we will append the rows and columns for all events in the event controller  
+		Since I couldn't get ng-repeat to work that well Im using mustache.js to make this process easier
+	-->
+	
+</div>
