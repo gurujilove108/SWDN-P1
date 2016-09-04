@@ -2,7 +2,8 @@
 
 var app = angular.module('swdnP1App', ['swdnP1AppControllers', 'ngRoute', 'ui.bootstrap']);
 
-app.config(["$routeProvider", function ($routeProvider) {
+app.config(["$routeProvider", function ($routeProvider, $templateCache) {
+    
     $routeProvider.when('/events', {
         templateUrl: '../views/events.html',
         controller: 'EventController'
