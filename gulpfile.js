@@ -3,19 +3,39 @@ var gulp 			= require('gulp'),
 	cssmin 			= require('gulp-cssmin'),
 	concat 			= require('gulp-concat'), 
 	uglify			= require('gulp-uglify'),
-	rimraf 			= require('rimraf');
+	rimraf 			= require('rimraf'),
+	htmlmin			= require('gulp-htmlmin'),
+	sourcemaps 		= require('gulp-sourcemaps');
 
-var paths = {
-  templates_root   				: 'templates/',
-  js_root						: 'static/js/',
-  index_html 					: 'templates/index.html',
-  js_file_path		 			: 'static/js/*.js',
-  css_file_path 				: 'static/css/*.css',
-  views_file_path	 			: 'static/views/*.html',
-  min_js_file_path 				: 'static/js/*.min.js',
-  min_css_file_path				: 'static/css/*.min.css',
-  destination_jsmin_filepath 	: 'static/js/site.min.js',
-  destination_jscss_filepath  	: 'static/css/site.min.css'
+var roots = {
+	html_root			: 'static/views/',
+	js_root  			: 'static/js/',
+	css_root 			: 'static/css/',
+	templates_root		: 'templates/',
+	minified_html_root 	: 'dist/html/',
+	minified_js_root 	: 'dist/js',
+	minified_css_root 	: 'dist/css/'
+}
+
+var paths = { 
+
+	create_events_html  : roots.html_root			+ 'create_event.html',
+	signup_html 		: roots.html_root			+ 'signup.html',
+  	login_html 			: roots.html_root			+ 'login.html',  	
+  	events_html			: roots.html_root			+ 'events.html',
+  	html_file_path		: roots.html_root 			+ '*.html',
+  	css_file_path 		: roots.css_root 			+ '*.css',
+  	js_file_path  		: roots.js_root 			+ '*.js',
+  	python_file_path 	: './**/*.py'				+ '',
+  	index_html 			: roots.templates_root		+ 'index.html',
+  	create_events_dest  : roots.minified_html_root 	+ 'create_event.min.html',
+	signup_dest 		: roots.minified_html_root 	+ 'signup.min.html',
+  	login_dest			: roots.minified_html_root 	+ 'login.min.html',   	
+  	events_dest			: roots.minified_html_root 	+ 'events.min.html',
+  	index_dest 			: roots.minified_html_root 	+ 'dist/html/index.min.html',
+	all_minhtml 		: roots.minified_html_root	+ '*.html',
+  	minjs_file_path 	: roots.minified_js_root 	+ 'site.min.js',
+  	mincss_file_path	: roots.minified_css_root 	+ 'site.min.css'
 };
 
 gulp.task('watch', function() {
@@ -23,48 +43,68 @@ gulp.task('watch', function() {
         proxy: "localhost:8080"
     });
 
-    gulp.watch("static/js/*.js").on('change', browserSync.reload);
-    gulp.watch("static/css/*.css").on('change', browserSync.reload);
-    gulp.watch("static/views/*.html").on('change', browserSync.reload);
-    gulp.watch("templates/*.html").on('change', browserSync.reload);
-
+	/* js, css, html, and python files when edited then saved, the browser will reload. This helps speed up development */
+    gulp.watch(paths.js_file_path).on('change', browserSync.reload);
+    gulp.watch(paths.css_file_path).on('change', browserSync.reload);
+    gulp.watch(paths.html_file_path).on('change', browserSync.reload);
+    gulp.watch(paths.index_html).on('change', browserSync.reload);
+    gulp.watch(paths.python_file_path).on('change', browserSync.reload);
 });
 
 /* deletes all .min.js files in static/js */
 gulp.task('delete:minjs', function (cb) {
-  rimraf(paths.min_js_file_path, cb);
+  rimraf(paths.minjs_file_path, cb);
 });
 
 /* deletes all .min.css files in static/css */
 gulp.task("delete:mincss", function (cb) {
-  rimraf(paths.min_css_file_path, cb);
+  rimraf(paths.mincss_file_path, cb);
 });
 
-/* 
- * Here we declare a task that runs two other tasks, that way we can accomplish n number of tasks with one task
- * Coolest thing right, a task that calls an array of tasks
- * One of my concerns as a programmer is that I already have a tool to delete certain files
- * The tool is powershell or a terminal and you could just run rm *.min.css or rm *.min.js or even
- * create a powershell or bash function to do it
-*/
-gulp.task("delete:js:css:min", ["delete:minjs", "delete:mincss"]);
+/* deletes any .min.html files */
+gulp.task("delete:minhtml", function(cb) {
+	rimraf(paths.all_minhtml, cb);
+});
 
-
+/* this task takes all the js files in /static/js/ and minifies them into one file called site.min.js and puts it inminified_js_root */
 gulp.task("minify:js", function () {
-  return gulp.src([paths.js_file_path, "!" + paths.min_js_file_path], { base: "." })
-    .pipe(concat(paths.destination_jsmin_filepath))
+	gulp.src([paths.js_file_path], {base: ".", read: true})  // if read was false this method will not work
+	.pipe(concat("site.min.js"))
     .pipe(uglify())
-    .pipe(gulp.dest("."));
+    .pipe(gulp.dest(roots.minified_js_root))
 });
 
-// gulp.task("min:css", function () {
-//   return gulp.src([paths.css, "!" + paths.min_css_file_path])
-//     .pipe(concat(paths.))
-//     .pipe(cssmin())
-//     .pipe(gulp.dest());
+/* this task does the same thing above except it uses cssmin instead of uglify for the compression and puts it in dist/css */
+gulp.task("minify:css", function () {
+  return gulp.src([paths.css_file_path], {base: '.', read: true})
+    .pipe(concat("site.min.css"))
+    .pipe(cssmin())
+    .pipe(gulp.dest(roots.minified_css_root));
+});
+
+gulp.task("minify:index_html", function() {
+	return gulp.src([paths.index_html], {base: '.', read: true})
+    .pipe(concat("index.min.html"))
+    .pipe(htmlmin({collapseWhitespace: true}))
+    .pipe(gulp.dest(roots.minified_html_root));
+});
+
+ 
+// gulp.task('javascript', function() {
+//   return gulp.src('src/**/*.js')
+//     .pipe(sourcemaps.init())
+//       .pipe(concat('all.js'))
+//     .pipe(sourcemaps.write())
+//     .pipe(gulp.dest('dist'));
 // });
 
-gulp.task("minify", ["min:js", "min:css"]);
+gulp.task("delete", ["delete:mincss", "delete:minjs", "delete_minhtml"])
+gulp.task("minify", ["min:js", "min:css", "min:html"]);
+gulp.task("delete && minify", ["delete", "minify"])
 
 
          
+/* 	you know I'm going to make several gulp files because there are so many ways to solve this problem 
+
+	
+*/

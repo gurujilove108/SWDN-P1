@@ -75,5 +75,6 @@ app.filter('startFrom', function () {
 });
 
 app.constant('HTTP_ERRORS', {
-    'UNAUTHORIZED': 401 
+    'UNAUTHORIZED': 401,
+    'test': 503 
 });
