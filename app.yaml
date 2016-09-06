@@ -1,3 +1,4 @@
+# DON'T FORGET TO RUN gulp build:process before deploying
 application: eventsandppl
 version: 1
 runtime: python27
@@ -6,20 +7,20 @@ threadsafe: yes
 
 handlers:
 - url: /css
-  static_dir: static/css
+  static_dir: dist/css
 
 - url: /js
-  static_dir: static/js
+  static_dir: dist/js
 
-- url: /views
-  static_dir: static/views
+- url: /html
+  static_dir: dist/views
 
 - url: /img
   static_dir: static/img
 
 - url: /
-  static_files: templates/index.html
-  upload: templates/index\.html
+  static_files: dist/index.html
+  upload: dist/index\.html
   secure: always
 
 - url: /_ah/spi/.*

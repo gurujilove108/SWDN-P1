@@ -143,4 +143,4 @@ gulp.task("minify:signup_html", function() {
 gulp.task("minify:html", ["minify:index_html", "minify:create_event_html", "minify:events_html", "minify:login_html", "minify:signup_html"]);
 gulp.task("delete", ["delete:mincss", "delete:minjs", "delete:minhtml"]);
 gulp.task("minify", ["minify:js", "minify:css", "minify:html"]);
-gulp.task("build_process", ["delete", "minify"]);
+gulp.task("build:process", ["delete", "minify"]);
