@@ -13,13 +13,13 @@ var roots = {
 	css_root 			: 'static/css/',
 	templates_root		: 'templates/',
 	minified_html_root 	: 'dist/html/',
-	minified_js_root 	: 'dist/js',
+	minified_js_root 	: 'dist/js/',
 	minified_css_root 	: 'dist/css/'
 }
 
 var paths = { 
 
-	create_events_html  : roots.html_root			+ 'create_event.html',
+	create_event_html   : roots.html_root			+ 'create_event.html',
 	signup_html 		: roots.html_root			+ 'signup.html',
   	login_html 			: roots.html_root			+ 'login.html',  	
   	events_html			: roots.html_root			+ 'events.html',
@@ -33,7 +33,7 @@ var paths = {
   	login_dest			: roots.minified_html_root 	+ 'login.min.html',   	
   	events_dest			: roots.minified_html_root 	+ 'events.min.html',
   	index_dest 			: roots.minified_html_root 	+ 'dist/html/index.min.html',
-	all_minhtml 		: roots.minified_html_root	+ '*.html',
+	minhtml_file_path 	: roots.minified_html_root	+ '*.html',
   	minjs_file_path 	: roots.minified_js_root 	+ 'site.min.js',
   	mincss_file_path	: roots.minified_css_root 	+ 'site.min.css'
 };
@@ -63,7 +63,7 @@ gulp.task("delete:mincss", function (cb) {
 
 /* deletes any .min.html files */
 gulp.task("delete:minhtml", function(cb) {
-	rimraf(paths.all_minhtml, cb);
+	rimraf(paths.minhtml_file_path, cb);
 });
 
 /* this task takes all the js files in /static/js/ and minifies them into one file called site.min.js and puts it inminified_js_root */
@@ -79,15 +79,44 @@ gulp.task("minify:css", function () {
   return gulp.src([paths.css_file_path], {base: '.', read: true})
     .pipe(concat("site.min.css"))
     .pipe(cssmin())
-    .pipe(gulp.dest(roots.minified_css_root));
+    .pipe(gulp.dest(roots.minified_css_root))
 });
 
 gulp.task("minify:index_html", function() {
 	return gulp.src([paths.index_html], {base: '.', read: true})
     .pipe(concat("index.min.html"))
     .pipe(htmlmin({collapseWhitespace: true}))
+    .pipe(gulp.dest(roots.minified_html_root))
+});
+
+gulp.task("minify:create_event_html", function() {
+	return gulp.src([paths.create_event_html], {base: '.', read: true})
+    .pipe(concat("create_event.min.html"))
+    .pipe(htmlmin({collapseWhitespace: true}))
+    .pipe(gulp.dest(roots.minified_html_root))
+});
+
+gulp.task("minify:events_html", function() {
+	return gulp.src([paths.events_html], {base: '.', read: true})
+    .pipe(concat("events.min.html"))
+    .pipe(htmlmin({collapseWhitespace: true}))
     .pipe(gulp.dest(roots.minified_html_root));
 });
+
+gulp.task("minify:login_html", function() {
+	return gulp.src([paths.login_html], {base: '.', read: true})
+    .pipe(concat("login.min.html"))
+    .pipe(htmlmin({collapseWhitespace: true}))
+    .pipe(gulp.dest(roots.minified_html_root));
+});
+
+gulp.task("minify:signup_html", function() {
+	return gulp.src([paths.signup_html], {base: '.', read: true})
+    .pipe(concat("signup.min.html"))
+    .pipe(htmlmin({collapseWhitespace: true}))
+    .pipe(gulp.dest(roots.minified_html_root));
+});
+
 
  
 // gulp.task('javascript', function() {
@@ -98,13 +127,7 @@ gulp.task("minify:index_html", function() {
 //     .pipe(gulp.dest('dist'));
 // });
 
-gulp.task("delete", ["delete:mincss", "delete:minjs", "delete_minhtml"])
-gulp.task("minify", ["min:js", "min:css", "min:html"]);
-gulp.task("delete && minify", ["delete", "minify"])
-
-
-         
-/* 	you know I'm going to make several gulp files because there are so many ways to solve this problem 
-
-	
-*/
+gulp.task("minify:html", ["minify:index_html", "minify:create_event_html", "minify:events_html", "minify:login_html", "minify:signup_html"]);
+gulp.task("delete", ["delete:mincss", "delete:minjs", "delete:minhtml"]);
+gulp.task("minify", ["minify:js", "minify:css", "minify:html"]);
+gulp.task("build_process", ["delete", "minify"]);
