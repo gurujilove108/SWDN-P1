@@ -2,7 +2,10 @@
 var gulp 		= require('gulp'),
 
 	/* used for reloading changes into the browser on file save to increase decelopment speed */ 
-	browserSync = require('browser-sync'),
+	browserSync = require('browser-sync').create(),
+
+	/* just simplifying the reload browser method*/
+	reload 		= browserSync.reload;
 
 	/* used for compressing css files */ 
 	cssmin 		= require('gulp-cssmin'),
@@ -33,6 +36,7 @@ var roots = {
 	minified_css_root 	: 'dist/css/'
 }
 
+/* specifying paths used in tasks */
 var paths = { 
 	create_event_html   : roots.html_root			+ 'create_event.html',
 	signup_html 		: roots.html_root			+ 'signup.html',
@@ -45,21 +49,8 @@ var paths = {
 	minhtml_file_path 	: roots.minified_html_root	+ '*.html',
   	minjs_file_path 	: roots.minified_js_root 	+ 'site.min.js',
   	mincss_file_path	: roots.minified_css_root 	+ 'site.min.css',
-  	python_file_path 	: './**/*.py'				+ '' // just added the + '' to make it look cleaner
+  	python_file_path 	: './**/*.py'				+ '' 				// just added the + '' to make it look cleaner
 };
-
-gulp.task('watch', function() {
-	browserSync.init(null, {
-        proxy: "localhost:8080"
-    });
-
-	/* js, css, html, and python files when edited then saved, the browser will reload and the files will be re compressed. This helps speed up development and allows us to us one app.yaml for gae development and ge production. Pretty sweet I think. Udacty: If there is a better more efficient way please let me know. But this seemed like such a great idea, I had to implement it. Thanks, Dylan */
-    gulp.watch(paths.js_file_path).on('change', browserSync.reload);
-    gulp.watch(paths.css_file_path).on('change', browserSync.reload);
-    gulp.watch(paths.html_file_path).on('change', browserSync.reload);
-    gulp.watch(paths.index_html).on('change', browserSync.reload);
-    gulp.watch(paths.python_file_path).on('change', browserSync.reload);
-});
 
 /* deletes any .min.js files in dist/js */
 gulp.task('delete:minjs', function (cb) {
@@ -76,23 +67,21 @@ gulp.task("delete:minhtml", function(cb) {
 	rimraf(paths.minhtml_file_path, cb);
 });
 
-/* delete templates/index.min.html*/
-
 /* this task takes all the js files in static/js/ and minifies them into one file called site.min.js and puts it in paths.minified_js_root which is dist/jss */
 gulp.task("minify:js", function () {
-	gulp.src([paths.js_file_path], {base: ".", read: true})  // if read was false this method will not work
-	.pipe(concat("site.min.js"))
-	.pipe(ngAnnotate())
-    .pipe(uglify())
-    .pipe(gulp.dest(roots.minified_js_root))
+	return gulp.src([paths.js_file_path], {base: ".", read: true})  // if read was false this method will not work
+		.pipe(concat("site.min.js"))
+		.pipe(ngAnnotate())
+	    .pipe(uglify())
+	    .pipe(gulp.dest(roots.minified_js_root))
 });
 
 /* this task does the same thing above except it takes css files from static/css/ and uses cssmin instead of uglify for the compression and puts it in paths.minified_css_root which is dist/css */
 gulp.task("minify:css", function () {
-  return gulp.src([paths.css_file_path], {base: '.', read: true})
-    .pipe(concat("site.min.css"))
-    .pipe(cssmin())
-    .pipe(gulp.dest(roots.minified_css_root))
+	return gulp.src([paths.css_file_path], {base: '.', read: true})
+	    .pipe(concat("site.min.css"))
+	    .pipe(cssmin())
+	    .pipe(gulp.dest(roots.minified_css_root))
 });
 
 
@@ -104,49 +93,109 @@ gulp.task("minify:css", function () {
  */
 gulp.task("minify:index_html", function() {
 	return gulp.src([paths.index_html], {base: '.', read: true})
-    .pipe(concat("index.min.html"))
-    .pipe(htmlmin({collapseWhitespace: true}))
-    .pipe(gulp.dest(roots.minified_html_root))
+	    .pipe(concat("index.min.html"))
+	    .pipe(htmlmin({collapseWhitespace: true}))
+	    .pipe(gulp.dest(roots.minified_html_root))
 });
 
 gulp.task("minify:create_event_html", function() {
 	return gulp.src([paths.create_event_html], {base: '.', read: true})
-    .pipe(concat("create_event.min.html"))
-    .pipe(htmlmin({collapseWhitespace: true}))
-    .pipe(gulp.dest(roots.minified_html_root))
+	    .pipe(concat("create_event.min.html"))
+	    .pipe(htmlmin({collapseWhitespace: true}))
+	    .pipe(gulp.dest(roots.minified_html_root))
 });
 
 gulp.task("minify:events_html", function() {
 	return gulp.src([paths.events_html], {base: '.', read: true})
-    .pipe(concat("events.min.html"))
-    .pipe(htmlmin({collapseWhitespace: true}))
-    .pipe(gulp.dest(roots.minified_html_root));
+	    .pipe(concat("events.min.html"))
+	    .pipe(htmlmin({collapseWhitespace: true}))
+	    .pipe(gulp.dest(roots.minified_html_root));
 });
 
 gulp.task("minify:login_html", function() {
 	return gulp.src([paths.login_html], {base: '.', read: true})
-    .pipe(concat("login.min.html"))
-    .pipe(htmlmin({collapseWhitespace: true}))
-    .pipe(gulp.dest(roots.minified_html_root));
+	    .pipe(concat("login.min.html"))
+	    .pipe(htmlmin({collapseWhitespace: true}))
+	    .pipe(gulp.dest(roots.minified_html_root));
 });
 
 gulp.task("minify:signup_html", function() {
 	return gulp.src([paths.signup_html], {base: '.', read: true, mangle: false})
-    .pipe(concat("signup.min.html"))
-    .pipe(htmlmin({collapseWhitespace: true}))
-    .pipe(gulp.dest(roots.minified_html_root));
+	    .pipe(concat("signup.min.html"))
+	    .pipe(htmlmin({collapseWhitespace: true}))
+	    .pipe(gulp.dest(roots.minified_html_root));
 });
-
 /* End minifying html tasks*/
 
- 
+/* this task ensures that the task minify:css is completed before the browser is reloaded */
+gulp.task("watch:css", ["minify:css"],  function(done) {
+	reload();
+	done();
+});
+
+/* this task ensures that the task minify:js is completed before the browser is reloaded */
+gulp.task("watch:js", ["minify:js"], function(done) {
+	reload();
+	done();
+});
+
+/* 
+ * so now that we have the css and js browser reloading after compression we can start defining tasks for our html
+ * we could program the task so that when one change is made to one html file, we compress all of them and then 
+ * reload the browser, but honestly even though that is much less code, it is stupid and extremely inefficent for development
+ * we only have to do that with css and js files because all the files get compressed into one, which is still efficient
+ * so what were going to do is create a watch task for each html file, that way its much more efficient
+ * files just for reference ["minify:index_html", "minify:create_event_html", "minify:events_html", "minify:login_html", "minify:signup_html"]
+*/
+gulp.task("watch:index_html", ["minify:index_html"], function(done) {
+	reload();
+	done();
+});
+
+gulp.task("watch:create_event_html", ["minify:create_event_html"], function(done) {
+	reload();
+	done();
+});
+
+gulp.task("watch:events_html", ["minify:events_html"], function(done) {
+	reload();
+	done();
+});
+
+gulp.task("watch:login_html", ["minify:login_html"], function(done) {
+	reload();
+	done();
+});
+
+gulp.task("watch:signup_html", ["minify:signup_html"], function(done) {
+	reload();
+	done();
+});
+/* end creating watch html tasks */
+
+gulp.task('serve', function() {
+
+	browserSync.init({
+    	proxy: "localhost:8080"
+    });
+
+	gulp.watch(paths.css_file_path, 	['watch:css']);
+	gulp.watch(paths.js_file_path, 		['watch:js']);
+	gulp.watch(paths.index_html, 		['watch:index_html']);
+    gulp.watch(paths.create_event_html, ['watch:create_event_html']);
+    gulp.watch(paths.events_html, 		['watch:events_html']);
+    gulp.watch(paths.login_html, 		['watch:login_html']);
+    gulp.watch(paths.signup_html, 		['watch:signup_html']);
+});
+
 /* 
  * creating tasks that run other tasks 
  * this is extremely useful in my opinionthe way this is designed because it is very easy to test
  * I can test every task specifically, all js tasks, all css tasks, all html tasks, or 
  * all tasks together. So far with all the testing I have done, running task_build process works perfectly
-*/
-gulp.task("minify:html", ["minify:index_html", "minify:create_event_html", "minify:events_html", "minify:login_html", "minify:signup_html"]);
-gulp.task("delete", ["delete:mincss", "delete:minjs", "delete:minhtml"]);
-gulp.task("minify", ["minify:js", "minify:css", "minify:html"]);
-gulp.task("build:process", ["delete", "minify"]);
+ *
+ *	gulp.task("minify:html", ["minify:index_html", "minify:create_event_html", "minify:events_html", "minify:login_html", "minify:signup_html"]);
+ *	gulp.task("delete", ["delete:mincss", "delete:minjs", "delete:minhtml"]);
+ *	gulp.task("minify", ["minify:js", "minify:css", "minify:html"]);
+ *	gulp.task("build:process", ["delete", "minify"]);
+ */

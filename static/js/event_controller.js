@@ -66,7 +66,7 @@ controllers.controller('EventController', function ($scope, $location, oauth2Pro
 		}
 	}
 
-	/* the container that holds all the rows of events that are loade rom the db */
+	/* the container that holds all the rows of events that are loaded rom the db */
 	$scope.container = jQuery(".events-container-wrapper");
 
 	/* 
@@ -75,7 +75,7 @@ controllers.controller('EventController', function ($scope, $location, oauth2Pro
 	 * so thats exactly what this function does. 
 	*/
 	$scope.createDataList = function(guests, index) {
-		if (guests.length > 0) {
+		if (guests.hasOwnProperty("length") && guests.length > 0) {
 			var datalist_input = "<input list='%s'>".replace("%s", "guestlist"+index);
 			var datalist = "<datalist id='%s'>".replace("%s", "guestlist"+index )
 

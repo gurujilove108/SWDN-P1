@@ -2,6 +2,7 @@
 
 var app = angular.module('swdnP1App', ['swdnP1AppControllers', 'ngRoute', 'ui.bootstrap']);
 
+/* routing configuration for production */
 var routeConfig = function($routeProvider) {
     $routeProvider.when('/events', {
         templateUrl: '/html/events.min.html',
@@ -24,8 +25,12 @@ var routeConfig = function($routeProvider) {
     });
 }
 
+/* 
+ * using the $inject property so that this file will minify properly. without this method of injecting $routeProvider the routeConfig
+ * would generate an error saying $routeProvider is undefined and will be unable to load in any templates
+ * I'm also happy I had to fix this error because now I know how to manually inject dpendencies in angular. Yay! #Winning
+*/ 
 routeConfig.$inject = ["$routeProvider"];
-
 app.config(routeConfig);
 
 app.factory('oauth2Provider', function ($modal) {
