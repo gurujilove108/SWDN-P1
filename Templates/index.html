@@ -9,25 +9,22 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta property="og:title" content="Senior Web Dev Nanodegree Project 1">
-        <meta property="og:type" content="Content Data">
-        <meta property="og:description" content="Login, Logout, Events, with DB">
+        <meta property="og:type" content="Data">
+        <meta property="og:description" content="Event Manager">
         <meta property="og:image" content="/img/CloudPlatform_logo.png">
         <meta property="og:site_name" content="">
         
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-social/5.0.0/bootstrap-social.min.css">
-        <link rel="stylesheet" href="/css/index.css">
-        <link rel="stylesheet" href="/css/sidenav.css">
+        <link rel="stylesheet" href="/css/site.min.css">
         <link rel="shortcut icon" href="/img/favicon.ico">
-
+        
         <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.js"></script>
         <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular-route.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.10.0/ui-bootstrap-tpls.js"></script>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-        <script src="/js/config.js"></script>
-        <script src="/js/utils.js"></script>
-        <script src="/js/app.js"></script>
+        <script src="/js/site.min.js"></script>
         <script>
             function init() {
                 var rootPath = '//' + window.location.host + '/_ah/api';
@@ -37,7 +34,7 @@
                 }, rootPath);
 
                 gapi.client.load('oauth2', 'v2', null);
-            };
+            }
         </script>
         <script src="//apis.google.com/js/client:plusone.js?onload=init"></script>
     </head>
@@ -74,6 +71,7 @@
                             <li id="nav-brand-custom" class="nav-item">
                                 <a class="navbar-brand" href="/#/events">Mr. Event Manager</a>
                             </li>
+
                         </ul>
                         <ul class="nav navbar-nav navbar-right" style="margin-right: 5%">
 
@@ -90,6 +88,7 @@
                                     <i class="fa fa-user-plus fa-2x"></i>
                                 </a>
                             </li>
+
                         </ul>
                     </nav>
                     <!-- End nav -->
@@ -105,15 +104,10 @@
 
         </div>
         <!-- / #wrapper -->
-        <script src="/js/controllers_init.js"></script>
-        <script src="/js/root_controller.js"></script>
-        <script src="/js/event_controller.js"></script>
-        <script src="/js/login_controller.js"></script>
-        <script src="/js/signup_controller.js"></script>
-        <script src="/js/index.js"></script>
+
         <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/2.2.1/mustache.min.js"></script>
         <script>
             console.log("loaded the page in " + (Math.round(performance.now() - t1)) + " milliseconds");
         </script>
-        
+    </body>
 </html>

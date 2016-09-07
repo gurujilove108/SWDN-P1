@@ -1,3 +1,5 @@
+
+
 controllers.controller('SignupController', function ($scope, $location, oauth2Provider) {
 
    /* constants for input error messages and success messages

@@ -19,6 +19,9 @@ var gulp 		= require('gulp'),
 	/* used for compressing html */
 	htmlmin		= require('gulp-htmlmin');
 
+	/* used for properyly minifying angular */
+	ngAnnotate 	= require('gulp-ng-annotate');
+
 /* specifying path roots */
 var roots = {
 	html_root			: 'static/views/',
@@ -50,7 +53,7 @@ gulp.task('watch', function() {
         proxy: "localhost:8080"
     });
 
-	/* js, css, html, and python files when edited then saved, the browser will reload. This helps speed up development */
+	/* js, css, html, and python files when edited then saved, the browser will reload and the files will be re compressed. This helps speed up development and allows us to us one app.yaml for gae development and ge production. Pretty sweet I think. Udacty: If there is a better more efficient way please let me know. But this seemed like such a great idea, I had to implement it. Thanks, Dylan */
     gulp.watch(paths.js_file_path).on('change', browserSync.reload);
     gulp.watch(paths.css_file_path).on('change', browserSync.reload);
     gulp.watch(paths.html_file_path).on('change', browserSync.reload);
@@ -73,10 +76,13 @@ gulp.task("delete:minhtml", function(cb) {
 	rimraf(paths.minhtml_file_path, cb);
 });
 
+/* delete templates/index.min.html*/
+
 /* this task takes all the js files in static/js/ and minifies them into one file called site.min.js and puts it in paths.minified_js_root which is dist/jss */
 gulp.task("minify:js", function () {
 	gulp.src([paths.js_file_path], {base: ".", read: true})  // if read was false this method will not work
 	.pipe(concat("site.min.js"))
+	.pipe(ngAnnotate())
     .pipe(uglify())
     .pipe(gulp.dest(roots.minified_js_root))
 });
@@ -125,7 +131,7 @@ gulp.task("minify:login_html", function() {
 });
 
 gulp.task("minify:signup_html", function() {
-	return gulp.src([paths.signup_html], {base: '.', read: true})
+	return gulp.src([paths.signup_html], {base: '.', read: true, mangle: false})
     .pipe(concat("signup.min.html"))
     .pipe(htmlmin({collapseWhitespace: true}))
     .pipe(gulp.dest(roots.minified_html_root));

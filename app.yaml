@@ -1,4 +1,4 @@
-# DON'T FORGET TO RUN gulp build:process before deploying
+# DON'T FORGET TO RUN gulp build:process before deploying even though we are minifying on every file save based on the file we are making changes too.
 application: eventsandppl
 version: 1
 runtime: python27
@@ -13,14 +13,14 @@ handlers:
   static_dir: dist/js
 
 - url: /html
-  static_dir: dist/views
+  static_dir: dist/html
 
 - url: /img
   static_dir: static/img
 
 - url: /
-  static_files: dist/index.html
-  upload: dist/index\.html
+  static_files: dist/html/index.min.html
+  upload: dist/html/index\.min.html
   secure: always
 
 - url: /_ah/spi/.*

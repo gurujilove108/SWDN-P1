@@ -11,8 +11,8 @@ $paths = @{
     js_file_path                = "static/js/*.js";
     css_file_ath                = "static/css/*.css";
     views_file_path             = "static/views/*.html";
-    min_js_file_path 			= "static/js/*.min.js";
-    min_css_file_path		    = "static/css/*.min.css";
+    min_js_file_path 			      = "static/js/*.min.js";
+    min_css_file_path           = "static/css/*.min.css";
     destination_jsmin_filepath 	= "static/js/site.min.js";
     destination_cssmin_filepath = "static/css/site.min.css"
 }
@@ -74,5 +74,6 @@ function open_git_config {
   To get around that you can run the command set-executionpolicy unrestricted, and make sure it worked
   By running the command get-executionpolicy .
   Once you loaded the functions in you can see them by checking the variable drive and function drive by ls variable:/ and ls function:/
-  call the function like so. delete_minified_css_files when you're ready
+  call the function like so. delete_minified_css_files when you're ready, but were just gonna stick to using gulp
+  until our powershell is more convenient than using gulp
 #>
