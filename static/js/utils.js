@@ -53,6 +53,19 @@ function validEmployer(employer_value) {
     return (defined(employer_value) && trim(employer_value).length >= 3);
 }
 
+/*  
+ * so I'm not exactly sure how I should validate an event name, but I'm just going to validate by making sure 
+ * the value is greater than 0 and that they are not all digits because an event name that is all digits 
+ * just doesn't make any sense and can't be valid
+*/
+function validEventName(value) {
+    return value.length > 0 && notAllDigits(value);
+}
+
+function notAllDigits(value) {
+    return (config.regexp.allNumbers.test(value)) ? false : true; 
+}
+
 function removeDisabledAttr(string_selector) {
 	jQuery(string_selector).attr("disabled", null);
 }

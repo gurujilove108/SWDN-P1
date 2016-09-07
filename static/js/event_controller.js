@@ -1,3 +1,4 @@
+/* this controller handles all the functionality for creting an event and loading in all events from the db */
 controllers.controller('EventController', function ($scope, $location, oauth2Provider) {
 
 	$scope.userSignedIn = function() {
@@ -21,7 +22,7 @@ controllers.controller('EventController', function ($scope, $location, oauth2Pro
 
 	/*
 	 * method to create the form rpc object to pass in to our create event api method
-	 * the keys in tje object must have the same name as the keys in the rpc object that is beint accepted by the api endpoint 
+	 * note that the keys in the object we pass to the user endpoint apimust have the same keynames in the rpc object that is being accepted by the api endpoint 
     */
 	$scope.sendGapiCreateForm = function() {
 		var guestlist = document.getElementById("guestlist");
@@ -36,10 +37,13 @@ controllers.controller('EventController', function ($scope, $location, oauth2Pro
 		};
 
 		/* creating an array of guests to store in the Event database from the datalist in the create event form */
-		if (guestlist.childElementCount > 0) 
+		if (guestlist.childElementCount > 0) {
+
 			for (var i=0, guests=[], len=guestlist.children.length; i < len; i++) {
 				var current_guest = guestlist.children[i].value;
 				guests.push(current_guest);
+			}
+
 			formObject.event_guestlist = guests;
 		}
 
@@ -48,9 +52,9 @@ controllers.controller('EventController', function ($scope, $location, oauth2Pro
 
 		var request = gapi.client.user_endpoint.create_event(formObject);
 		request.execute(function(response){
-			if (response.successful === "1") {
+			if (response.hasOwnProperty("successful") && response.successful === "1") {
 				jQuery("#event-create-success").removeClass("hidden");
-				jQuery("#eventname").text("Your Event");
+				jQuery("#eventname").text($scope.eventName);
 			}
 		});
 
@@ -92,9 +96,10 @@ controllers.controller('EventController', function ($scope, $location, oauth2Pro
 	}
 
 	/* 
-	 * This method fetches all of the events from the db, organizes them intohtml and then displays them on the page
+	 * This method fetches all of the events from the db, organizes them into html and then displays them on the page
      * Because I had so much troube with ng-repeat which would have made my life a whole lot easier in solving this problem,
-     * I had the pleaseure of learning a new templating system called muctache
+     * I had the pleaseure of learning a new templating system called mustache.js but in the next project I will make sure
+     * To get ng-repeat working
 	*/
 	$scope.loadAllEventsOntoPage = function() {
 
@@ -106,7 +111,7 @@ controllers.controller('EventController', function ($scope, $location, oauth2Pro
 		request.execute(function(response){
 			log(response);
 			// if there are no events then there will be no events object in response we will add a msg to the events.html page to link them to create an event
-			if (!response.events) {
+			if ( ! response.hasOwnProperty("events")) {
 				jQuery(".no-events").text('There are currently no events, to create an event click');
 				jQuery('.no-events').append(" <a href='/#/create_event'>create an event</a>");
 			} else {
@@ -119,13 +124,13 @@ controllers.controller('EventController', function ($scope, $location, oauth2Pro
 					datalist = $scope.createDataList(element1.event_guestlist, index);
 
 					// now for each event key we create the html to display them using mustache to replace the values from out event objects
-					row1 = "<div class='row text-center'><div class='col-xs-12'><label for='event_name'>Name of Event: </label><span id='event_name'> {{event_name}}</span></div></div> ";
-					row2 = "<div class='row text-center'><div class='col-xs-12'><label for='event_type'>Type of Event: </label><span id='event_type'> {{event_type}}</span></div></div> "; 
-					row3 = "<div class='row text-center'><div class='col-xs-12'><label for='event_host'>Host of Event: </label><span id='event_host'> {{event_host}}</span></div></div> "; 
-					row4 = "<div class='row text-center'><div class='col-xs-12'><label for='event_start'>Event Start Date: </label><span id='event_start'> {{event_start}}</span></div></div> "; 
-					row5 = "<div class='row text-center'><div class='col-xs-12'><label for='event_end'>Event End Date: </label><span id='event_end'> {{event_end}}</span></div></div> "; 
-					row6 = "<div class='row text-center'><div class='col-xs-12'><label for='event_guestlist'>Event Guest list: </label><span id='event_guestlist' class='event_guestlist_unbelievable'>doit </span></div></div> ".replace("doit", datalist.input + datalist.datalist); 
-					row7 = "<div class='row text-center'><div class='col-xs-12'><label for='event_guestmessage'>Message for Guests: </label><span id='event_guestmessage'> {{event_guestmessage}}</span></div></div><hr> "; 
+					row1 = "<div class='row text-left'><div class='col-xs-12'><label for='event_name'>Name of Event: </label><span id='event_name'> {{event_name}}</span></div></div> ";
+					row2 = "<div class='row text-left'><div class='col-xs-12'><label for='event_type'>Type of Event: </label><span id='event_type'> {{event_type}}</span></div></div> "; 
+					row3 = "<div class='row text-left'><div class='col-xs-12'><label for='event_host'>Host of Event: </label><span id='event_host'> {{event_host}}</span></div></div> "; 
+					row4 = "<div class='row text-left'><div class='col-xs-12'><label for='event_start'>Event Start Date: </label><span id='event_start'> {{event_start}}</span></div></div> "; 
+					row5 = "<div class='row text-left'><div class='col-xs-12'><label for='event_end'>Event End Date: </label><span id='event_end'> {{event_end}}</span></div></div> "; 
+					row6 = "<div class='row text-left'><div class='col-xs-12'><label for='event_guestlist'>Event Guest list: </label><span id='event_guestlist' class='event_guestlist_unbelievable'>doit </span></div></div> ".replace("doit", datalist.input + datalist.datalist); 
+					row7 = "<div class='row text-left'><div class='col-xs-12'><label for='event_guestmessage'>Message for Guests: </label><span id='event_guestmessage'> {{event_guestmessage}}</span></div></div><hr> "; 
 					
 					// iterate through all the rows, use mustache to make the html and then add it onto the events container
 					[row1, row2, row3, row4, row5, row6, row7].forEach(function(element2, index){

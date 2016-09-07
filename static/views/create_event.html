@@ -10,9 +10,6 @@
 		<div class="col-xs-6 text-center">
 			<h1 class="create-event-title">Create an Event</h1>
 		</div>
-		<div class="col-xs-6 text-center">
-			<button class="btn btn-primary" style="width:100%">Create Event</button>
-		</div> 
 	</div>
 
 	<!-- form events inputs row -->
@@ -21,9 +18,9 @@
 		<!-- event name input -->
 		<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
 			<label for="event-name">Event name <i class="event-name-status"></i></label>
-		    <input type="text" class="form-control" id="event-name" placeholder="event name"
+		    <input id="event-name" type="text" class="form-control" placeholder="event name"
 		    	ng-change="onEventNameChange()"
-		    	ng-model="event_name"
+		    	ng-model="eventName"
 		    	required
 		    >	
 		</div>
