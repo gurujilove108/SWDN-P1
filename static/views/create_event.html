@@ -1,14 +1,17 @@
 <form class="create-event-form row-form" ng-submit="createEvent()">
 
-	<!-- any error messages pop up here -->
+	<!-- Successful account creation message appears here -->
 	<div id="event-create-success" class="alert alert-success hidden">
 		<Strong id="eventname"></Strong> has successfully been created. You can view the event <a href="/#/events">Here</a> 
 	</div>
 
 	<!-- header row -->
 	<div class="row">
-		<div class="col-xs-6 text-center">
+		<div class="col-xs-6 text-left">
 			<h1 class="create-event-title">Create an Event</h1>
+		</div>
+		<div class="col-xs-6 text-left">
+			<h1 class="enter-location-title hidden-sm hidden-xs">Enter Location of Event</h1>
 		</div>
 	</div>
 
@@ -16,73 +19,82 @@
 	<div class="row form-group inputs">
 
 		<!-- event name input -->
-		<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
-			<label for="event-name">Event name <i class="event-name-status"></i></label>
-		    <input id="event-name" type="text" class="form-control" placeholder="event name"
+		<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+			<label for="event-name" class="create-event-label">Event Name <i class="event-name-status"></i></label>
+		    <input id="event-name-input" type="text" class="form-control" placeholder="event name"
 		    	ng-change="onEventNameChange()"
 		    	ng-model="eventName"
 		    	required
 		    	autofocus>
-		</div>
-
-		<!-- event type input -->
-		<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
-			<label for="event-type">Event type <i class="event-type-status"></i></label>
-		    <input type="text" class="form-control" id="event-type" placeholder="event type"
-		    	ng-change="onEventTypeChange()"
-		    	ng-model="event_type"
-		    	required
-		    >	
+		    <datalist id="event-name"></datalist>
 		</div>
 
 		<!-- event host input -->
-		<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
+		<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
 			<label for="event-host">Event host <i class="event-host-status"></i></label>
 		    <input type="text" class="form-control" id="event-host" placeholder="event host"
 		    	ng-change="onEventHostChange()"
-		    	ng-model="event_host"
-		    	required
-			>	
+		    	ng-model="eventHost"
+		    	required>	
+		</div>
+		
+	</div>
+	<div class="row form-group">
+
+		<!-- 
+			event type input and event type datalist. by declaring the event type as a datalist
+			the user can add several categories that the event type matches
+		-->
+		<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+			<label for="eventtype" class="create-event-label">Event Type <i class="event-type-status"></i></label>
+		    <input type="text" class="form-control" id="event-type" placeholder="enter event type" list="eventtype"
+		    	ng-change="eventTypeInputOnChange()"
+		    	ng-model="eventType"
+		    	required>
+		    <datalist id="eventtype"></datalist>
+			<button type="button" id="guestlist-btn" class="add-datalist-btn" ng-click="addToDatalist('event-type', 'eventtype')">Add Event Type</button>
 		</div>
 
 		<!-- event guest list input -->
-		<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
-			<label for="event-guestlist" class="guestlist-label">Guest List</label>
-			<input id="event-guestlist" class="guestlist form-control" list="guestlist"
+		<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+			<label for="guestlist" class="guestlist-label">Guest List</label>
+			<input id="event-guestlist" class="guestlist form-control" list="guestlist" placeholder="enter guest"
 				ng-change="guestInputOnChange()"
-				ng-model="current_guest"
-			>
+				ng-model="currentGuest">
 		    <datalist id="guestlist"></datalist>
-			<button type="button" id="guestlist" class="dylans-btn" ng-click="addGuest()">add guest</button>
-
+			<button type="button" id="guestlist-btn" class="add-datalist-btn" ng-click="addToDatalist('event-guestlist', 'guestlist')">Add Guest</button>
 		</div>
 	</div>
 
 	<div class="row form-group">
 
 		<!-- datetime start input -->
-		<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+		<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
 			<label for="event-datetime-start">Event Start Date and Time <i class="event-datetime-start-status"></i></label>
 		    <input type="datetime-local" class="form-control" id="event-datetime-start" placeholder="event date and Time"
-		    	ng-change="onEventDateTimeStartChange()"
-		    	ng-model="event_datetime_start"
-		    	required
-		    >	
+		    	ng-change="onEventStartDateChange()"  
+		    	ng-model="eventDateStart"
+		    	required>	
 		</div>
 
 		<!-- datetime end input -->
-		<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+		<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
 			<label for="event-datetime-end">Event End Date and Time<i class="event-datetime-end-status"></i></label>
 		    <input type="datetime-local" class="form-control" id="event-datetime-end" placeholder="event date and Time"
-		    	ng-change="onEventDateTimeEndChange()"
-		    	ng-model="event_datetime_end"
-		    	required
-		    >	
+		    	ng-change="onEventEndDateChange()"
+		    	ng-model="eventDateEnd"
+		    	required>	
 		</div>
-
+	</div>
+	<div class="row form-group">
 		<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-			<label for="guest-message" style="display:block;">Optional message for all guests</label>
+			<label for="guest-message" class="guest-message-label">Optional message for all guests</label>
 			<textarea id="guest-message" class="guest-message"></textarea>
 		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-12 col-sm-6 col-sm-6 col-lg-6 text-center">
+			<button class="btn btn-primary create-account-button">Create Event</button>
+		</div> 
 	</div>
 </form>

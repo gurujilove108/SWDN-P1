@@ -26,15 +26,22 @@
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
         <script src="/js/site.min.js"></script>
         <script>
+
+            /* Function to run once the google js client library has loaded*/
             function init() {
+
+                /* This variable rootPath declares the path where google api client will download the functionality so users can call functions from the specified google endpoint api */
                 var rootPath = '//' + window.location.host + '/_ah/api';
 
+                /* This function loads in the user_endpoint defined on the backend, and once that is loaded is, the document is bootstrapped to angular */
                 gapi.client.load('user_endpoint', 'v1', function() {
                     angular.bootstrap(document, ['swdnP1App']);
                 }, rootPath);
 
+                /* This function uses the google js client library to load in the oauth module for hadnling user sign in with oauth, but we will not be using that at the present moment */
                 gapi.client.load('oauth2', 'v2', null);
             }
+
         </script>
         <script src="//apis.google.com/js/client:plusone.js?onload=init"></script>
     </head>
@@ -93,7 +100,7 @@
                     </nav>
                     <!-- End nav -->
 
-                    <!-- Where partial templates will be loaded into, Initially the intro page will be loaded in -->
+                    <!-- Where partial templates will be loaded into, Initially the events.html will be loaded in first -->
                     <ng-view></ng-view>
 
                 </div>
