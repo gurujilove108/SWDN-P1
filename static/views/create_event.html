@@ -7,11 +7,11 @@
 
 	<!-- header row -->
 	<div class="row">
-		<div class="col-xs-6 text-left">
+		<div class="col-xs-12 col-sm-12 col-md-6 text-center">
 			<h1 class="create-event-title">Create an Event</h1>
 		</div>
-		<div class="col-xs-6 text-left">
-			<h1 class="enter-location-title hidden-sm hidden-xs">Enter Location of Event</h1>
+		<div class="col-xs-6 text-center hidden-sm hidden-xs">
+			<h1 class="enter-location-title">Enter Location of Event</h1>
 		</div>
 	</div>
 
@@ -52,7 +52,7 @@
 		    	ng-model="eventType"
 		    	required>
 		    <datalist id="eventtype"></datalist>
-			<button type="button" id="guestlist-btn" class="add-datalist-btn" ng-click="addToDatalist('event-type', 'eventtype')">Add Event Type</button>
+			<button type="button" id="event-type-btn" class="add-datalist-btn" ng-click="addToDatalist('event-type', 'eventtype')">Add Event Type</button>
 		</div>
 
 		<!-- event guest list input -->
@@ -87,13 +87,13 @@
 		</div>
 	</div>
 	<div class="row form-group">
-		<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+		<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
 			<label for="guest-message" class="guest-message-label">Optional message for all guests</label>
 			<textarea id="guest-message" class="guest-message"></textarea>
 		</div>
 	</div>
 	<div class="row">
-		<div class="col-xs-12 col-sm-6 col-sm-6 col-lg-6 text-center">
+		<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 text-center">
 			<button class="btn btn-primary create-account-button">Create Event</button>
 		</div> 
 	</div>

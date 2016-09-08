@@ -93,6 +93,10 @@ body {
 	width: 100%;
 }
 
+.custom-nav {
+	position:relative; z-index:1
+}
+
 .create-event-title {
 }
 
