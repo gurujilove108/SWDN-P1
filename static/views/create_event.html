@@ -60,7 +60,8 @@
 			<label for="guestlist" class="guestlist-label">Guest List</label>
 			<input id="event-guestlist" class="guestlist form-control" list="guestlist" placeholder="enter guest"
 				ng-change="guestInputOnChange()"
-				ng-model="currentGuest">
+				ng-model="currentGuest"
+				required>
 		    <datalist id="guestlist"></datalist>
 			<button type="button" id="guestlist-btn" class="add-datalist-btn" ng-click="addToDatalist('event-guestlist', 'guestlist')">Add Guest</button>
 		</div>

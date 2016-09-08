@@ -60,6 +60,7 @@ controllers.controller('EventController', function ($scope, $location, oauth2Pro
 	$scope.sendGapiCreateForm = function() {
 		var guestlist = document.getElementById("guestlist");
 		var guestMessage = document.getElementById("guest-message");
+		var eventTypeList = document.getElementById("eventtype");
 
 		var formObject = {
 			event_name:  jQuery("#event-name").val(),
@@ -71,14 +72,29 @@ controllers.controller('EventController', function ($scope, $location, oauth2Pro
 
 		/* Creating an array of guests to store in the Event database from the datalist in the create event form */
 		if (guestlist.childElementCount > 0) {
-
-			for (var i=0, guests=[], len=guestlist.children.length; i < len; i++) {
-				var current_guest = guestlist.children[i].value;
+			var i;
+			var current_guest;
+			for (i=0, guests=[], len=guestlist.children.length; i < len; i++) {
+				current_guest = guestlist.children[i].value;
 				guests.push(current_guest);
 			}
 
 			formObject.event_guestlist = guests;
 		}
+
+		/* same thing as above exceptwith the eventtype list*/ 
+		if (eventTypeList.childElementCount > 0) {
+			var i;
+			var current_event_type;
+			for (i=0, event_types=[], len=eventTypeList.children.length; i < len; i++) {
+				current_event_type = eventTypeList.children[i].value;
+				event_types.push(current_event_type);
+			}
+
+			formObject.event_types = eventTypeList;
+		}
+
+
 
 		if (guestMessage.value.length > 0)
 			formObject.event_guestmessage = guestMessage.value;

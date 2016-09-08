@@ -34,7 +34,7 @@ class User(ndb.Expando):
 
 class Event(ndb.Expando):
     event_name = ndb.StringProperty(required=True)
-    event_type = ndb.StringProperty(required=True)
+    event_type = ndb.StringProperty(repeated=True)
     event_host = ndb.StringProperty(required=True)
     event_start = ndb.StringProperty(required=True)
     event_end = ndb.StringProperty(required=True)

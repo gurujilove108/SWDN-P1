@@ -97,6 +97,31 @@ body {
 	position:relative; z-index:1
 }
 
+.signup-anchor {
+
+}
+
+.signup-anchor:hover {
+	border: 1px solid turquoise;
+	border-radius: 10px;
+	background: black;
+}
+
+.login-anchor {
+	
+}
+
+.login-anchor:hover {
+	border: 1px solid turquoise;
+	border-radius: 10px;
+	background-color: black;
+}
+
+.signup-form {
+	width: 100%;
+	margin: 0 auto;
+}
+
 .create-event-title {
 }
 

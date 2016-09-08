@@ -12,17 +12,16 @@
         ng-change="onAccountNameChange()" 
         ng-model="account_name" 
         required
-      >
+        autofocus>
     </div>
 
     <!-- Password Input, autocomplete will be turned off for security reasons  -->
     <div class="form-group">
-      <label for="login-password">Password</label> <i class="password-login-status"> </i>
+      <label for="login-password">Password </label> <i class="password-login-status"> </i>
       <input type="password" class="form-control" id="login-password" autocomplete="name" placeholder="Password" 
         ng-change="onPasswordChange()" 
         ng-model="password" 
-        required
-      >
+        required>
     </div>
 
     <!-- 

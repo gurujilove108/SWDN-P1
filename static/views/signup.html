@@ -1,56 +1,64 @@
-<div class="row row-form">
-	<div class="col-md-6">
-	
-		<!--  User SignUp Form -->
-		<form id="signup-form" class="signup-form" ng-submit="submitSignupForm()">
 
-			<!-- Signup Form Header -->
-			<div class="form-group">
+<!--  User SignUp Form -->
+<form id="signup-form" class="signup-form" ng-submit="submitSignupForm()">
 
-				<!-- bootstrap alert message -->
-				<div id="alert-msg" class="alert alert-success hidden">
-	  				<strong>Success!</strong> Your account has been created please <a href="/#/login">Login Here</a>
-				</div>
-				
-				<h1 class="form-header">Create Account - <i>It's Free!</i></h1>
+	<!-- Signup Form Header -->
+	<div class="row form-group">
+
+		<!-- bootstrap alert message -->
+		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+			<div id="alert-msg" class="alert alert-success hidden">
+  				<strong>Success!</strong> Your account has been created please <a href="/#/login">Login Here</a>
 			</div>
-
-			<!-- Account Name Input -->
-			<div class="form-group">
-		    	<label for="name">Account Name <i class="account-name-status"></i></label>
-		    	<input type="text" class="form-control" id="account_name" maxlength="15" placeholder="Enter name" name="name" autocomplete="name" ng-focus="onAccountNameFocus()" ng-blur="onAccountNameUnfocus()" ng-change="onAccountNameChange()" ng-model="account_name"  ng-mouseleave="onAccountNameMouseLeave()" required>
-		    	<small id="nickname-help" class="form-text text-muted">Use a nickname if you like</small>
-		  	</div>
-
-		  	<!-- Email Input -->
-			<div class="form-group">
-		    	<label for="email-signup">Email address <i class="email-status"></i></label>
-		    	<input type="email" class="form-control" id="email-signup" maxlength="40" placeholder="Enter email" autocomplete="email" ng-focus="onEmailFocus()" ng-blur="onEmailUnfocus()" ng-change="onEmailChange()" ng-model="email" ng-mouseleave="onEmailMouseLeave()" ng-click="onAccountNameUnfocus()" required>
-		    	<small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-		  	</div>
-
-		  	<!-- Password Input -->
-		  	<div class="form-group">
-		    	<label for="password-signup">Password <i class="password-status"></i></label>
-		    	<input type="password" class="form-control" id="password-signup" pattern=".{8,25}" title="8 to 25 characters" placeholder="Enter Password" ng-focus="onPasswordFocus()" ng-blur="onPasswordUnfocus()" ng-change="onPasswordChange()" ng-model="password" ng-mouseleave="onPasswordMouseLeave()" required>
-		  	</div>
-
-		  	<!-- Phone Input -->
-		  	<div class="form-group">
-		    	<label for="phone">Phone <i class="phone-status"></i></label>
-		    	<input type="tel" class="form-control" id="phone" name="phone" placeholder="(555)555-5555" autocomplete="tel" ng-focus="onPhoneFocus()" ng-blur="onPhoneUnfocus()" ng-change="onPhoneChange()" ng-model="phone_number" ng-mouseleave="onPhoneMouseLeave()" required>
-		  	</div>
-
-		  	<!--Employer Input -->
-		  	<div class="form-group">
-		    	<label for="employer">Employer name, If unemployed type unemployed <i class="employer-status"></i></label>
-		    	<input type="text" class="form-control" id="employer" name="employer" placeholder="Google, Udacity, Unemployed" autocomplete="employer" ng-focus="onEmployerFocus()" ng-blur="onEmployerUnfocus()" ng-change="onEmployerChange()" ng-model="employer" ng-mouseleave="onEmployerMouseLeave()" required>
-		  	</div>
-
-		  	<!-- Form Sign Up Button -->
-		  	<div class="form-group">
-		  		<button type="submit" class="btn btn-success btn-signup" disabled="disabled">Sign up</button>
-		  	</div>
-		</form>
+			<h1 class="form-header">Create Account - <i>It's Free!</i></h1>
+		</div>
 	</div>
-</div>
+
+	<!-- Account Name Input -->
+		
+	<div class="row form-group">
+		<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+	    	<label for="account_name">Account Name <i class="account-name-status"></i></label>
+	    	<input id="account_name" type="text" class="form-control" maxlength="15" placeholder="Enter name" name="name" autocomplete="name" ng-focus="onAccountNameFocus()" ng-blur="onAccountNameUnfocus()" ng-change="onAccountNameChange()" ng-model="account_name"  ng-mouseleave="onAccountNameMouseLeave()" required autofocus>
+	    	<small id="nickname-help" class="form-text text-muted">Use a nickname if you like</small>
+  		</div>
+  	</div>
+
+  	<!-- Email Input -->
+	<div class="row form-group">
+		<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+	    	<label for="email-signup">Email address <i class="email-status"></i></label>
+	    	<input type="email" class="form-control" id="email-signup" maxlength="60" placeholder="Enter email" autocomplete="email" ng-focus="onEmailFocus()" ng-blur="onEmailUnfocus()" ng-change="onEmailChange()" ng-model="email" ng-mouseleave="onEmailMouseLeave()" ng-click="onAccountNameUnfocus()" required>
+	    	<small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+  		</div>
+  	</div>
+
+  	<!-- Password Input -->
+  	<div class="row form-group">
+		<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+	    	<label for="password-signup">Password <i class="password-status"></i></label>
+	    	<input id="password-signup" type="password" class="form-control" pattern=".{8,25}" title="8 to 25 characters" placeholder="Enter Password" ng-focus="onPasswordFocus()" ng-blur="onPasswordUnfocus()" ng-change="onPasswordChange()" ng-model="password" ng-mouseleave="onPasswordMouseLeave()" required>
+  		</div>
+  	</div>
+
+  	<!-- Phone Input -->
+  	<div class="row form-group">
+		<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+	    	<label for="phone">Phone <i class="phone-status"></i></label>
+	    	<input id="phone" type="tel" class="form-control" name="phone" placeholder="(555)555-5555" autocomplete="tel" ng-focus="onPhoneFocus()" ng-blur="onPhoneUnfocus()" ng-change="onPhoneChange()" ng-model="phone_number" ng-mouseleave="onPhoneMouseLeave()" required>
+  		</div>
+  	</div>
+	
+  	<!--Employer Input -->
+  	<div class="row form-group">
+		<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+	  		<label for="employer">Employer name, If unemployed type unemployed <i class="employer-status"></i></label>
+			<input type="text" class="form-control" id="employer" name="employer" placeholder="Google, Udacity, Unemployed" autocomplete="employer" ng-focus="onEmployerFocus()" ng-blur="onEmployerUnfocus()" ng-change="onEmployerChange()" ng-model="employer" ng-mouseleave="onEmployerMouseLeave()" required>
+  		</div>
+  	</div>
+
+  	<!-- Form Sign Up Button -->
+  	<div class="form-group">
+  		<button type="submit" class="btn btn-success btn-signup" disabled="disabled">Sign up</button>
+  	</div>
+</form>
