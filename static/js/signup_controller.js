@@ -26,9 +26,7 @@ controllers.controller('SignupController', function ($scope, $location, oauth2Pr
 	$scope.$email_status 			= jQuery('.email-status');
 	$scope.$password_status 		= jQuery('.password-status');
 	$scope.$phone_status 			= jQuery('.phone-status');
-	$scope.$employer_status			= jQuery(".employer-status");
-
-	$scope.signup_btn 				= jQuery('.btn-signup');
+	$scope.$employer_status			= jQuery('.employer-status');
 
 	/* 
 	 * In order to enable the sign up button, all input fields must be true and 
@@ -49,32 +47,23 @@ controllers.controller('SignupController', function ($scope, $location, oauth2Pr
 			$scope.$account_name_status.text($scope.account_name_valid_msg).css("color", "green");
 			$scope.is_account_name_valid = true;
 
-		} else if ( ! defined($scope.account_name)) {
-			$scope.$account_name_status.text('');
-			$scope.is_account_name_valid = false;
-
-		} else if (defined($scope.account_name) && ! validAccountName($scope.account_name)) {
+		} else {
 			$scope.$account_name_status.text($scope.account_name_error).css("color", "red");
 			$scope.is_account_name_valid = false;
 		}
 	};
 
+	/* The email onchange has to be handled differently then the other onchanges because */
+	/* If this event gets fired then the email is valid according to html5 */
 	$scope.onEmailChange = function() {
 
 		if (validEmail($scope.email)) {
 			$scope.$email_status.text($scope.email_valid_msg).css("color", "green");
 			$scope.is_email_valid = true;
 
-		} else if ( ! defined($scope.email)) {
-			$scope.$email_status.text('');
-			$scope.is_email_valid = false;
-
-		} else if (defined($scope.email) && ! validEmail($scope.email)) {
-			log("email");
+		} else {
 			$scope.$email_status.text($scope.email_error).css("color", "red");
 			$scope.is_email_valid = false;
-		} else {
-			log("what conditiion is this");
 		}
 	};
 
@@ -83,12 +72,8 @@ controllers.controller('SignupController', function ($scope, $location, oauth2Pr
 		if (validPassword($scope.password)) {
 			$scope.$password_status.text($scope.password_valid_msg).css("color", "green");
 			$scope.is_password_valid = true;
-
-		} else if ( ! defined($scope.password)) {
-			$scope.$password_status.text('');
-			$scope.is_password_valid = false;
 			
-		} else if (defined($scope.password) && ! validPassword($scope.password)) {
+		} else {
 			$scope.$password_status.text($scope.password_error).css("color", "red");
 			$scope.is_password_valid = false;
 		}
@@ -100,11 +85,7 @@ controllers.controller('SignupController', function ($scope, $location, oauth2Pr
 	 		$scope.$phone_status.text($scope.phone_valid_msg).css("color", "green");
 			$scope.is_phone_valid = true;
 
-	 	} else if ( ! defined($scope.phone_number)) {
-	 		$scope.$phone_status.text('');
-			$scope.is_phone_valid = false;
-
-	 	} else if (defined($scope.phone_number) && ! validPhone($scope.phone_number)) {
+	 	} else {
 	 		$scope.$phone_status.text($scope.phone_error).css("color", "red");
 			$scope.is_phone_valid = false;
 	 	}
@@ -116,11 +97,7 @@ controllers.controller('SignupController', function ($scope, $location, oauth2Pr
 	 		$scope.$employer_status.text($scope.employer_valid_msg).css("color", "green");
 			$scope.is_employer_valid = true;
 
-	 	} else if ( ! defined($scope.employer)) {
-	 		$scope.$employer_status.text('');
-			$scope.is_employer_valid = false;
-
-	 	} else if (defined($scope.employer) && ! validEmployer($scope.employer)) {
+	 	} else {
 	 		$scope.$employer_status.text($scope.employer_error).css("color", "red");
 			$scope.is_employer_valid = false;
 	 	}
@@ -161,16 +138,22 @@ controllers.controller('SignupController', function ($scope, $location, oauth2Pr
 
 	  			/* As of right now the only time response.user_stored would equal "0" is if the username already exists */
 	  			/* If user stored === "1" then the user was stored in the user db. all we have to do is implement login options*/
+	  			/* If the user stored === "1" the user ccount was created and not we redirect to the login page*/ 
 	  			if (response.user_stored === "0") {
 	  				$scope.$account_name_status.text("Account name already exists, please choose another").css("color", "red");
 
 	  			} else if (response.user_stored === "1") { 
+	  				$location.path("/login");
 					$("#alert-msg").removeClass("hidden");
 					window.scrollTo(10, 10);
 				}	  			
 	  		});
 	  	} 
 	};
+
+	$scope.clearSignupForm = function() {
+
+	}
 
 	$scope.getUserSignupEndpointRequest = function(rpcFormObject) {
 		return gapi.client.user_endpoint.user_signup(rpcFormObject);

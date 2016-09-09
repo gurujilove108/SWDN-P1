@@ -8,7 +8,7 @@
 		<!-- bootstrap alert message -->
 		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 			<div id="alert-msg" class="alert alert-success hidden">
-  				<strong>Success!</strong> Your account has been created please <a href="/#/login">Login Here</a>
+				<strong>Success!</strong> Your account has been created! Redirecting to the login page. <!-- TODO: add a loading bar when redirecting to login -->
 			</div>
 			<h1 class="form-header">Create Account - <i>It's Free!</i></h1>
 		</div>
@@ -28,6 +28,8 @@
 	<div class="row form-group">
 		<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
 	    	<label for="email-signup">Email address <i class="email-status"></i></label>
+
+	    	 <!-- I just found a very important piece of information, the ng-change event on an input type='email' only fires when the email is valid so if the event is fired then the email is valid -->
 	    	<input id="email-signup" type="email" class="form-control" maxlength="60" placeholder="Enter email" autocomplete="email" ng-focus="onEmailFocus()" ng-blur="onEmailUnfocus()" ng-change="onEmailChange()" ng-model="email" ng-mouseleave="onEmailMouseLeave()" required>
 	    	<small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
   		</div>

@@ -25,6 +25,7 @@ function defined(val) {
 }
 
 function regExpMatch(regexp, value) {
+    console.log(regexp.test(value));
 	return regexp.test(value);
 }
 
@@ -37,6 +38,9 @@ function validAccountName(account_name) {
 	return (defined(account_name) && (trim(account_name)).length >= 3);
 }
 
+/* So For some reason the error message for email validation doesn't show up until theres some letters an @ sign and then some letters */
+/* Thus, I need the validation to show up as soon as someone enters in at least one character so they know whatthe requirement */
+/* In order to accomplish this I'm going to apply a length requirement. So far the least of amount of letters accepted as a valid email is 6 so If the email value is not at least 6 letters the error should show up */ 
 function validEmail(email) {
 	return (defined(email) && regExpMatch(config.regexp.email, trim(email)));
 }
@@ -62,6 +66,7 @@ function validEventName(value) {
     return value.length > 0 && notAllDigits(value);
 }
 
+/* I love ternary operators because they turn at lest like several lines of code into 1 and they are readable as well as maintainable , at least in my opinion */
 function notAllDigits(value) {
     return (config.regexp.allNumbers.test(value)) ? false : true; 
 }
