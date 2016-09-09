@@ -12,7 +12,7 @@ controllers.controller('SignupController', function ($scope, $location, oauth2Pr
 	*/
 	$scope.account_name_error 		= "Account name must be at least 3 characters";
 	$scope.email_error 				= "Email must meet the following requirements, Some letters, an @ sign, some letters, a period, some letters";
-	$scope.password_error 			= "Password must be 8 characters in length, include 1 lowercase and 1 uppercase letter as well as the @ sign";
+	$scope.password_error 			= "Password must be 8 characters in length, include 1 lowercase and 1 uppercase letter";
 	$scope.phone_error 				= "Phone must be in format (555)555-5555";
 	$scope.employer_error			= "Employer name must be at least 3 characters in length";
 

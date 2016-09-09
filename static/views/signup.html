@@ -54,13 +54,15 @@
   	<div class="row form-group">
 		<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
 	  		<label for="employer">Employer name, If unemployed type unemployed <i class="employer-status"></i></label>
-			<input type="text" class="form-control" id="employer" name="employer" placeholder="Google, Udacity, Unemployed" autocomplete="employer" ng-focus="onEmployerFocus()" ng-blur="onEmployerUnfocus()" ng-change="onEmployerChange()" ng-model="employer" ng-mouseleave="onEmployerMouseLeave()" required>
+			<input id="employer" type="text" class="form-control" name="employer" placeholder="Google, Udacity, Unemployed" autocomplete="employer" ng-focus="onEmployerFocus()" ng-blur="onEmployerUnfocus()" ng-change="onEmployerChange()" ng-model="employer" ng-mouseleave="onEmployerMouseLeave()" required>
   		</div>
   	</div>
 
   	<!-- Form Sign Up Button -->	  	
 
   	<div class="form-group">
+
+  		<!-- Thanks Udacity for the ngDisabled function , it totally optimized my signup controller -->
   		<button type="submit" class="btn btn-success btn-signup" ng-disabled="!allFieldsValid()">Sign up</button>
   	</div>
 </form>
