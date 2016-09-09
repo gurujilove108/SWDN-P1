@@ -15,7 +15,7 @@ controllers.controller('EventController', function ($scope, $location, oauth2Pro
 	$scope.areDatesValid 	= false;
 
 	/* Here we want to store the error message element because I have a feeling the website will be using it alot and its much more efficient to store it one time than to have to store it everytime there is an error. I like effiency and speed! */
-	$scope.errorMessageElement = 
+	$scope.errorMessageElement;
 
 	$scope.userSignedIn = function() {
 		return oauth2Provider.signedIn;
@@ -24,7 +24,9 @@ controllers.controller('EventController', function ($scope, $location, oauth2Pro
 	$scope.createEvent = function() {
 		if($scope.createEventFormValid()) {
 			$scope.sendGapiCreateForm();
-		} 
+		} else {
+			
+		}
 	}
 
 	$scope.createEventFormValid = function() {
@@ -64,7 +66,6 @@ controllers.controller('EventController', function ($scope, $location, oauth2Pro
 
 		var formObject = {
 			event_name:  jQuery("#event-name").val(),
-			event_type:  jQuery("#event-type").val(),
 			event_host:  jQuery("#event-host").val(),
 			event_start: jQuery("#event-datetime-start").val(),
 			event_end:   jQuery("#event-datetime-end").val()
@@ -74,28 +75,31 @@ controllers.controller('EventController', function ($scope, $location, oauth2Pro
 		if (guestlist.childElementCount > 0) {
 			var i;
 			var current_guest;
-			for (i=0, guests=[], len=guestlist.children.length; i < len; i++) {
-				current_guest = guestlist.children[i].value;
+			var guestlistChildren = guestlist.children;
+
+			for (i=0, guests=[], len=guestlistChildren.length; i < len; i++) {
+				current_guest = guestlistChildren[i].value;
 				guests.push(current_guest);
 			}
 
 			formObject.event_guestlist = guests;
 		}
 
-		/* same thing as above exceptwith the eventtype list*/ 
+		/* Same thing as above except with the eventtype list*/ 
 		if (eventTypeList.childElementCount > 0) {
 			var i;
 			var current_event_type;
-			for (i=0, event_types=[], len=eventTypeList.children.length; i < len; i++) {
-				current_event_type = eventTypeList.children[i].value;
+			var eventTypeChildren = eventTypeList.children;
+
+			for (i=0, event_types=[], len=eventTypeChildren.length; i < len; i++) {
+				current_event_type = eventTypeChildren[i].value;
 				event_types.push(current_event_type);
 			}
 
-			formObject.event_types = eventTypeList;
+			formObject.event_type = event_types;
 		}
 
-
-
+		/* Since guestmessage is not required we only add it if there is a message */
 		if (guestMessage.value.length > 0)
 			formObject.event_guestmessage = guestMessage.value;
 
@@ -109,7 +113,7 @@ controllers.controller('EventController', function ($scope, $location, oauth2Pro
 
 	}
 
-	/* This function allows a user to add an element to a datalist */
+	/* This function allows a user to add an element to a datalist, it just needs an id of th input datalist and an id of the datalist itself and so far it works with any data list */
 	$scope.addToDatalist = function(input_id, datalist_id) {
 			var datalist = jQuery("#" + datalist_id);
 			var inputForDatalist = jQuery("#" + input_id);
@@ -131,36 +135,48 @@ controllers.controller('EventController', function ($scope, $location, oauth2Pro
 
 	/* 
 	 * I'm sure theres a better way of doing this but this way is definitely harder which makes me cooler lol jk. 
-	 * When loading our events from the database, we have to essentially re-create datalist html if we want to present it that way
-	 * So thats exactly what this function does. 
+	 * When loading our events from the database, we have to essentially re-create any datalists into the datalist html if we want to present it that way
+	 * So thats exactly what this function does. This originally was only made for the event_guestlist, but now I have made it dynamic to accept any list and make datalist html
 	*/
-	$scope.createDataList = function(guests, index) {
-		if (guests.hasOwnProperty("length") && guests.length > 0) {
-			var datalist_input = "<input list='%s'>".replace("%s", "guestlist"+index);
-			var datalist = "<datalist id='%s'>".replace("%s", "guestlist"+index )
+	$scope.createDataList = function(database_list, index, id) {
 
-			guests.forEach(function(element, index) {
+		/* 
+		 * The guestlist and event types list are required by default so I shouldn't have to check for this, but Im going to anyway, because certain lists are requird
+		 * The length will always be greater than 0, so in the else statement Im still going to provide output that doesnt break anthing but lets the tester know something is wrong with the code
+		 */
+		if (database_list.hasOwnProperty("length") && database_list.length > 0) {
+			var datalist_input = "<input list='%s'>".replace("%s", id+index); 
+			var datalist = "<datalist id='%s'>".replace("%s", id+index)
+
+			/* Iterate through all objects in the list from the db */
+			database_list.forEach(function(element, index) {
+
+				/* Add each value from the list as an option alement to the datalist because a datalist uses html option elements so an option element is what we hve to add*/
 				datalist += "<option value='%s'>".replace("%s", element);
 			});
+
+			/* Here we close off the datalist otherwise it wouldnt be valid html*/
 			datalist += "</datalist>";
 
 			return {input: datalist_input, datalist: datalist}
 
 		} else {
-			return {input: "no", datalist: "guests"}
+
+			/* This should never ever be returned, don't worry if it is I will fix it */
+			return {input: "no", datalist: "values on the list"}
 		}
 	}
 
 	/* 
 	 * This method fetches all of the events from the db, organizes them into html and then displays them on the page
      * Because I had so much troube with ng-repeat which would have made my life a whole lot easier in solving this problem,
-     * I had the pleaseure of learning a new templating system called mustache.js but in the next project I will make sure
+     * I had the pleasure of learning a new templating system called mustache.js but in the next project I will make sure
      * To get ng-repeat working
 	*/
 	$scope.loadAllEventsOntoPage = function() {
 
 		/* Declare our variables here so we dont have to keep re-creating objects which is more effient */
-		var datalist, html, row1, row2, row3, row4, row5, row6, row7;
+		var guestlist_datalist, event_types_datalist, html, row1, row2, row3, row4, row5, row6, row7;
 		var request = gapi.client.user_endpoint.all_events();
 
 		/* Start loading in events */
@@ -179,15 +195,15 @@ controllers.controller('EventController', function ($scope, $location, oauth2Pro
 					 * For each event, re-create our datalist, since each datalist has two tags, an input and datalist
 					 * This datalist will be an object containing two keys which correspond to the two tags, datalist.input, datalist.datalist
 					 */
-					datalist = $scope.createDataList(element1.event_guestlist, index);
-
+					guestlist_datalist = $scope.createDataList(element1.event_guestlist, index, "guests");
+					event_types_datalist = $scope.createDataList(element1.event_type, index, "eventtypes");
 					/* Now for each event key we create the html to display them using mustache to replace the values from out event objects */
 					row1 = "<div class='row text-left'><div class='col-xs-12'><label for='event_name'>Name of Event: </label><span id='event_name'> {{event_name}}</span></div></div> ";
-					row2 = "<div class='row text-left'><div class='col-xs-12'><label for='event_type'>Type of Event: </label><span id='event_type'> {{event_type}}</span></div></div> "; 
+					row2 = "<div class='row text-left'><div class='col-xs-12'><label for='event_type'>Event Types: </label><span id='event_type'>%s </span></div></div> ".replace("%s", event_types_datalist.input + event_types_datalist.datalist);
 					row3 = "<div class='row text-left'><div class='col-xs-12'><label for='event_host'>Host of Event: </label><span id='event_host'> {{event_host}}</span></div></div> "; 
 					row4 = "<div class='row text-left'><div class='col-xs-12'><label for='event_start'>Event Start Date: </label><span id='event_start'> {{event_start}}</span></div></div> "; 
 					row5 = "<div class='row text-left'><div class='col-xs-12'><label for='event_end'>Event End Date: </label><span id='event_end'> {{event_end}}</span></div></div> "; 
-					row6 = "<div class='row text-left'><div class='col-xs-12'><label for='event_guestlist'>Event Guest list: </label><span id='event_guestlist' class='event_guestlist_unbelievable'>doit </span></div></div> ".replace("doit", datalist.input + datalist.datalist); 
+					row6 = "<div class='row text-left'><div class='col-xs-12'><label for='event_guestlist'>Event Guest list: </label><span id='event_guestlist' class='event_guestlist_unbelievable'>%s </span></div></div> ".replace("%s", guestlist_datalist.input + guestlist_datalist.datalist); 
 					row7 = "<div class='row text-left'><div class='col-xs-12'><label for='event_guestmessage'>Message for Guests: </label><span id='event_guestmessage'> {{event_guestmessage}}</span></div></div><hr> "; 
 					
 					/* Iterate through all the rows, use mustache to make the html and then add it onto the events container */

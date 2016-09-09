@@ -5,6 +5,11 @@
 		<Strong id="eventname"></Strong> has successfully been created. You can view the event <a href="/#/events">Here</a> 
 	</div>
 
+	<!-- Error messages appears here -->
+	<div id="event-create-success" class="alert alert-success hidden">
+		<Strong id="error"></Strong> has successfully been created. You can view the event <a href="/#/events">Here</a> 
+	</div>
+
 	<!-- header row -->
 	<div class="row">
 		<div class="col-xs-12 col-sm-12 col-md-6 text-center">
@@ -20,7 +25,7 @@
 
 		<!-- event name input -->
 		<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
-			<label for="event-name" class="create-event-label">Event Name <i class="event-name-status"></i></label>
+			<label for="event-name-input" class="create-event-label">Event Name <i class="event-name-status"></i></label>
 		    <input id="event-name-input" type="text" class="form-control" placeholder="event name"
 		    	ng-change="onEventNameChange()"
 		    	ng-model="eventName"
@@ -46,8 +51,8 @@
 			the user can add several categories that the event type matches
 		-->
 		<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
-			<label for="eventtype" class="create-event-label">Event Type <i class="event-type-status"></i></label>
-		    <input type="text" class="form-control" id="event-type" placeholder="enter event type" list="eventtype"
+			<label for="event-type" class="create-event-label">Event Type <i class="event-type-status"></i></label>
+		    <input id="event-type" type="text" class="form-control" placeholder="enter event type" list="eventtype"
 		    	ng-change="eventTypeInputOnChange()"
 		    	ng-model="eventType"
 		    	required>

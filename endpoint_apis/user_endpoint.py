@@ -1,10 +1,10 @@
 import endpoints
 import logging
-from models.models 						import *
-from protorpc 							import remote, message_types
-from endpoints_proto_datastore.ndb		import EndpointsModel
-from settings 							import WEB_CLIENT_ID
-from request_models.user_rpc_messages 	import *
+from models.models                      import *
+from protorpc                           import remote, message_types
+from endpoints_proto_datastore.ndb      import EndpointsModel
+from settings                           import WEB_CLIENT_ID
+from request_models.user_rpc_messages   import *
 
 EMAIL_SCOPE = endpoints.EMAIL_SCOPE
 API_EXPLORER_CLIENT_ID = endpoints.API_EXPLORER_CLIENT_ID
@@ -16,46 +16,49 @@ class UserEndpoint(remote.Service):
 
     @endpoints.method(UserSignupData, UserSignupResponse, path="user_signup_path", http_method="POST", name="user_signup")
     def store_user(self, user_data):
-    	user_stored = User.store_user(user_data)
-    	if user_stored:
-    		return UserSignupResponse(user_stored=1, error_msg="no error")
-    	elif not user_stored:
-    		return UserSignupResponse(user_stored=0, error_msg="users account name already exists")
+        user_stored = User.store_user(user_data)
+        if user_stored:
+            return UserSignupResponse(user_stored=1, error_msg="no error")
+        elif not user_stored:
+            return UserSignupResponse(user_stored=0, error_msg="users account name already exists")
     
     @endpoints.method(UserLoginData, UserLoginResponse, path="user_login_path", http_method="POST", name="user_login")
     def logged_in(self, user_login_data):
-    	user_logged_in, msg = User.login_user(user_login_data)
-    	if user_logged_in:
-    		return UserLoginResponse(successful=1)
-    	else:
-    		return UserLoginResponse(successful=0, error_msg=msg)
+        user_logged_in, msg = User.login_user(user_login_data)
+        if user_logged_in:
+            return UserLoginResponse(successful=1)
+        else:
+            return UserLoginResponse(successful=0, error_msg=msg)
 
 
     @endpoints.method(UserEventRequest, UserEventResponse, path="create_event_path", http_method="POST", name="create_event")
     def create_event(self, event_data):
-    	event_stored, msg = Event.store_event(event_data)
-    	if event_stored:
-    		return UserEventResponse(successful="1", error_msg="no error")
-    	return UserEventResponse(successful="0", error_msg="something went wrong, ypur fault")
-    	
+        event_stored, msg = Event.store_event(event_data)
+        if event_stored:
+            return UserEventResponse(successful="1", error_msg="no error")
+        return UserEventResponse(successful="0", error_msg="You must provide at least one event type")
+        
 
     @endpoints.method(message_types.VoidMessage,EventsList,path="get_events", http_method="POST", name="all_events")
     def return_events(self, request):
-    	events = []
-    	for event in Event.query():
-    		eventRpcMessage = UserEventRequest(
-    			event_name 			= event.event_name,  
-				event_type			= event.event_type,
-				event_host  		= event.event_host,
-				event_start 		= event.event_start,
-				event_end         	= event.event_end,
-				event_guestlist  	= event.event_guestlist,
-				event_guestmessage 	= event.event_guestmessage
-    		)
+        events = []
 
-    		events.append(eventRpcMessage)
-    	events_list = EventsList(events=events)
-    	return events_list
+        for event in Event.query():
+            eventRpcMessage = UserEventRequest(
+                event_name          = event.event_name,  
+                event_type          = event.event_type,
+                event_host          = event.event_host,
+                event_start         = event.event_start,
+                event_end           = event.event_end,
+                event_guestlist     = event.event_guestlist,
+                event_guestmessage  = event.event_guestmessage,
+                event_created       = event.event_created,
+                event_last_modified = event.event_last_modified
+            )
+
+            events.append(eventRpcMessage)
+        events_list = EventsList(events=events)
+        return events_list
 
 
 

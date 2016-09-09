@@ -34,7 +34,7 @@ function trim(value) {
     return value;
 }
 function validAccountName(account_name) {
-	return (defined(account_name) && trim(account_name).length >= 3);
+	return (defined(account_name) && (trim(account_name)).length >= 3);
 }
 
 function validEmail(email) {

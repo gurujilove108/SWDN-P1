@@ -21,7 +21,7 @@ class UserLoginResponse(messages.Message):
 
 class UserEventRequest(messages.Message):
     event_name         = messages.StringField(1, required=True)
-    event_type         = messages.StringField(2, required=True)
+    event_type         = messages.StringField(2, repeated=True)
     event_host         = messages.StringField(3, required=True)
     event_start        = messages.StringField(4, required=True)
     event_end          = messages.StringField(5, required=True)
