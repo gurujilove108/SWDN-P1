@@ -34,7 +34,7 @@ var roots = {
 	minified_html_root 	: 'dist/html/',
 	minified_js_root 	: 'dist/js/',
 	minified_css_root 	: 'dist/css/'
-}
+};
 
 /* specifying paths used in tasks */
 var paths = { 
@@ -73,7 +73,7 @@ gulp.task("minify:js", function () {
 		.pipe(concat("site.min.js"))
 		.pipe(ngAnnotate())
 	    .pipe(uglify())
-	    .pipe(gulp.dest(roots.minified_js_root))
+	    .pipe(gulp.dest(roots.minified_js_root));
 });
 
 /* this task does the same thing above except it takes css files from static/css/ and uses cssmin instead of uglify for the compression and puts it in paths.minified_css_root which is dist/css */
@@ -81,7 +81,7 @@ gulp.task("minify:css", function () {
 	return gulp.src([paths.css_file_path], {base: '.', read: true})
 	    .pipe(concat("site.min.css"))
 	    .pipe(cssmin())
-	    .pipe(gulp.dest(roots.minified_css_root))
+	    .pipe(gulp.dest(roots.minified_css_root));
 });
 
 
@@ -95,14 +95,14 @@ gulp.task("minify:index_html", function() {
 	return gulp.src([paths.index_html], {base: '.', read: true})
 	    .pipe(concat("index.min.html"))
 	    .pipe(htmlmin({collapseWhitespace: true}))
-	    .pipe(gulp.dest(roots.minified_html_root))
+	    .pipe(gulp.dest(roots.minified_html_root));
 });
 
 gulp.task("minify:create_event_html", function() {
 	return gulp.src([paths.create_event_html], {base: '.', read: true})
 	    .pipe(concat("create_event.min.html"))
 	    .pipe(htmlmin({collapseWhitespace: true}))
-	    .pipe(gulp.dest(roots.minified_html_root))
+	    .pipe(gulp.dest(roots.minified_html_root));
 });
 
 gulp.task("minify:events_html", function() {

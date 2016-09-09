@@ -57,7 +57,7 @@ controllers.controller('SignupController', function ($scope, $location, oauth2Pr
 			$scope.$account_name_status.text($scope.account_name_error).css("color", "red");
 			$scope.is_account_name_valid = false;
 		}
-	}
+	};
 
 	$scope.onEmailChange = function() {
 
@@ -76,7 +76,7 @@ controllers.controller('SignupController', function ($scope, $location, oauth2Pr
 		} else {
 			log("what conditiion is this");
 		}
-	}
+	};
 
 	$scope.onPasswordChange = function() {
 
@@ -92,7 +92,7 @@ controllers.controller('SignupController', function ($scope, $location, oauth2Pr
 			$scope.$password_status.text($scope.password_error).css("color", "red");
 			$scope.is_password_valid = false;
 		}
-	}
+	};
 
 	$scope.onPhoneChange = function() {
 
@@ -108,7 +108,7 @@ controllers.controller('SignupController', function ($scope, $location, oauth2Pr
 	 		$scope.$phone_status.text($scope.phone_error).css("color", "red");
 			$scope.is_phone_valid = false;
 	 	}
-	}
+	};
 
 	$scope.onEmployerChange = function() {
 
@@ -124,14 +124,13 @@ controllers.controller('SignupController', function ($scope, $location, oauth2Pr
 	 		$scope.$employer_status.text($scope.employer_error).css("color", "red");
 			$scope.is_employer_valid = false;
 	 	}
-	}
+	};
 
 	/* function to make sure all fields are valid, if this function returns true then the signup button will be disabled */
 	$scope.allFieldsValid = function() {
-		return $scope.is_account_name_valid && $scope.is_email_valid && $scope.is_password_valid &&	$scope.is_phone_valid && $scope.is_employer_valid; 
+		return $scope.is_account_name_valid && $scope.is_email_valid && $scope.is_password_valid && $scope.is_phone_valid && $scope.is_employer_valid;	
 	};
 
-	/* This is the form object we will be sending as an rpc message object to a google cloud endpoint, the key names in this object need to be the same exact as the key names in the rpc message object being accepted in the endpoint */
 	$scope.collectFormObject = function() {	  	
 	  	return {
 	  		account_name : 	jQuery("#account_name").val(),
@@ -139,8 +138,8 @@ controllers.controller('SignupController', function ($scope, $location, oauth2Pr
 	  		password 	 : 	jQuery("#password-signup").val(),
 	  		phone 		 : 	jQuery("#phone").val(),
 	  		employer 	 : 	jQuery("#employer").val()  		 	
-	  	}
-	 }
+	  	};
+	 };
 
    /* 
 	* Now for our submit form function.
@@ -154,7 +153,7 @@ controllers.controller('SignupController', function ($scope, $location, oauth2Pr
 
 	  	if ($scope.allFieldsValid()) {
 	  		var rpcFormObject = $scope.collectFormObject();
-	  		var request = $scope.getUserSignupEndpointRequest(rpcFormObject)
+	  		var request = $scope.getUserSignupEndpointRequest(rpcFormObject);
 
 	  		request.execute(function(response) {
 
@@ -171,10 +170,10 @@ controllers.controller('SignupController', function ($scope, $location, oauth2Pr
 				}	  			
 	  		});
 	  	} 
-	}
+	};
 
 	$scope.getUserSignupEndpointRequest = function(rpcFormObject) {
 		return gapi.client.user_endpoint.user_signup(rpcFormObject);
-	}
+	};
 });
 

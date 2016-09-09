@@ -19,7 +19,7 @@ controllers.controller('EventController', function ($scope, $location, oauth2Pro
 
 	$scope.userSignedIn = function() {
 		return oauth2Provider.signedIn;
-	}
+	};
 
 	$scope.createEvent = function() {
 		if($scope.createEventFormValid()) {
@@ -27,19 +27,17 @@ controllers.controller('EventController', function ($scope, $location, oauth2Pro
 		} else {
 			
 		}
-	}
+	};
 
 	$scope.createEventFormValid = function() {
-		return  $scope.isEventNameValid && 
-				$scope.isEventTypeValid &&
-				$scope.isEventHostValid &&
-				$scope.areDatesValid;
-	}
+		return  $scope.isEventNameValid && $scope.isEventTypeValid &&
+				$scope.isEventHostValid && $scope.areDatesValid;
+	};
 
 	/* Functions that validate required input fields when their input is changed */
 	$scope.onEventNameChange = function() {
 
-	}
+	};
 
 	/* Function to validate the Event Type, when the event is validated */
 
@@ -49,11 +47,11 @@ controllers.controller('EventController', function ($scope, $location, oauth2Pro
 	*/
 	$scope.onEventStartDateChange = function() {
 
-	}
+	};
 
 	$scope.deleteEventInfo = function() {
 		jQuery(".event-info-row").remove();
-	}
+	};
 
 	/*
 	 * Method to create the form rpc object to pass in to our create event api method
@@ -63,7 +61,11 @@ controllers.controller('EventController', function ($scope, $location, oauth2Pro
 		var guestlist = document.getElementById("guestlist");
 		var guestMessage = document.getElementById("guest-message");
 		var eventTypeList = document.getElementById("eventtype");
-
+		var guestlistChildren = guestlist.children;
+		var eventTypeChildren = eventTypeList.children;
+    	var current_guest;
+    	var i;
+    
 		var formObject = {
 			event_name:  jQuery("#event-name").val(),
 			event_host:  jQuery("#event-host").val(),
@@ -73,10 +75,7 @@ controllers.controller('EventController', function ($scope, $location, oauth2Pro
 
 		/* Creating an array of guests to store in the Event database from the datalist in the create event form */
 		if (guestlist.childElementCount > 0) {
-			var i;
-			var current_guest;
-			var guestlistChildren = guestlist.children;
-
+	
 			for (i=0, guests=[], len=guestlistChildren.length; i < len; i++) {
 				current_guest = guestlistChildren[i].value;
 				guests.push(current_guest);
@@ -86,11 +85,8 @@ controllers.controller('EventController', function ($scope, $location, oauth2Pro
 		}
 
 		/* Same thing as above except with the eventtype list*/ 
-		if (eventTypeList.childElementCount > 0) {
-			var i;
-			var current_event_type;
-			var eventTypeChildren = eventTypeList.children;
-
+    	if (eventTypeList.childElementCount > 0) {
+      
 			for (i=0, event_types=[], len=eventTypeChildren.length; i < len; i++) {
 				current_event_type = eventTypeChildren[i].value;
 				event_types.push(current_event_type);
@@ -111,7 +107,7 @@ controllers.controller('EventController', function ($scope, $location, oauth2Pro
 			}
 		});
 
-	}
+	};
 
 	/* This function allows a user to add an element to a datalist, it just needs an id of th input datalist and an id of the datalist itself and so far it works with any data list */
 	$scope.addToDatalist = function(input_id, datalist_id) {
@@ -127,8 +123,7 @@ controllers.controller('EventController', function ($scope, $location, oauth2Pro
 			} else {
 				
 			}
-			
-	}
+	};
 
 	/* The container that holds all the rows of events that are loaded rom the db */
 	$scope.container = jQuery(".events-container-wrapper");
@@ -146,7 +141,7 @@ controllers.controller('EventController', function ($scope, $location, oauth2Pro
 		 */
 		if (database_list.hasOwnProperty("length") && database_list.length > 0) {
 			var datalist_input = "<input list='%s'>".replace("%s", id+index); 
-			var datalist = "<datalist id='%s'>".replace("%s", id+index)
+			var datalist = "<datalist id='%s'>".replace("%s", id+index);
 
 			/* Iterate through all objects in the list from the db */
 			database_list.forEach(function(element, index) {
@@ -158,14 +153,14 @@ controllers.controller('EventController', function ($scope, $location, oauth2Pro
 			/* Here we close off the datalist otherwise it wouldnt be valid html*/
 			datalist += "</datalist>";
 
-			return {input: datalist_input, datalist: datalist}
+			return {input: datalist_input, datalist: datalist};
 
 		} else {
 
 			/* This should never ever be returned, don't worry if it is I will fix it */
-			return {input: "no", datalist: "values on the list"}
+			return {input: "no", datalist: "values on the list"};
 		}
-	}
+	};
 
 	/* 
 	 * This method fetches all of the events from the db, organizes them into html and then displays them on the page
@@ -214,5 +209,5 @@ controllers.controller('EventController', function ($scope, $location, oauth2Pro
 				});
 			}
 		});
-	}
+	};
 });

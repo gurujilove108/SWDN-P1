@@ -1,3 +1,5 @@
+'use strict';
+
 var config = {
 
 	regexp: {
@@ -8,4 +10,4 @@ var config = {
 	},
 	
     stylesheetsAsyncLoad: [],
-}
+};

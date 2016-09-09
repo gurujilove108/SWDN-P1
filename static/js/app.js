@@ -23,7 +23,7 @@ var routeConfig = function($routeProvider) {
     $routeProvider.otherwise({
         redirectTo: '/'
     });
-}
+};
 
 /* 
  * using the $inject property so that this file will minify properly. without this method of injecting $routeProvider the routeConfig
@@ -38,7 +38,7 @@ app.factory('oauth2Provider', function ($modal) {
         CLIENT_ID: '39830639023-6ijh10vnoq4cdgkoh4me2btt4sfjgqco.apps.googleusercontent.com', //replace me with new one, this is from different app
         SCOPES: 'email profile',
         signedIn: false
-    }
+    };
 
     oauth2Provider.signIn = function (callback) {
         gapi.auth.signIn({
@@ -53,7 +53,7 @@ app.factory('oauth2Provider', function ($modal) {
 
     oauth2Provider.signOut = function () {
         gapi.auth.signOut();
-        gapi.auth.setToken({access_token: ''})
+        gapi.auth.setToken({access_token: ''});
         oauth2Provider.signedIn = false;
     };
 
@@ -75,7 +75,7 @@ app.factory('oauth2Provider', function ($modal) {
 app.filter('startFrom', function () {
     var filter = function (data, start) {
         return data.slice(start);
-    }
+    };
     return filter;
 });
 
