@@ -49,9 +49,10 @@ var paths = {
 	minhtml_file_path 	: roots.minified_html_root	+ '*.html',
   	minjs_file_path 	: roots.minified_js_root 	+ 'site.min.js',
   	mincss_file_path	: roots.minified_css_root 	+ 'site.min.css',
-  	python_file_path 	: './**/*.py'				+ '' 				// just added the + '' to make it look cleaner
+
 };
 
+/* I recently just realized that I haven't been using any of these delete tasks and I think It's because since the files have the same name they just get overwritten and it works fine without using them, but in case I run into any problems I will start using them */
 /* deletes any .min.js files in dist/js */
 gulp.task('delete:minjs', function (cb) {
   rimraf(paths.minjs_file_path, cb);
@@ -173,6 +174,7 @@ gulp.task("watch:signup_html", ["minify:signup_html"], function(done) {
 });
 /* end creating watch html tasks */
 
+/* run gulp serve:dist to work in production mode, the only problem with this method is that if there's any kind of error, gulp.watch stops working and exits*/
 gulp.task('serve:dist', function() {
 
 	browserSync.init({
@@ -188,6 +190,8 @@ gulp.task('serve:dist', function() {
     gulp.watch(paths.signup_html, 		['watch:signup_html']);
 });
 
+
+/* Run gulp serve:dev to work in development mode, this is better because if there's an error gulp serve:dev will not stop running the task and you will see the error in the development console as normal */ 
 gulp.task("serve:dev", function() {
 
 	browserSync.init({
@@ -201,19 +205,17 @@ gulp.task("serve:dev", function() {
     gulp.watch(paths.events_html).on('change', reload); 
     gulp.watch(paths.login_html).on('change', reload); 
     gulp.watch(paths.signup_html).on('change', reload); 
+    gulp.watch(paths.python_file_path).on('change', reload); 
+
 });
 
-
-
 /* 
- * Creating tasks that run other tasks 
- * This is extremely useful in my opinion the way this is designed because it is very easy to test
- * I can test every task specifically, all js tasks, all css tasks, all html tasks, or 
- * All tasks together. So far with all the testing I have done, running task_build process works perfectly
- * However these are not being used, just in case I need to test tasks specifically
- */
-gulp.task("minify:html", ["minify:index_html", "minify:create_event_html", "minify:events_html", "minify:login_html", "minify:signup_html"]);
-gulp.task("delete", ["delete:mincss", "delete:minjs", "delete:minhtml"]);
-gulp.task("minify", ["minify:js", "minify:css", "minify:html"]);
-gulp.task("build:process", ["delete", "minify"]);
- 
+ * In order to deploy the production version of the site online by running appcfg.py update app.yaml we have to do a few things before we deploy
+ * 1. Change app.yaml to app-development.yaml and change app-production.yaml to app.yaml, this makes it so the site is using the minified files in dist, opposed to using the un-minified files used for development
+ * 2. Once we have tested the site and everything is working and were ready to deploy we run a task call build process and this will minify all the files and put them in the dist folde
+ * 3. if we want to come back to development mode we have to do the opposite, change app.yaml to app-production.yaml and app-development.yaml back to app.yaml, then run gulp serve:dev to run the site in development mode
+ * 4. There are other ways of doing this process, but this is how I'm doing it. 
+*/
+
+gulp.task("minify", ["minify:js", "minify:css", "minify:index_html", "minify:create_event_html", "minify:events_html", "minify:login_html", "minify:signup_html"])
+gulp.task("build:process", ["minify"]);

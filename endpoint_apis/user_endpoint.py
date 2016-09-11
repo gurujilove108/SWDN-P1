@@ -33,10 +33,15 @@ class UserEndpoint(remote.Service):
 
     @endpoints.method(UserEventRequest, UserEventResponse, path="create_event_path", http_method="POST", name="create_event")
     def create_event(self, event_data):
+        logging.info(event_data.event_type)
+        logging.info(event_data.event_guestlist)
+        logging.info(type(event_data.event_type))
+        logging.info(type(event_data.event_guestlist))
+        
         event_stored, msg = Event.store_event(event_data)
         if event_stored:
             return UserEventResponse(successful="1", error_msg="no error")
-        return UserEventResponse(successful="0", error_msg="You must provide at least one event type")
+        return UserEventResponse(successful="0", error_msg="You must provide at least one event type and at least one ")
         
 
     @endpoints.method(message_types.VoidMessage,EventsList,path="get_events", http_method="POST", name="all_events")

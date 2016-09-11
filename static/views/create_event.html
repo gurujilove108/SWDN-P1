@@ -20,7 +20,7 @@
 					<div id="errors" class="alert alert-warning hidden">
 						<Strong id="error-msg">Errors need fixing</Strong><i id="msg"></i>
 						<button type="button" class="btn close-error-btn" ng-click="closeMessageBox('#errors')">Ok Got It!</button>
-					</div><a></a>
+					</div>
 				</div>
 			</div>
 			
@@ -56,7 +56,7 @@
 				-->
 				<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
 					<label for="event-type" class="create-event-label">Event Type <i class="event-type-status"></i></label>
-			    	<small id="event-type-help" class="form-text text-muted" style="display:block"> - At least one event type is required</small>
+			    	<small id="event-type-help" class="form-text text-muted" style="display:block"> - At least one event type is required - - You can add an event type to the list by clicking the add event type button below</small>
 				    <input id="event-type" type="text" class="form-control" placeholder="enter event type" list="eventtype"
 				    	ng-change="eventTypeInputOnChange()"
 				    	ng-model="eventType">
@@ -67,7 +67,7 @@
 				<!-- event guest list input -->
 				<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
 					<label for="guestlist" class="guestlist-label">Guest List</label>
-			    	<small id="guestlist-help" class="form-text text-muted" style="display:block"> - At least one guest is required</small>
+			    	<small id="guestlist-help" class="form-text text-muted" style="display:block"> - At least one guest is required - You can add a guest to the list by clicking the add guest button below</small>
 					<input id="event-guestlist" class="guestlist form-control" list="guestlist" placeholder="enter guest"
 						ng-change="guestInputOnChange()"
 						ng-model="currentGuest">
