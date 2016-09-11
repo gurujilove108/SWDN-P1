@@ -153,7 +153,7 @@ controllers.controller('SignupController', function ($scope, $location, oauth2Pr
 
 	$scope.clearSignupForm = function() {
 
-	}
+	};
 
 	$scope.getUserSignupEndpointRequest = function(rpcFormObject) {
 		return gapi.client.user_endpoint.user_signup(rpcFormObject);

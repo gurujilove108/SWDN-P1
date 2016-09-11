@@ -45,19 +45,19 @@ controllers.controller('EventController', function ($scope, $location, $template
 		}
 
 		if ( ! $scope.guestlistValid()) { 
-			errorObject = {error: "There must be at least one guest in the list"}
+			errorObject = {error: "There must be at least one guest in the list"};
 			$scope.eventFormErrors.push(errorObject);
 			validForm = false;
 		}
 
 		if ( ! $scope.eventTypesValid()) {
-			errorObject = {error: "There must be at least one event type in the list"}
+			errorObject = {error: "There must be at least one event type in the list"};
 			$scope.eventFormErrors.push(errorObject);
 			validForm = false;
 		}
 
 		if (jQuery("#address").val().length === 0) {
-			errorObject = {error: "Address must be valid"}
+			errorObject = {error: "Address must be valid"};
 			$scope.eventFormErrors.push(errorObject);
 			validForm = false;
 		}
@@ -80,7 +80,7 @@ controllers.controller('EventController', function ($scope, $location, $template
 		}
 
 		return true;
-	}
+	};
 
 	$scope.userSignedIn = function() {
 		return oauth2Provider.signedIn;
@@ -101,7 +101,7 @@ controllers.controller('EventController', function ($scope, $location, $template
 
 	$scope.eventTypesValid = function() {
 		return jQuery("#eventtype").children().length > 0;
-	}
+	};
 
 	$scope.onEventStartDateChange = function() {
 		$scope.startDate = new Date($scope.eventDateStart).getTime();
@@ -206,7 +206,7 @@ controllers.controller('EventController', function ($scope, $location, $template
 			} else {
 				$scope.eventFormErrors = [];
 				$scope.showMessageBox("#errors");	
-				$scope.eventFormErrors.push({error: "You can't add blank input. Please provide some input then try again."})
+				$scope.eventFormErrors.push({error: "You can't add blank input. Please provide some input then try again."});
 			}
 				
 	};
@@ -250,7 +250,7 @@ controllers.controller('EventController', function ($scope, $location, $template
 
 	$scope.initMap = function() {
 		log("map loaded");
-	}
+	};
 
 	/* 
 	 * This method fetches all of the events from the db, organizes them into html and then displays them on the page
