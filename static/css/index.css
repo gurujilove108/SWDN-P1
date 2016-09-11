@@ -124,6 +124,13 @@ body {
 
 .close-error-btn {
 	background: lightsalmon;
+	margin-top: 1%;
+}
+
+.event-form-errors {
+	margin-top: 1%;
+	display: block;
+	list-style-type: square;
 }
 
 .create-event-title {

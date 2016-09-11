@@ -34,12 +34,12 @@ class User(ndb.Expando):
 
 class Event(ndb.Expando):
     event_name          = ndb.StringProperty(required=True)
-    event_type          = ndb.StringProperty(repeated=True)
+    event_types         = ndb.StringProperty(repeated=True)
     event_host          = ndb.StringProperty(required=True)
-    event_start         = ndb.StringProperty(required=True)
-    event_end           = ndb.StringProperty(required=True)
+    event_start         = ndb.IntegerProperty(required=True)
+    event_end           = ndb.IntegerProperty(required=True)
     event_guestlist     = ndb.StringProperty(repeated=True)
-    event_guest_message = ndb.TextProperty()
+    event_guestmessage  = ndb.TextProperty()
     event_created       = ndb.DateTimeProperty(auto_now_add=True)
     event_last_modified = ndb.DateTimeProperty(auto_now=True)
 
@@ -47,12 +47,12 @@ class Event(ndb.Expando):
     def store_event(cls, event_data):
         new_event = Event(
             event_name = event_data.event_name,
-            event_type = event_data.event_type,
+            event_types = event_data.event_types,
             event_host = event_data.event_host,
             event_start = event_data.event_start,
             event_end = event_data.event_end,
             event_guestlist = event_data.event_guestlist,
-            event_guest_message = event_data.event_guestmessage
+            event_guestmessage = event_data.event_guestmessage
         )
 
         key = new_event.put()

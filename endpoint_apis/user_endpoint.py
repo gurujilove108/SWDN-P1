@@ -33,11 +33,11 @@ class UserEndpoint(remote.Service):
 
     @endpoints.method(UserEventRequest, UserEventResponse, path="create_event_path", http_method="POST", name="create_event")
     def create_event(self, event_data):
-        logging.info(event_data.event_type)
+        logging.info(event_data.event_types)
         logging.info(event_data.event_guestlist)
-        logging.info(type(event_data.event_type))
+        logging.info(type(event_data.event_types))
         logging.info(type(event_data.event_guestlist))
-        
+
         event_stored, msg = Event.store_event(event_data)
         if event_stored:
             return UserEventResponse(successful="1", error_msg="no error")
@@ -48,17 +48,17 @@ class UserEndpoint(remote.Service):
     def return_events(self, request):
         events = []
         for event in Event.query():
+
             eventRpcMessage = UserEventRequest(
                 event_name          = event.event_name,  
-                event_type          = event.event_type,
+                event_types         = event.event_types,
                 event_host          = event.event_host,
                 event_start         = event.event_start,
                 event_end           = event.event_end,
                 event_guestlist     = event.event_guestlist,
-                event_guestmessage  = event.event_guestmessage,
-                event_created       = event.event_created,
-                event_last_modified = event.event_last_modified
+                event_guestmessage  = event.event_guestmessage
             )
+            
             events.append(eventRpcMessage)
         events_list = EventsList(events=events)
         return events_list

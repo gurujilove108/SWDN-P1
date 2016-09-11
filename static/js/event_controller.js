@@ -8,69 +8,70 @@ controllers.controller('EventController', function ($scope, $location, $template
 	$scope.isEventHostValid = false;
 
 	/* Here we want to store the error message element because I have a feeling the website will be using it alot and its much more efficient to store it one time than to have to store it everytime there is an error. I like effiency and speed! */
-	$scope.error 			= jQuery("#msg");
-
-	$scope.guestlist 		= document.getElementById("guestlist")
-	$scope.eventTypes 		= document.getElementById("eventtype");
-	$scope.numGuests 		= ($scope.guestlist != null) ? $scope.guestlist.childElementCount : $location.path();
-	$scope.numEventTypes	= ($scope.eventTypes != null) ? $scope.eventTypes.childElementCount : $location.path();
+	$scope.eventFormErrors 	= [];
 
 	/* When these are set they will be set to the correct date timestamps in milliseconds since it's javascript and timesamps in js are in millisecond so to get them into seconds just multiply by a 1000 */
 	$scope.startDate;
 	$scope.endDate;
 
 	$scope.createEvent = function() {
-		var error_message = "";
-		var errors = $scope.createEventFormValid();
+		$scope.eventFormErrors = [];
+		var isFormValid = $scope.createEventFormValid();
 		
-		if (errors)
-			$sope.sendGapiCreateForm();
+		if ($scope.eventFormErrors.length === 0)
+			$scope.sendGapiCreateForm();
 
 		else {
-			errors.forEach(function(error, index) {
-				error_message += (error + "<br>");
-			});
-
 			$scope.showMessageBox("#errors");
-			$scope.error.text(error_message);
 		}
 	};		
 
-	$scope.showErrors = function(errorList) {
-
-	}
-
 	$scope.createEventFormValid = function() {
-		var errors = [];
+		var validForm = true;
+		var errorObject;
 
-		if ( ! $scope.isEventNameValid)
-			errors.push("Event Name,");
+		if ( ! $scope.isEventNameValid) {
+			error_object = {error: "Event Name must be at least 1 character"};
+			$scope.eventFormErrors.push(error_object);
+			validForm = false;
+		}
 
-		if ( ! $scope.isEventHostValid)
-			error.push("Event Host,");
+		if ( ! $scope.isEventHostValid) {
+			errorObject = {error: "Event Host must be at least 1 character"};
+			$scope.eventFormErrors.push(errorObject);
+			validForm = false;
+		}
 
-		if ( ! $scope.checkDates())
-			errors.push("Event Start Date must be before right now and must be before the Event End Date,");
+		if ( ! $scope.guestlistValid()) { 
+			errorObject = {error: "There must be at least one guest in the list"}
+			$scope.eventFormErrors.push(errorObject);
+			validForm = false;
+		}
 
-		if ( ! $scope.guestlistValid()) 
-			errors.push("there must be at least one guest,");
+		if ( ! $scope.eventTypesValid()) {
+			errorObject = {error: "There must be at least one event type in the list"}
+			$scope.eventFormErrors.push(errorObject);
+			validForm = false;
+		}
 
-		if ( ! $scope.eventTypesValid())
-			error.push("There must be at least one event type")
+		/* In case all the above cases pass, we have still have to check the dates so there we go */
+		validForm = $scope.checkDates();
 
-		if (errors.length > 0)
-			return false;
-		return true;
+		return validForm;
 	};
 
 	$scope.checkDates = function() {
-		log($scope.guestlistValid())
-		log($scope.eventTypesValid());
-		log($scope.isEventNameValid)
-		log($scope.isEventHostValid)
-		log($scope.startDate);
-		log($scope.endDate);
-		return false;
+		if ($scope.startDate <= Date.now()) {
+			$scope.eventFormErrors.push({error: "The start date can not be in the past"});
+			return false;
+		}
+
+		else if ($scope.startDate >= $scope.endDate) {
+			$scope.eventFormErrors.push({error: "The start date can not be past the end date"});
+			return false;
+		}
+
+		return true;
 	}
 
 	$scope.userSignedIn = function() {
@@ -87,19 +88,21 @@ controllers.controller('EventController', function ($scope, $location, $template
 	};
 
 	$scope.guestlistValid = function() {
-		return $scope.numGuests > 0;
+		return jQuery("#guestlist").children().length > 0;
 	};
 
 	$scope.eventTypesValid = function() {
-		return $scope.numEventTypes > 0;
+		return jQuery("#eventtype").children().length > 0;
 	}
 
 	$scope.onEventStartDateChange = function() {
-		$scope.startDate = $scope.eventDateStart;
+		$scope.startDate = new Date($scope.eventDateStart).getTime();
+		log("startdate = " + $scope.startDate);
 	};
 
 	$scope.onEventEndDateChange = function() {
-		$scope.endDate = $scope.eventDateEnd;
+		$scope.endDate = new Date($scope.eventDateEnd).getTime();
+		log("end date = " + $scope.endDate);
 	};
 
 	$scope.deleteEventInfo = function() {
@@ -119,22 +122,27 @@ controllers.controller('EventController', function ($scope, $location, $template
 	 * Note that the keys in the object we pass to the user endpoint api must have the same keynames in the rpc object that is being accepted by the api endpoint 
     */
 	$scope.sendGapiCreateForm = function() {
-    	var guestlistChildren 	= $scope.guestlist.children;
-    	var eventTypesChildren 	= $scope.eventTypes.children;
+    	var guestlistChildren 	= jQuery("#guestlist").children();
+    	var eventTypesChildren 	= jQuery("#eventtype").children();
+    	var numGuests 			= guestlistChildren.length;
+    	var numEventTypes 		= eventTypesChildren.length;
+    	var guestMessage 		= jQuery("#guest-message").val();
     	var current_guest;
+    	var current_event_type;
     	var i;
 
 		var formObject = {
-			event_name:  jQuery("#event-name").val(),
+			event_name:  jQuery("#event-name-input").val(),
 			event_host:  jQuery("#event-host").val(),
-			event_start: jQuery("#event-datetime-start").val(),
-			event_end:   jQuery("#event-datetime-end").val()
+			event_start: $scope.startDate,
+			event_end:   $scope.endDate
 		};
 
 		/* Creating an array of guests to store in the Event database from the datalist in the create event form */
-		if ($scope.numGuests > 0) {
+		
+		if (numGuests > 0) {
 	
-			for (i=0, guests=[]; i < $scope.numGuests; i++) {
+			for (i=0, guests=[]; i < numGuests; i++) {
 				current_guest = guestlistChildren[i].value;
 				guests.push(current_guest);
 			}
@@ -143,20 +151,24 @@ controllers.controller('EventController', function ($scope, $location, $template
 		}
 
 		/* Same thing as above except with the eventtype list*/ 
-    	if ($scope.numEventTypes > 0) {
+    	if (numEventTypes > 0) {
       
-			for (i=0, event_types=[]; i < $scope.numEventTypes; i++) {
+			for (i=0, event_types=[]; i < numEventTypes; i++) {
 				current_event_type = eventTypesChildren[i].value;
 				event_types.push(current_event_type);
 			}
 
-			formObject.event_type = event_types;
+			formObject.event_types = event_types;
 		}
 
 		/* Since guestmessage is not required we only add it if there is a message */
-		if (guestMessage.value.length > 0)
-			formObject.event_guestmessage = guestMessage.value;
+		if (guestMessage.length > 0)
+			formObject.event_guestmessage = guestMessage;
+		else
+			formObject.event_guestmessage = "No current message for this event at this time";
 
+
+		log(formObject);
 		var request = gapi.client.user_endpoint.create_event(formObject);
 		request.execute(function(response){
 			if (response.hasOwnProperty("successful") && response.successful === "1") {
@@ -183,8 +195,9 @@ controllers.controller('EventController', function ($scope, $location, $template
 				$scope.closeMessageBox("#errors");
 
 			} else {
+				$scope.eventFormErrors = [];
 				$scope.showMessageBox("#errors");	
-				jQuery("#msg").text("You can't add blank input to a list. Please provide at least one event and at least one guest");		
+				$scope.eventFormErrors.push({error: "You can't add blank input. Please provide some input then try again."})
 			}
 				
 	};
@@ -259,7 +272,7 @@ controllers.controller('EventController', function ($scope, $location, $template
 					 * This datalist will be an object containing two keys which correspond to the two tags, datalist.input, datalist.datalist
 					 */
 					guestlist_datalist = $scope.createDataList(element1.event_guestlist, index, "guests");
-					event_types_datalist = $scope.createDataList(element1.event_type, index, "eventtypes");
+					event_types_datalist = $scope.createDataList(element1.event_types, index, "eventtypes");
 					/* Now for each event key we create the html to display them using mustache to replace the values from out event objects */
 					row1 = "<div class='row text-left'><div class='col-xs-12'><label for='event_name'>Name of Event: </label><span id='event_name'> {{event_name}}</span></div></div> ";
 					row2 = "<div class='row text-left'><div class='col-xs-12'><label for='event_type'>Event Types: </label><span id='event_type'>%s </span></div></div> ".replace("%s", event_types_datalist.input + event_types_datalist.datalist);
