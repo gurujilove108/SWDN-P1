@@ -42,7 +42,6 @@ class UserEndpoint(remote.Service):
     @endpoints.method(message_types.VoidMessage,EventsList,path="get_events", http_method="POST", name="all_events")
     def return_events(self, request):
         events = []
-
         for event in Event.query():
             eventRpcMessage = UserEventRequest(
                 event_name          = event.event_name,  
@@ -55,7 +54,6 @@ class UserEndpoint(remote.Service):
                 event_created       = event.event_created,
                 event_last_modified = event.event_last_modified
             )
-
             events.append(eventRpcMessage)
         events_list = EventsList(events=events)
         return events_list

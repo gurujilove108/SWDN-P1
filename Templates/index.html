@@ -41,9 +41,9 @@
                 /* This function uses the google js client library to load in the oauth module for hadnling user sign in with oauth, but we will not be using that at the present moment */
                 gapi.client.load('oauth2', 'v2', null);
             }
-
         </script>
         <script src="//apis.google.com/js/client:plusone.js?onload=init"></script>
+
     </head>
 
     <body ng-controller="RootController as rc">
@@ -112,7 +112,11 @@
         </div>
         <!-- / #wrapper -->
 
+        <div ng-template="'mapView.html'"></div>
+        <script type="text/ng-template" id="mapView.html"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/2.2.1/mustache.min.js"></script>
+        <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDnYnq8vyZJvgUlUr_W-7EPa4HUsjwvF7I"></script>
+
         <script>
             console.log("loaded the page in " + (Math.round(performance.now() - t1)) + " milliseconds");
         </script>

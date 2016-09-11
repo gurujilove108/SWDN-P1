@@ -122,11 +122,14 @@ body {
 	margin: 0 auto;
 }
 
+.close-error-btn {
+	background: lightsalmon;
+}
+
 .create-event-title {
 }
 
 .create-event-form {
-	
 }
 
 .enter-location-title {

@@ -1,56 +1,117 @@
 /* This controller handles all the functionality for creting an event and loading in all events from the db */
-controllers.controller('EventController', function ($scope, $location, oauth2Provider) {
+controllers.controller('EventController', function ($scope, $location, $templateCache, oauth2Provider) {
 
-	
-	/* Initialize all required inputs validity to be false. These will be set true when they are validated */
+	/* Initialize all required inputs validity to be false. These will be set true when they are validated name, host length just have to be greater than 3 */
 	$scope.isEventNameValid = false;
-
-	/* Since event type is a datalist, it will only be set to true if there is at least one element in the datalist */
-	$scope.isEventTypeValid = false;
 
 	/* Host just has to be more than 0 characters */
 	$scope.isEventHostValid = false;
 
-	/* Dates are only valid if the start date is not in the past and before the end date */
-	$scope.areDatesValid 	= false;
-
 	/* Here we want to store the error message element because I have a feeling the website will be using it alot and its much more efficient to store it one time than to have to store it everytime there is an error. I like effiency and speed! */
-	$scope.errorMessageElement;
+	$scope.error 			= jQuery("#msg");
+
+	$scope.guestlist 		= document.getElementById("guestlist")
+	$scope.eventTypes 		= document.getElementById("eventtype");
+	$scope.numGuests 		= ($scope.guestlist != null) ? $scope.guestlist.childElementCount : $location.path();
+	$scope.numEventTypes	= ($scope.eventTypes != null) ? $scope.eventTypes.childElementCount : $location.path();
+
+	/* When these are set they will be set to the correct date timestamps in milliseconds since it's javascript and timesamps in js are in millisecond so to get them into seconds just multiply by a 1000 */
+	$scope.startDate;
+	$scope.endDate;
+
+	$scope.createEvent = function() {
+		var error_message = "";
+		var errors = $scope.createEventFormValid();
+		
+		if (errors)
+			$sope.sendGapiCreateForm();
+
+		} else {
+			errors.forEach(function(error, index) {
+				error_message += (error + "<br>");
+			});
+
+			$scope.showMessageBox("#errors");
+			$scope.error.text(error_message);
+		}
+	};		
+
+	$scope.showErrors = function(errorList) {
+
+	}
+
+	$scope.createEventFormValid = function() {
+		var errors = [];
+
+		if ( ! $scope.isEventNameValid)
+			errors.push("Event Name,");
+
+		if ( ! $scope.isEventHostValid)
+			error.push("Event Host,");
+
+		if ( ! $scope.checkDates())
+			errors.push("Event Start Date must be before right now and must be before the Event End Date,");
+
+		if ( ! $scope.guestlistValid()) 
+			errors.push("there must be at least one guest,");
+
+		if ( ! $scope.eventTypesValid())
+			error.push("There must be at least one event type")
+
+		if (errors.length > 0)
+			return false;
+		return true;
+	};
+
+	$scope.checkDates = function() {
+		log($scope.guestlistValid())
+		log($scope.eventTypesValid());
+		log($scope.isEventNameValid)
+		log($scope.isEventHostValid)
+		log($scope.startDate);
+		log($scope.endDate);
+		return false;
+	}
 
 	$scope.userSignedIn = function() {
 		return oauth2Provider.signedIn;
 	};
 
-	$scope.createEvent = function() {
-		if($scope.createEventFormValid()) {
-			$scope.sendGapiCreateForm();
-		} else {
-			
-		}
-	};
-
-	$scope.createEventFormValid = function() {
-		return  $scope.isEventNameValid && $scope.isEventTypeValid &&
-				$scope.isEventHostValid && $scope.areDatesValid;
-	};
-
 	/* Functions that validate required input fields when their input is changed */
 	$scope.onEventNameChange = function() {
-
+		$scope.isEventNameValid = ($scope.eventName.length > 0) ? true : false;
 	};
 
-	/* Function to validate the Event Type, when the event is validated */
+	$scope.onEventHostChange = function() {
+		$scope.isEventHostValid = ($scope.eventHost.length > 0) ? true : false;
+	};
 
-	/* 
-	 * This function is called when the user changes the Event Start date and Time input field
-	 * This function validates the start date to make sure it does not exist in the past, because it has to start in the future
-	*/
+	$scope.guestlistValid = function() {
+		return $scope.numGuests > 0;
+	};
+
+	$scope.eventTypesValid = function() {
+		return $scope.numEventTypes > 0;
+	}
+
 	$scope.onEventStartDateChange = function() {
+		$scope.startDate = $scope.eventDateStart;
+	};
 
+	$scope.onEventEndDateChange = function() {
+		$scope.endDate = $scope.eventDateEnd;
 	};
 
 	$scope.deleteEventInfo = function() {
 		jQuery(".event-info-row").remove();
+	};
+
+	$scope.showMessageBox = function(stringProperty) {
+		jQuery(stringProperty).removeClass("hidden");
+	};
+
+	$scope.closeMessageBox = function(stringProperty) {
+		jQuery(stringProperty).addClass("hidden");
 	};
 
 	/*
@@ -58,14 +119,11 @@ controllers.controller('EventController', function ($scope, $location, oauth2Pro
 	 * Note that the keys in the object we pass to the user endpoint api must have the same keynames in the rpc object that is being accepted by the api endpoint 
     */
 	$scope.sendGapiCreateForm = function() {
-		var guestlist = document.getElementById("guestlist");
-		var guestMessage = document.getElementById("guest-message");
-		var eventTypeList = document.getElementById("eventtype");
-		var guestlistChildren = guestlist.children;
-		var eventTypeChildren = eventTypeList.children;
+    	var guestlistChildren 	= $scope.guestlist.children;
+    	var eventTypesChildren 	= $scope.eventTypes.children;
     	var current_guest;
     	var i;
-    
+
 		var formObject = {
 			event_name:  jQuery("#event-name").val(),
 			event_host:  jQuery("#event-host").val(),
@@ -74,9 +132,9 @@ controllers.controller('EventController', function ($scope, $location, oauth2Pro
 		};
 
 		/* Creating an array of guests to store in the Event database from the datalist in the create event form */
-		if (guestlist.childElementCount > 0) {
+		if ($scope.numGuests > 0) {
 	
-			for (i=0, guests=[], len=guestlistChildren.length; i < len; i++) {
+			for (i=0, guests=[]; i < $scope.numGuests; i++) {
 				current_guest = guestlistChildren[i].value;
 				guests.push(current_guest);
 			}
@@ -85,10 +143,10 @@ controllers.controller('EventController', function ($scope, $location, oauth2Pro
 		}
 
 		/* Same thing as above except with the eventtype list*/ 
-    	if (eventTypeList.childElementCount > 0) {
+    	if ($scope.numEventTypes > 0) {
       
-			for (i=0, event_types=[], len=eventTypeChildren.length; i < len; i++) {
-				current_event_type = eventTypeChildren[i].value;
+			for (i=0, event_types=[]; i < $scope.numEventTypes; i++) {
+				current_event_type = eventTypesChildren[i].value;
 				event_types.push(current_event_type);
 			}
 
@@ -102,7 +160,7 @@ controllers.controller('EventController', function ($scope, $location, oauth2Pro
 		var request = gapi.client.user_endpoint.create_event(formObject);
 		request.execute(function(response){
 			if (response.hasOwnProperty("successful") && response.successful === "1") {
-				jQuery("#event-create-success").removeClass("hidden");
+				$scope.showMessageBox("#event-create-success");
 				jQuery("#eventname").text($scope.eventName);
 			}
 		});
@@ -111,18 +169,24 @@ controllers.controller('EventController', function ($scope, $location, oauth2Pro
 
 	/* This function allows a user to add an element to a datalist, it just needs an id of th input datalist and an id of the datalist itself and so far it works with any data list */
 	$scope.addToDatalist = function(input_id, datalist_id) {
-			var datalist = jQuery("#" + datalist_id);
-			var inputForDatalist = jQuery("#" + input_id);
-			var inputValue = inputForDatalist.val();
+			var datalist 			= jQuery("#" + datalist_id);
+			var inputForDatalist 	= jQuery("#" + input_id);
+			var inputValue 			= inputForDatalist.val();
 
 			if (inputValue.length > 0) {
 				datalist.append("<option value='%s'>".replace("%s", inputValue));
 
-				/* After we've added the input to the datalist we want to clear the input field so it makes it easier for the user to add more data to the datalist */
+				/* After we've added the input to the datalist we want to clear the input field so it makes it easier for the user to add more data to the datalist also we could dynamically add the autofocus to it by writing the code jQuery(element).attr(autofocus, true)*/
 				inputForDatalist.val('');
+
+				/* We also want to remove the error box if the user has added input and added it to the data list */
+				$scope.closeMessageBox("#errors");
+
 			} else {
-				
+				$scope.showMessageBox("#errors");	
+				jQuery("#msg").text("You can't add blank input to a list. Please provide at least one event and at least one guest");		
 			}
+				
 	};
 
 	/* The container that holds all the rows of events that are loaded rom the db */
@@ -161,6 +225,10 @@ controllers.controller('EventController', function ($scope, $location, oauth2Pro
 			return {input: "no", datalist: "values on the list"};
 		}
 	};
+
+	$scope.initMap = function() {
+		log("map loaded");
+	}
 
 	/* 
 	 * This method fetches all of the events from the db, organizes them into html and then displays them on the page

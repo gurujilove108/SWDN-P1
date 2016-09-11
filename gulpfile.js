@@ -173,7 +173,7 @@ gulp.task("watch:signup_html", ["minify:signup_html"], function(done) {
 });
 /* end creating watch html tasks */
 
-gulp.task('serve', function() {
+gulp.task('serve:dist', function() {
 
 	browserSync.init({
     	proxy: "localhost:8080"
@@ -188,14 +188,32 @@ gulp.task('serve', function() {
     gulp.watch(paths.signup_html, 		['watch:signup_html']);
 });
 
+gulp.task("serve:dev", function() {
+
+	browserSync.init({
+    	proxy: "localhost:8080"
+    });
+
+    gulp.watch(paths.css_file_path).on('change', reload);
+	gulp.watch(paths.js_file_path).on('change', reload);
+	gulp.watch(paths.index_html).on('change', reload); 
+    gulp.watch(paths.create_event_html).on('change', reload);
+    gulp.watch(paths.events_html).on('change', reload); 
+    gulp.watch(paths.login_html).on('change', reload); 
+    gulp.watch(paths.signup_html).on('change', reload); 
+});
+
+
+
 /* 
- * creating tasks that run other tasks 
- * this is extremely useful in my opinionthe way this is designed because it is very easy to test
+ * Creating tasks that run other tasks 
+ * This is extremely useful in my opinion the way this is designed because it is very easy to test
  * I can test every task specifically, all js tasks, all css tasks, all html tasks, or 
- * all tasks together. So far with all the testing I have done, running task_build process works perfectly
- *
- *	gulp.task("minify:html", ["minify:index_html", "minify:create_event_html", "minify:events_html", "minify:login_html", "minify:signup_html"]);
- *	gulp.task("delete", ["delete:mincss", "delete:minjs", "delete:minhtml"]);
- *	gulp.task("minify", ["minify:js", "minify:css", "minify:html"]);
- *	gulp.task("build:process", ["delete", "minify"]);
+ * All tasks together. So far with all the testing I have done, running task_build process works perfectly
+ * However these are not being used, just in case I need to test tasks specifically
  */
+gulp.task("minify:html", ["minify:index_html", "minify:create_event_html", "minify:events_html", "minify:login_html", "minify:signup_html"]);
+gulp.task("delete", ["delete:mincss", "delete:minjs", "delete:minhtml"]);
+gulp.task("minify", ["minify:js", "minify:css", "minify:html"]);
+gulp.task("build:process", ["delete", "minify"]);
+ 

@@ -29,6 +29,7 @@ var routeConfig = function($routeProvider) {
  * using the $inject property so that this file will minify properly. without this method of injecting $routeProvider the routeConfig
  * would generate an error saying $routeProvider is undefined and will be unable to load in any templates
  * I'm also happy I had to fix this error because now I know how to manually inject dpendencies in angular. Yay! #Winning
+ * From now on this is how I'm going to implement my controllers in the future by inject dependencies manually for successful minification
 */ 
 routeConfig.$inject = ["$routeProvider"];
 app.config(routeConfig);

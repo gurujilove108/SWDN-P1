@@ -33,14 +33,14 @@ class User(ndb.Expando):
 
 
 class Event(ndb.Expando):
-    event_name = ndb.StringProperty(required=True)
-    event_type = ndb.StringProperty(repeated=True)
-    event_host = ndb.StringProperty(required=True)
-    event_start = ndb.StringProperty(required=True)
-    event_end = ndb.StringProperty(required=True)
-    event_guestlist = ndb.StringProperty(repeated=True)
+    event_name          = ndb.StringProperty(required=True)
+    event_type          = ndb.StringProperty(repeated=True)
+    event_host          = ndb.StringProperty(required=True)
+    event_start         = ndb.StringProperty(required=True)
+    event_end           = ndb.StringProperty(required=True)
+    event_guestlist     = ndb.StringProperty(repeated=True)
     event_guest_message = ndb.TextProperty()
-    event_created = ndb.DateTimeProperty(auto_now_add=True)
+    event_created       = ndb.DateTimeProperty(auto_now_add=True)
     event_last_modified = ndb.DateTimeProperty(auto_now=True)
 
     @classmethod
