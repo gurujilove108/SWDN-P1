@@ -20,10 +20,13 @@ var gulp 		= require('gulp'),
 	rimraf 		= require('rimraf'),
 
 	/* used for compressing html */
-	htmlmin		= require('gulp-htmlmin');
+	htmlmin		= require('gulp-htmlmin'),
 
 	/* used for properyly minifying angular */
-	ngAnnotate 	= require('gulp-ng-annotate');
+	ngAnnotate 	= require('gulp-ng-annotate'),
+
+	/* used for renaming files */
+	rename 		= require('gulp-rename');
 
 /* specifying path roots */
 var roots = {
@@ -209,13 +212,50 @@ gulp.task("serve:dev", function() {
 
 });
 
-/* 
- * In order to deploy the production version of the site online by running appcfg.py update app.yaml we have to do a few things before we deploy
- * 1. Change app.yaml to app-development.yaml and change app-production.yaml to app.yaml, this makes it so the site is using the minified files in dist, opposed to using the un-minified files used for development
- * 2. Once we have tested the site and everything is working and were ready to deploy we run a task call build process and this will minify all the files and put them in the dist folde
- * 3. if we want to come back to development mode we have to do the opposite, change app.yaml to app-production.yaml and app-development.yaml back to app.yaml, then run gulp serve:dev to run the site in development mode
- * 4. There are other ways of doing this process, but this is how I'm doing it. 
-*/
 
-gulp.task("minify", ["minify:js", "minify:css", "minify:index_html", "minify:create_event_html", "minify:events_html", "minify:login_html", "minify:signup_html"])
-gulp.task("build:process", ["minify"]);
+
+/* replaces the contents of app.yaml with the contents of app-development.yaml */
+gulp.task("rename:app.yaml:development", function(done) {
+	gulp.src('./app-development.yaml')
+		.pipe(rename('./app.yaml'))
+		.pipe(gulp.dest('./'));
+
+	done();
+});
+
+/* replaces the contents of app.yaml with the contents of app-production.yaml */
+gulp.task("rename:app.yaml:production", function(done) {
+	gulp.src('./app-production.yaml')
+		.pipe(rename('./app.yaml'))
+		.pipe(gulp.dest('./'));
+
+	done();
+});
+
+/* replaces the contents of app.js with the contents of app-production.js */
+gulp.task("rename:app.js:production", function(done) {
+	gulp.src('./static/js/app-production.js')
+		.pipe(rename('./static/js/app.js'))
+		.pipe(gulp.dest('./'));
+
+	done();
+});
+
+/* replaces the contents of app.js with the contents of app-development.js */
+gulp.task("rename:app.js:development", function(done) {
+	gulp.src('./static/js/app-development.js')
+		.pipe(rename('./static/js/app.js'))
+		.pipe(gulp.dest('./'));
+
+	done();
+});
+
+/* minifies all files for production*/
+gulp.task("minify", ["minify:js", "minify:css", "minify:index_html", "minify:create_event_html", "minify:events_html", "minify:login_html", "minify:signup_html"]);
+
+/* makes app.yaml and app.js the development version */
+gulp.task("backto:development", ["rename:app.yaml:development", "rename:app.js:development"]);
+
+/* makes app.yaml and app.js the production version and minifies all the files */
+gulp.task("backto:production", ["rename:app.yaml:production", "rename:app.js:production", "minify"]);
+

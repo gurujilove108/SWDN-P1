@@ -26,7 +26,7 @@ controllers.controller('EventController', function ($scope, $location, $template
 		if (errors)
 			$sope.sendGapiCreateForm();
 
-		} else {
+		else {
 			errors.forEach(function(error, index) {
 				error_message += (error + "<br>");
 			});
