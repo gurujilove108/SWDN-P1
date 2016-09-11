@@ -14,7 +14,7 @@ controllers.controller('EventController', function ($scope, $location, $template
 	$scope.startDate;
 	$scope.endDate;
 
-	$scope.allEvents = [{a:1}];
+	$scope.allEvents = []; /* ng-repeat only works if the data is already set which is the worst thing in the world, from now on I'm going to combine angular with knockout because this is ridiculous, excuse me for being frustrated */
 
 	$scope.createEvent = function() {
 		$scope.eventFormErrors = [];
@@ -52,6 +52,12 @@ controllers.controller('EventController', function ($scope, $location, $template
 
 		if ( ! $scope.eventTypesValid()) {
 			errorObject = {error: "There must be at least one event type in the list"}
+			$scope.eventFormErrors.push(errorObject);
+			validForm = false;
+		}
+
+		if (jQuery("#address").val().length === 0) {
+			errorObject = {error: "Address must be valid"}
 			$scope.eventFormErrors.push(errorObject);
 			validForm = false;
 		}
@@ -137,7 +143,8 @@ controllers.controller('EventController', function ($scope, $location, $template
 			event_name:  jQuery("#event-name-input").val(),
 			event_host:  jQuery("#event-host").val(),
 			event_start: $scope.startDate,
-			event_end:   $scope.endDate
+			event_end:   $scope.endDate,
+			event_address: 	 $scope.address 
 		};
 
 		/* Creating an array of guests to store in the Event database from the datalist in the create event form */
@@ -268,9 +275,6 @@ controllers.controller('EventController', function ($scope, $location, $template
 				/* Iterate through the events from our db */
 				response.events.forEach(function(element1, index) { 
 
-					log(new Date(parseInt(element1.event_start)));
-					log(new Date(parseInt(element1.event_end)));
-
 					element1.event_start = new Date(parseInt(element1.event_start));
 					element1.event_end = new Date(parseInt(element1.event_end));
 
@@ -279,6 +283,7 @@ controllers.controller('EventController', function ($scope, $location, $template
 					 
 					guestlist_datalist = $scope.createDataList(element1.event_guestlist, index, "guests");
 					event_types_datalist = $scope.createDataList(element1.event_types, index, "eventtypes");
+					
 					/* Now for each event key we create the html to display them using mustache to replace the values from out event objects */
 					row1 = "<div class='row text-left'><div class='col-xs-12'><label for='event_name'>Name of Event: </label><span id='event_name'> {{event_name}}</span></div></div> ";
 					row2 = "<div class='row text-left'><div class='col-xs-12'><label for='event_type'>Event Types: </label><span id='event_type'>%s </span></div></div> ".replace("%s", event_types_datalist.input + event_types_datalist.datalist);
@@ -286,10 +291,11 @@ controllers.controller('EventController', function ($scope, $location, $template
 					row4 = "<div class='row text-left'><div class='col-xs-12'><label for='event_start'>Event Start Date: </label><span id='event_start'> {{event_start}}</span></div></div> "; 
 					row5 = "<div class='row text-left'><div class='col-xs-12'><label for='event_end'>Event End Date: </label><span id='event_end'> {{event_end}}</span></div></div> "; 
 					row6 = "<div class='row text-left'><div class='col-xs-12'><label for='event_guestlist'>Event Guest list: </label><span id='event_guestlist' class='event_guestlist_unbelievable'>%s </span></div></div> ".replace("%s", guestlist_datalist.input + guestlist_datalist.datalist); 
-					row7 = "<div class='row text-left'><div class='col-xs-12'><label for='event_guestmessage'>Message for Guests: </label><span id='event_guestmessage'> {{event_guestmessage}}</span></div></div><hr> "; 
-					
+					row7 = "<div class='row text-left'><div class='col-xs-12'><label for='event_guestmessage'>Message for Guests: </label><span id='event_guestmessage'> {{event_guestmessage}}</span></div></div>"; 
+					row8 = "<div class='row text-left'><div class='col-xs-12'><label for='address'>Address for event: </label><span id='address'> {{event_address}}</span></div></div><hr> "; 
+			
 					/* Iterate through all the rows, use mustache to make the html and then add it onto the events container */
-					[row1, row2, row3, row4, row5, row6, row7].forEach(function(element2, index){
+					[row1, row2, row3, row4, row5, row6, row7, row8].forEach(function(element2, index){
 						html = Mustache.to_html(element2, element1);
 						$scope.container.append(html);
 					});

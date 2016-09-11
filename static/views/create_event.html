@@ -1,4 +1,5 @@
 
+		
 		<form class="create-event-form" ng-submit="createEvent()">
 			
 			<!-- Successful account creation message appears here -->
@@ -69,7 +70,7 @@
 
 				<!-- event guest list input -->
 				<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-					<label for="guestlist" class="guestlist-label">Guest List</label>
+					<label for="event-guestlist" class="guestlist-label">Guest List</label>
 			    	<small id="guestlist-help" class="form-text text-muted" style="display:block"> - At least one guest is required -</small>
 					<input id="event-guestlist" class="guestlist form-control" list="guestlist" placeholder="enter guest"
 						ng-change="guestInputOnChange()"
@@ -102,6 +103,17 @@
 				</div>
 			</div>
 			<div class="row form-group">
+			
+				<!-- Location -->
+				<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+					<label for="address">Event Address<i class="event-address"></i></label>
+				    <input type="text" class="form-control" id="address" placeholder="event address"
+				    	ng-change="onAddressChange()"
+				    	ng-model="address"
+				    	required>	
+				</div>
+			</div>
+			<div class="row form-group">
 				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 					<label for="guest-message" class="guest-message-label">Optional message for all guests</label>
 					<textarea id="guest-message" class="guest-message"></textarea>
@@ -113,6 +125,7 @@
 				</div> 
 			</div>
 		</form>
+
 
 
 

@@ -56,9 +56,10 @@ class UserEndpoint(remote.Service):
                 event_start         = event.event_start,
                 event_end           = event.event_end,
                 event_guestlist     = event.event_guestlist,
-                event_guestmessage  = event.event_guestmessage
+                event_guestmessage  = event.event_guestmessage,
+                event_address       = event.event_address
             )
-            
+
             events.append(eventRpcMessage)
         events_list = EventsList(events=events)
         return events_list

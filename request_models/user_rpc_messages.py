@@ -27,6 +27,8 @@ class UserEventRequest(messages.Message):
     event_end          = messages.IntegerField(5, required=True)
     event_guestlist    = messages.StringField(6, repeated=True)
     event_guestmessage = messages.StringField(7)
+    event_address      = messages.StringField(8, required=True)
+
 
 class UserEventResponse(messages.Message):
     successful = messages.StringField(1, required=True)

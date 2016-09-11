@@ -42,6 +42,7 @@ class Event(ndb.Expando):
     event_guestmessage  = ndb.TextProperty()
     event_created       = ndb.DateTimeProperty(auto_now_add=True)
     event_last_modified = ndb.DateTimeProperty(auto_now=True)
+    event_address       = ndb.StringProperty(required=True)
 
     @classmethod
     def store_event(cls, event_data):
@@ -52,7 +53,8 @@ class Event(ndb.Expando):
             event_start = event_data.event_start,
             event_end = event_data.event_end,
             event_guestlist = event_data.event_guestlist,
-            event_guestmessage = event_data.event_guestmessage
+            event_guestmessage = event_data.event_guestmessage,
+            event_address = event_data.event_address
         )
 
         key = new_event.put()
