@@ -14,6 +14,8 @@ controllers.controller('EventController', function ($scope, $location, $template
 	$scope.startDate;
 	$scope.endDate;
 
+	$scope.allEvents = [{a:1}];
+
 	$scope.createEvent = function() {
 		$scope.eventFormErrors = [];
 		var isFormValid = $scope.createEventFormValid();
@@ -255,7 +257,6 @@ controllers.controller('EventController', function ($scope, $location, $template
 		var guestlist_datalist, event_types_datalist, html, row1, row2, row3, row4, row5, row6, row7;
 		var request = gapi.client.user_endpoint.all_events();
 
-		/* Start loading in events */
 		request.execute(function(response){
 			log(response);
 			/* if there are no events then there will be no events object in response we will add a msg to the events.html page to link them to create an event */
@@ -267,10 +268,15 @@ controllers.controller('EventController', function ($scope, $location, $template
 				/* Iterate through the events from our db */
 				response.events.forEach(function(element1, index) { 
 
-					/* 
-					 * For each event, re-create our datalist, since each datalist has two tags, an input and datalist
-					 * This datalist will be an object containing two keys which correspond to the two tags, datalist.input, datalist.datalist
-					 */
+					log(new Date(parseInt(element1.event_start)));
+					log(new Date(parseInt(element1.event_end)));
+
+					element1.event_start = new Date(parseInt(element1.event_start));
+					element1.event_end = new Date(parseInt(element1.event_end));
+
+		 			//  * For each event, re-create our datalist, since each datalist has two tags, an input and datalist
+					// * This datalist will be an object containing two keys which correspond to the two tags, datalist.input, datalist.datalist
+					 
 					guestlist_datalist = $scope.createDataList(element1.event_guestlist, index, "guests");
 					event_types_datalist = $scope.createDataList(element1.event_types, index, "eventtypes");
 					/* Now for each event key we create the html to display them using mustache to replace the values from out event objects */
@@ -291,4 +297,5 @@ controllers.controller('EventController', function ($scope, $location, $template
 			}
 		});
 	};
+	$scope.loadAllEventsOntoPage();
 });
