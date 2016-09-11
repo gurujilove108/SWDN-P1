@@ -47,6 +47,7 @@ var paths = {
   	events_html			: roots.html_root			+ 'events.html',
   	html_file_path		: roots.html_root 			+ '*.html',
   	index_html 			: roots.templates_root		+ 'index.html',
+  	index_production_html: roots.templates_root		+ 'index-production.html',
   	css_file_path 		: roots.css_root 			+ '*.css',
   	js_file_path  		: roots.js_root 			+ '*.js',
 	minhtml_file_path 	: roots.minified_html_root	+ '*.html',
@@ -75,7 +76,6 @@ gulp.task("delete:minhtml", function(cb) {
 gulp.task("minify:js", function () {
 	return gulp.src([paths.js_file_path], {base: ".", read: true})  // if read was false this method will not work
 		.pipe(concat("site.min.js"))
-		.pipe(ngAnnotate())
 	    .pipe(uglify())
 	    .pipe(gulp.dest(roots.minified_js_root));
 });
@@ -95,8 +95,8 @@ gulp.task("minify:css", function () {
  * Anyways, unlike css and js, we are minifying html files one to one from non minified to miniied instead of minifying n number of css or js files into one file
  * We have to do it this way because of the way we load in html files opposed to css and js, I'm also excited to see the speed difference in loading the page
  */
-gulp.task("minify:index_html", function() {
-	return gulp.src([paths.index_html], {base: '.', read: true})
+gulp.task("minify:index_production_html", function() {
+	return gulp.src([paths.index_production_html], {base: '.', read: true})
 	    .pipe(concat("index.min.html"))
 	    .pipe(htmlmin({collapseWhitespace: true}))
 	    .pipe(gulp.dest(roots.minified_html_root));
@@ -251,7 +251,7 @@ gulp.task("rename:app.js:development", function(done) {
 });
 
 /* minifies all files for production*/
-gulp.task("minify", ["minify:js", "minify:css", "minify:index_html", "minify:create_event_html", "minify:events_html", "minify:login_html", "minify:signup_html"]);
+gulp.task("minify", ["minify:js", "minify:css", "minify:index_production_html", "minify:create_event_html", "minify:events_html", "minify:login_html", "minify:signup_html"]);
 
 /* makes app.yaml and app.js the development version */
 gulp.task("backto:development", ["rename:app.yaml:development", "rename:app.js:development"]);
