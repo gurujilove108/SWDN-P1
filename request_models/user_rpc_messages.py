@@ -34,7 +34,6 @@ class UserEventResponse(messages.Message):
     successful = messages.StringField(1, required=True)
     error_msg  = messages.StringField(2)
 
-
 class EventsList(messages.Message):
     events = messages.MessageField(UserEventRequest, 1, repeated=True)
 
@@ -44,6 +43,12 @@ class UsernameExistsRequest(messages.Message):
 class UsernameExistsResponse(messages.Message):
     exists = messages.StringField(1, required=True)
 
+class PasswordMatchRequest(messages.Message):
+    username = messages.StringField(1, required=True)
+    password = messages.StringField(2, required=True)
+
+class PasswordMatchResponse(messages.Message):
+    match = messages.StringField(1, required=True)
     
 """
 34:40

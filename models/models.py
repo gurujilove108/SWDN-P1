@@ -30,6 +30,11 @@ class User(ndb.Expando):
         query = User.query(User.account_name == account_name)
         return query.get() != None
 
+    @classmethod
+    def match(cls, username, passwd):
+        query = User.query(User.account_name == username and User.password == passwd)
+        return query.get() != None
+
 
 
 class Event(ndb.Expando):

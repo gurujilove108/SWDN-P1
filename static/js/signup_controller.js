@@ -14,7 +14,7 @@ controllers.controller('SignupController', ['$scope', '$location', function ($sc
 	$scope.password_error 			= "Password must be 8 characters in length, include 1 lowercase and 1 uppercase letter";
 	$scope.phone_error 				= "Phone must be in format (555)555-5555";
 	$scope.employer_error			= "Employer name must be at least 3 characters in length";
-
+	$scope.account_name_exists_error= "That Account already exists, please enter a different account name."
 	$scope.account_name_valid_msg 	= "Account name is valid";
 	$scope.email_valid_msg 			= "Email is valid";
 	$scope.password_valid_msg 		= "Password is valid";
@@ -40,10 +40,25 @@ controllers.controller('SignupController', ['$scope', '$location', function ($sc
 	$scope.is_phone_valid			= false;
 	$scope.is_employer_valid		= false;
 
+	$scope.accountNameExists = function() {
+
+		var request = gapi.client.user_endpoint.user_exists({username: $scope.account_name});
+
+		request.execute(function(response) {
+			if (response.exists === "true") {
+				$scope.$account_name_status.text($scope.account_name_exists_error).css("color", "red");
+				$scope.is_account_name_valid = false;
+				$scope.setFocus("account_name");
+			}
+		});
+	};
+
 	$scope.onAccountNameFocus = function() {
 
-		if ( ! validAccountName($scope.account_name))
+		if ( ! $scope.is_account_name_valid)
 			$scope.$account_name_status.text($scope.account_name_error).css("color", "red");
+		
+		$scope.accountNameExists();
 	};
 
 	$scope.onAccountNameChange = function() {
@@ -62,20 +77,27 @@ controllers.controller('SignupController', ['$scope', '$location', function ($sc
 	/* Also, if this event is called and account name is not valid then we put the focus back on the account name */
 	$scope.onAccountNameUnfocus = function() {
 
-		if ( ! validAccountName($scope.account_name)) {
+		$scope.accountNameExists();
+
+		if (!$scope.is_account_name_valid) {
 			$scope.$account_name_status.text($scope.account_name_error).css("color", "red");
 			$scope.setFocus("account_name");
 		}
 
-		else 
-			$scope.setFocus("email-signup");
+		else if ($scope.is_account_name_valid) {
+			$scope.$account_name_status.text($scope.account_name_valid_msg).css("color", "green");
+		}
+
 		
 	};
 
 	$scope.onEmailFocus = function() {
 
+		if ( ! $scope.is_account_name_valid)
+			$scope.setFocus("account_name");
+
 		/* We have to add the or conditiion because of the way the input type='email' works */
-		if (!validEmail($scope.email) || jQuery("#email-signup").val().length <= 6) 
+		if (jQuery("#email-signup").val().length <= 6) 
 			$scope.$email_status.text($scope.email_error).css("color", "red");
 	};
 
@@ -83,7 +105,7 @@ controllers.controller('SignupController', ['$scope', '$location', function ($sc
 	/* If this event gets fired then the email is valid according to html5 */
 	$scope.onEmailChange = function() {
 
-		if (validEmail($scope.email)) {
+		if (validEmail($scope.email) && jQuery("#email-signup").val().length >= 6) {
 			$scope.$email_status.text($scope.email_valid_msg).css("color", "green");
 			$scope.is_email_valid = true;
 
@@ -96,7 +118,7 @@ controllers.controller('SignupController', ['$scope', '$location', function ($sc
 	/* I'm going to make it the same with all inputs so that if they unfocus then the focus stays on that input*/
 	$scope.onEmailUnfocus = function() {
 
-		if ( ! validEmail($scope.email)) {
+		if ( !$scope.is_email_valid && $scope.is_account_name_valid) {
 			$scope.$email_status.text($scope.email_error).css("color", "red");
 			$scope.setFocus("email-signup");
 		}
@@ -126,7 +148,7 @@ controllers.controller('SignupController', ['$scope', '$location', function ($sc
 
 	$scope.onPasswordUnfocus = function() {
 
-		if ( ! validPassword($scope.password)) {
+		if ( ! $scope.is_password_valid) {
 			$scope.$password_status.text($scope.password_error).css("color", "red");
 			$scope.setFocus("password-signup");
 		}
@@ -174,7 +196,7 @@ controllers.controller('SignupController', ['$scope', '$location', function ($sc
 	 	}
 	};
 
-	$scope.onEMployerUnfocus = function() {
+	$scope.onEmployerUnfocus = function() {
 
 	};
 
@@ -184,7 +206,7 @@ controllers.controller('SignupController', ['$scope', '$location', function ($sc
 	};
 
 	$scope.collectFormObject = function() {	 
-	 	
+
 	  	var rpcObj = {
 	  		account_name : 	jQuery("#account_name").val(),
 	  		email 		 : 	jQuery("#email-signup").val(),
