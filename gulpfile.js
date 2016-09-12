@@ -208,7 +208,6 @@ gulp.task("serve:dev", function() {
     gulp.watch(paths.events_html).on('change', reload); 
     gulp.watch(paths.login_html).on('change', reload); 
     gulp.watch(paths.signup_html).on('change', reload); 
-    gulp.watch(paths.python_file_path).on('change', reload); 
 
 });
 

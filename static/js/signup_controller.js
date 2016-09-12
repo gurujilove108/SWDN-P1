@@ -37,8 +37,6 @@ controllers.controller('SignupController', ['$scope', '$location', function ($sc
 	$scope.is_account_name_valid 	= false;
 	$scope.is_email_valid 			= false;
 	$scope.is_password_valid 		= false;
-	$scope.is_phone_valid 			= false;
-	$scope.is_employer_valid 		= false;
 
 	$scope.onAccountNameChange = function() {
 
@@ -104,7 +102,7 @@ controllers.controller('SignupController', ['$scope', '$location', function ($sc
 
 	/* function to make sure all fields are valid, if this function returns true then the signup button will be disabled */
 	$scope.allFieldsValid = function() {
-		return $scope.is_account_name_valid && $scope.is_email_valid && $scope.is_password_valid && $scope.is_phone_valid && $scope.is_employer_valid;	
+		return $scope.is_account_name_valid && $scope.is_email_valid && $scope.is_password_valid;	
 	};
 
 	$scope.collectFormObject = function() {	  	

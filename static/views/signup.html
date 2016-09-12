@@ -47,7 +47,7 @@
   	<!-- Phone Input -->
   	<div class="row form-group">
 		<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-	    	<label for="phone">Phone <i class="phone-status"></i></label>
+	    	<label for="phone">Phone <small>(Optional)</small><i class="phone-status"></i></label>
 	    	<input id="phone" type="tel" class="form-control" name="phone" placeholder="(555)555-5555" autocomplete="tel" ng-focus="onPhoneFocus()" ng-blur="onPhoneUnfocus()" ng-change="onPhoneChange()" ng-model="phone_number" ng-mouseleave="onPhoneMouseLeave()" required>
   		</div>
   	</div>
@@ -55,7 +55,7 @@
   	<!--Employer Input -->
   	<div class="row form-group">
 		<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-	  		<label for="employer">Employer name, If unemployed type unemployed <i class="employer-status"></i></label>
+	  		<label for="employer">Employer Name <small>(Optional)</small><i class="employer-status"></i></label>
 			<input id="employer" type="text" class="form-control" name="employer" placeholder="Google, Udacity, Unemployed" autocomplete="employer" ng-focus="onEmployerFocus()" ng-blur="onEmployerUnfocus()" ng-change="onEmployerChange()" ng-model="employer" ng-mouseleave="onEmployerMouseLeave()" required>
   		</div>
   	</div>

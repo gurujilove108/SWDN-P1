@@ -304,12 +304,4 @@ controllers.controller('EventController',  ['$scope', '$location', function ($sc
 		});
 	};
 	$scope.loadAllEventsOntoPage();
-	/* To the udacity reviewer, sometimes the events load in just fine, and sometimes they don't. Notice how I bootstrap angular to the document after the user_endpoint has loaded, well I guess thats not working perfectly or this function is running even before the page loads */
-	// $scope.initializeEvents = function() {
-	// 	try {
-	// 		$scope.loadAllEventsOntoPage();
-	// 	} catch () {
-
-	// 	}
-	// };
 }]);
