@@ -19,7 +19,7 @@
 	<div class="row form-group">
 		<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
 	    	<label for="account_name">Account Name <i class="account-name-status"></i></label>
-	    	<input id="account_name" type="text" class="form-control" maxlength="15" placeholder="Enter name" name="name" autocomplete="name" ng-focus="onAccountNameFocus()" ng-blur="onAccountNameUnfocus()" ng-change="onAccountNameChange()" ng-model="account_name"  ng-mouseleave="onAccountNameMouseLeave()" required autofocus>
+	    	<input id="account_name" type="text" class="form-control" maxlength="15" placeholder="Enter name" name="name" autocomplete="name" ng-focus="onAccountNameFocus()" ng-blur="onAccountNameUnfocus()" ng-change="onAccountNameChange()" ng-model="account_name"  ng-mouseleave="onAccountNameMouseLeave()" required>
 	    	<small id="nickname-help" class="form-text text-muted">Use a nickname if you like</small>
   		</div>
   	</div>
@@ -48,7 +48,7 @@
   	<div class="row form-group">
 		<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
 	    	<label for="phone">Phone <small>(Optional)</small><i class="phone-status"></i></label>
-	    	<input id="phone" type="tel" class="form-control" name="phone" placeholder="(555)555-5555" autocomplete="tel" ng-focus="onPhoneFocus()" ng-blur="onPhoneUnfocus()" ng-change="onPhoneChange()" ng-model="phone_number" ng-mouseleave="onPhoneMouseLeave()" required>
+	    	<input id="phone" type="tel" class="form-control" name="phone" placeholder="(555)555-5555" autocomplete="tel" ng-focus="onPhoneFocus()" ng-blur="onPhoneUnfocus()" ng-change="onPhoneChange()" ng-model="phone_number" ng-mouseleave="onPhoneMouseLeave()">
   		</div>
   	</div>
 	
@@ -56,7 +56,7 @@
   	<div class="row form-group">
 		<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
 	  		<label for="employer">Employer Name <small>(Optional)</small><i class="employer-status"></i></label>
-			<input id="employer" type="text" class="form-control" name="employer" placeholder="Google, Udacity, Unemployed" autocomplete="employer" ng-focus="onEmployerFocus()" ng-blur="onEmployerUnfocus()" ng-change="onEmployerChange()" ng-model="employer" ng-mouseleave="onEmployerMouseLeave()" required>
+			<input id="employer" type="text" class="form-control" name="employer" placeholder="Google, Udacity, Unemployed" autocomplete="employer" ng-focus="onEmployerFocus()" ng-blur="onEmployerUnfocus()" ng-change="onEmployerChange()" ng-model="employer" ng-mouseleave="onEmployerMouseLeave()">
   		</div>
   	</div>
 
@@ -65,6 +65,6 @@
   	<div class="form-group">
 
   		<!-- Thanks Udacity for the ngDisabled function , it totally optimized my signup controller -->
-  		<button type="submit" class="btn btn-success btn-signup" ng-disabled="!allFieldsValid()">Sign up</button>
+  		<button id="btn-signup" type="submit" class="btn btn-success btn-signup" ng-disabled="!allFieldsValid()">Sign up</button>
   	</div>
 </form>

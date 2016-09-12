@@ -4,8 +4,8 @@ class UserSignupData(messages.Message):
     account_name = messages.StringField(1, required=True)
     email        = messages.StringField(2, required=True)
     password     = messages.StringField(3, required=True)
-    phone        = messages.StringField(4, required=True)
-    employer     = messages.StringField(5, required=True)
+    phone        = messages.StringField(4)
+    employer     = messages.StringField(5)
 
 class UserSignupResponse(messages.Message):
     user_stored = messages.IntegerField(1, required=True)
@@ -38,6 +38,13 @@ class UserEventResponse(messages.Message):
 class EventsList(messages.Message):
     events = messages.MessageField(UserEventRequest, 1, repeated=True)
 
+class UsernameExistsRequest(messages.Message):
+    username = messages.StringField(1, required=True)
+
+class UsernameExistsResponse(messages.Message):
+    exists = messages.StringField(1, required=True)
+
+    
 """
 34:40
 In case I wanted to send requests manualy opposed to using gapi.client.apiname.methodname

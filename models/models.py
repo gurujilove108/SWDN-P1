@@ -6,8 +6,8 @@ class User(ndb.Expando):
     account_name = ndb.StringProperty(required=True)
     email = ndb.StringProperty(required=True)
     password = ndb.StringProperty(required=True)        
-    phone = ndb.StringProperty(required=True)
-    employer = ndb.StringProperty(required=True)
+    phone = ndb.StringProperty()
+    employer = ndb.StringProperty()
 
     @classmethod
     def store_user(cls, user_data):

@@ -37,6 +37,14 @@ controllers.controller('SignupController', ['$scope', '$location', function ($sc
 	$scope.is_account_name_valid 	= false;
 	$scope.is_email_valid 			= false;
 	$scope.is_password_valid 		= false;
+	$scope.is_phone_valid			= false;
+	$scope.is_employer_valid		= false;
+
+	$scope.onAccountNameFocus = function() {
+
+		if ( ! validAccountName($scope.account_name))
+			$scope.$account_name_status.text($scope.account_name_error).css("color", "red");
+	};
 
 	$scope.onAccountNameChange = function() {
 
@@ -48,6 +56,27 @@ controllers.controller('SignupController', ['$scope', '$location', function ($sc
 			$scope.$account_name_status.text($scope.account_name_error).css("color", "red");
 			$scope.is_account_name_valid = false;
 		}
+	};
+
+	/* If you click outside of the account name input and account name is valid then it sets focus to email, just in case the user doesnt hit tab or click the email input, well do it for them. We could set the focus as soon as the account name is valid, but that might turn out to be a bad user experience because even though it's valid, the user might not be done */ 
+	/* Also, if this event is called and account name is not valid then we put the focus back on the account name */
+	$scope.onAccountNameUnfocus = function() {
+
+		if ( ! validAccountName($scope.account_name)) {
+			$scope.$account_name_status.text($scope.account_name_error).css("color", "red");
+			$scope.setFocus("account_name");
+		}
+
+		else 
+			$scope.setFocus("email-signup");
+		
+	};
+
+	$scope.onEmailFocus = function() {
+
+		/* We have to add the or conditiion because of the way the input type='email' works */
+		if (!validEmail($scope.email) || jQuery("#email-signup").val().length <= 6) 
+			$scope.$email_status.text($scope.email_error).css("color", "red");
 	};
 
 	/* The email onchange has to be handled differently then the other onchanges because */
@@ -64,6 +93,25 @@ controllers.controller('SignupController', ['$scope', '$location', function ($sc
 		}
 	};
 
+	/* I'm going to make it the same with all inputs so that if they unfocus then the focus stays on that input*/
+	$scope.onEmailUnfocus = function() {
+
+		if ( ! validEmail($scope.email)) {
+			$scope.$email_status.text($scope.email_error).css("color", "red");
+			$scope.setFocus("email-signup");
+		}
+
+		else 
+			$scope.setFocus("password-signup");
+	};
+
+	$scope.onPasswordFocus = function() {
+
+		if ( ! validPassword($scope.password)) {
+			$scope.$password_status.text($scope.password_error).css("color", "red");
+		}
+	};
+
 	$scope.onPasswordChange = function() {
 
 		if (validPassword($scope.password)) {
@@ -76,17 +124,40 @@ controllers.controller('SignupController', ['$scope', '$location', function ($sc
 		}
 	};
 
+	$scope.onPasswordUnfocus = function() {
+
+		if ( ! validPassword($scope.password)) {
+			$scope.$password_status.text($scope.password_error).css("color", "red");
+			$scope.setFocus("password-signup");
+		}
+
+		else
+			$scope.setFocus("phone");
+	};
+ 
+ 	$scope.onPhoneFocus = function() {
+ 		/* Nothing to do here because we only show the validation message if they start entering data */
+ 	};
+
+ 	/* We want to handle the optional fields a little differently, like I before if we only show the validation message if theres input other wise we remove it */
 	$scope.onPhoneChange = function() {
 
 		if (validPhone($scope.phone_number)) {
 	 		$scope.$phone_status.text($scope.phone_valid_msg).css("color", "green");
 			$scope.is_phone_valid = true;
 
-	 	} else {
+	 	} else if ( ( ! validPhone($scope.phone_number)) && $scope.phone_number.length > 0) {
 	 		$scope.$phone_status.text($scope.phone_error).css("color", "red");
 			$scope.is_phone_valid = false;
+
+	 	} else {
+	 		$scope.$phone_status.text('');
 	 	}
 	};
+
+	$scope.onPhoneUnfocus = function() {
+
+	}
 
 	$scope.onEmployerChange = function() {
 
@@ -94,10 +165,17 @@ controllers.controller('SignupController', ['$scope', '$location', function ($sc
 	 		$scope.$employer_status.text($scope.employer_valid_msg).css("color", "green");
 			$scope.is_employer_valid = true;
 
-	 	} else {
+	 	} else if ( ( ! validEmployer($scope.employer)) && $scope.employer.length > 0 ) {
 	 		$scope.$employer_status.text($scope.employer_error).css("color", "red");
 			$scope.is_employer_valid = false;
+
+	 	} else {
+	 		$scope.$employer_status.text('');
 	 	}
+	};
+
+	$scope.onEMployerUnfocus = function() {
+
 	};
 
 	/* function to make sure all fields are valid, if this function returns true then the signup button will be disabled */
@@ -105,14 +183,21 @@ controllers.controller('SignupController', ['$scope', '$location', function ($sc
 		return $scope.is_account_name_valid && $scope.is_email_valid && $scope.is_password_valid;	
 	};
 
-	$scope.collectFormObject = function() {	  	
-	  	return {
+	$scope.collectFormObject = function() {	 
+	 	
+	  	var rpcObj = {
 	  		account_name : 	jQuery("#account_name").val(),
 	  		email 		 : 	jQuery("#email-signup").val(),
-	  		password 	 : 	jQuery("#password-signup").val(),
-	  		phone 		 : 	jQuery("#phone").val(),
-	  		employer 	 : 	jQuery("#employer").val()  		 	
+	  		password 	 : 	jQuery("#password-signup").val()	 	
 	  	};
+
+	  	if (validPhone($scope.phone_number))
+	  		rpcObj.phone = $scope.phone_number;
+
+	  	if (validEmployer($scope.employer))
+	  		rpcObj.employer = $scope.employer;
+
+	  	return rpcObj;
 	 };
 
    /* 
@@ -140,7 +225,10 @@ controllers.controller('SignupController', ['$scope', '$location', function ($sc
 	  				$scope.$account_name_status.text("Account name already exists, please choose another").css("color", "red");
 
 	  			} else if (response.user_stored === "1") { 
-	  				$location.path("/login");
+	  				window.setTimeout(function() {
+	  					$location.path("/login");
+	  				}, 100);
+
 					$("#alert-msg").removeClass("hidden");
 					window.scrollTo(10, 10);
 				}	  			
@@ -148,6 +236,7 @@ controllers.controller('SignupController', ['$scope', '$location', function ($sc
 	  	} 
 	};
 
+	/* Once the user has successfully created an account we should clear all inputs, but since were redirect after 8/10 of a second and you cant make signup with an existing account name, ill just leave the method signature here in case I change my mind for some reason, maybe I'll apply some cool fade out affect, because I can do whatever I want with code #winning */
 	$scope.clearSignupForm = function() {
 
 	};
@@ -155,5 +244,21 @@ controllers.controller('SignupController', ['$scope', '$location', function ($sc
 	$scope.getUserSignupEndpointRequest = function(rpcFormObject) {
 		return gapi.client.user_endpoint.user_signup(rpcFormObject);
 	};
+
+	$scope.setFocus = function(element_id) {
+		jQuery("#" + element_id).focus();
+	};
+
+	/* There's the autofocus right there #winning */
+	$scope.checkPath = function() {
+		var current_path = $location.path();
+		if (current_path === "/signup") {
+			$scope.setFocus("account_name");
+			$scope.onAccountNameFocus();
+		}
+
+	};
+
+	$scope.checkPath();
 }]);
 

@@ -54,6 +54,16 @@ controllers.controller('LoginController', ['$scope', '$location', function ($sco
 			$scope.password_valid = false;
 		}
 	};
+
+	/* There's the autofocus right there #winning */
+	$scope.checkPath = function() {
+		var current_path = $location.path();
+		if (current_path === "/login") {
+			jQuery("#account-name-login").focus();
+		}
+
+	};
+	$scope.checkPath();
 }]);
 
 
