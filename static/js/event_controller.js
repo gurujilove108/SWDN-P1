@@ -1,5 +1,5 @@
 /* This controller handles all the functionality for creting an event and loading in all events from the db */
-controllers.controller('EventController', function ($scope, $location, $templateCache, oauth2Provider) {
+controllers.controller('EventController',  ['$scope', '$location', function ($scope, $location) {
 
 	/* Initialize all required inputs validity to be false. These will be set true when they are validated name, host length just have to be greater than 3 */
 	$scope.isEventNameValid = false;
@@ -82,9 +82,9 @@ controllers.controller('EventController', function ($scope, $location, $template
 		return true;
 	};
 
-	$scope.userSignedIn = function() {
-		return oauth2Provider.signedIn;
-	};
+	// $scope.userSignedIn = function() {
+	// 	return oauth2Provider.signedIn;
+	// };
 
 	/* Functions that validate required input fields when their input is changed */
 	$scope.onEventNameChange = function() {
@@ -261,7 +261,7 @@ controllers.controller('EventController', function ($scope, $location, $template
 	$scope.loadAllEventsOntoPage = function() {
 
 		/* Declare our variables here so we dont have to keep re-creating objects which is more effient */
-		var guestlist_datalist, event_types_datalist, html, row1, row2, row3, row4, row5, row6, row7;
+		var guestlist_datalist, event_types_datalist, html, row1, row2, row3, row4, row5, row6, row7, row8;
 		var request = gapi.client.user_endpoint.all_events();
 
 		request.execute(function(response){
@@ -304,4 +304,4 @@ controllers.controller('EventController', function ($scope, $location, $template
 		});
 	};
 	$scope.loadAllEventsOntoPage();
-});
+}]);

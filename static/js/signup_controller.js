@@ -1,6 +1,5 @@
 
-
-controllers.controller('SignupController', function ($scope, $location, oauth2Provider) {
+controllers.controller('SignupController', ['$scope', '$location', function ($scope, $location) {
 
    /* 
     * Constants for input error messages and success messages
@@ -158,5 +157,5 @@ controllers.controller('SignupController', function ($scope, $location, oauth2Pr
 	$scope.getUserSignupEndpointRequest = function(rpcFormObject) {
 		return gapi.client.user_endpoint.user_signup(rpcFormObject);
 	};
-});
+}]);
 

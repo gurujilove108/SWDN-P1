@@ -8,8 +8,6 @@ from request_models.user_rpc_messages   import *
 
 EMAIL_SCOPE = endpoints.EMAIL_SCOPE
 API_EXPLORER_CLIENT_ID = endpoints.API_EXPLORER_CLIENT_ID
-logging.info(API_EXPLORER_CLIENT_ID)
-logging.info(EMAIL_SCOPE)
 
 @endpoints.api(name="user_endpoint", version="v1", allowed_client_ids=[WEB_CLIENT_ID, API_EXPLORER_CLIENT_ID], scopes=[EMAIL_SCOPE], description="Endpoint for managing user login and signup")
 class UserEndpoint(remote.Service):

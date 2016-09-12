@@ -1,4 +1,4 @@
-controllers.controller('LoginController', function ($scope, $location, oauth2Provider) {
+controllers.controller('LoginController', ['$scope', '$location', function ($scope, $location) {
 	
 	$scope.account_name_valid 	= false;
 	$scope.password_valid 		= false;
@@ -54,7 +54,7 @@ controllers.controller('LoginController', function ($scope, $location, oauth2Pro
 			$scope.password_valid = false;
 		}
 	};
-});
+}]);
 
 
 /* 
