@@ -24,7 +24,7 @@ controllers.controller('EventController',  ['$scope', '$location', function ($sc
 	$scope.eventTypeInput		= jQuery("#event-type-input");
 	$scope.eventTypeList 		= jQuery("#eventtypes-list");
 	$scope.guestlist 			= jQuery("#guestlist");
-	$scope.eventGuestInput		= jQuery("#event-guest-input");
+	$scope.guestlistInput		= jQuery("#event-guest-input");
 	$scope.eventStartDateInput	= jQuery("#event-datetime-start");
 	$scope.eventEndDateInput 	= jQuery("#event-datetime-end");
 	$scope.eventAddressInput 	= jQuery("#event-address");
@@ -32,7 +32,7 @@ controllers.controller('EventController',  ['$scope', '$location', function ($sc
 	$scope.startDate;
 	$scope.endDate;
 
-
+	/* validation functions */
 	$scope.checkEventNameValid = function() {
 		if ( ! validEventName($scope.eventName)) {
 			$scope.eventNameStatus.text("Event Name is invalid").css("color", "red");
@@ -60,7 +60,6 @@ controllers.controller('EventController',  ['$scope', '$location', function ($sc
 		if ( ! validHost($scope.eventHost)) {
 			$scope.eventHostStatus.text("Host Name is invalid").css("color", "red");
 			$scope.isEventHostValid = false;
-			log($scope.eventHost);
 
 		} else {
 			$scope.eventHostStatus.text("Host Name is valid").css("color", "green");
@@ -100,9 +99,28 @@ controllers.controller('EventController',  ['$scope', '$location', function ($sc
 	};
 
 	$scope.checkGuestInputValid = function() {
-		log($scope.currentGuest);
+		if ( ! validGuest($scope.currentGuest)) {
+			$scope.eventGuestlistStatus.text("Guest Name is invalid").css("color", "red");
+			$scope.isGuestValid = false;
+
+		} else {
+			$scope.eventGuestlistStatus.text("Guest Name is valid, you are ready to add to the list").css("color", "green");
+			$scope.isGuestValid = true;
+		}
 	}
 
+	$scope.checkGuestlistValid = function() {
+		if ($scope.guestlist.children().length > 0) {
+			$scope.isGuestlistValid = true;
+			$scope.eventGuestlistStatus.text("There is at least one guest so you are good to go").css("color", "green");
+
+		} else {
+			$scope.eventGuestlistStatus.text("At least one guest is required").css("color", "red");
+			$scope.isGuestlistValid = false;
+		}
+	}
+
+	/* focus, change, unfocus functions*/
 	$scope.onEventNameFocus = function() {
 		$scope.checkEventNameValid();
 	};
@@ -144,17 +162,19 @@ controllers.controller('EventController',  ['$scope', '$location', function ($sc
 	};
 
 	$scope.onGuestInputChange = function() {
-
+		$scope.checkGuestInputValid();
 	};
 
 	$scope.onGuestInputUnfocus = function() {
-
+		$scope.checkGuestlistValid();
 	};
 
 	$scope.addGuestToDatalist = function() {
 		if ($scope.isGuestValid) {
 			$scope.guestlist.append("<option value='%s'>".replace("%s", $scope.currentGuest));
-			$scope.eventGuestInput.val('');
+			$scope.currentGuest = "";
+			$scope.guestlistInput.val('');
+			$scope.checkGuestInputValid();
 		} 
 	};
 
@@ -167,6 +187,10 @@ controllers.controller('EventController',  ['$scope', '$location', function ($sc
 		} 
 	};
 
+	$scope.setFocus = function(jquery_element) {
+		jquery_element.focus();
+	};
+
 	$scope.checkPath = function() {
 
 		if ($location.path() === "/create_event") {
@@ -176,12 +200,6 @@ controllers.controller('EventController',  ['$scope', '$location', function ($sc
 	};
 
 	$scope.checkPath();
-
-	$scope.setFocus = function(jquery_element) {
-		jquery_element.focus();
-	};
-
-
 
 	// $scope.createEvent = function() {
 		

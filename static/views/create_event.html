@@ -34,7 +34,7 @@
 				<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
 					<label for="event-host-input">Event host</label>
 				    <input id="event-host-input" type="text" class="form-control" placeholder="event host"
-				    	ng-focus="onEventHostfocus()"
+				    	ng-focus="onEventHostFocus()"
 				    	ng-change="onEventHostChange()"
 				    	ng-blur="onEventHostUnfocus()"
 				    	ng-model="eventHost"
@@ -52,7 +52,7 @@
 				<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
 					<label for="event-type-input" class="create-event-label">Event Type <i class="event-type-status"></i></label>
 			    	<small id="event-type-help" class="form-text text-muted" style="display:block"> - At least one event type is required -</small>
-				    <input id="event-type-input" type="text" class="form-control" placeholder="enter event type" list="eventtype"
+				    <input id="event-type-input" type="text" class="form-control" placeholder="enter event type" list="eventtypes-list"
 				    	ng-focus="onEventTypeFocus()"
 				    	ng-change="onEventTypeChange()"
 				    	ng-blur="onEventTypeUnfocus()"
@@ -72,7 +72,7 @@
 						ng-blur="onGuestInputUnfocus()"
 						ng-model="currentGuest">
 				    <datalist id="guestlist"></datalist>
-					<button type="button" id="guestlist-btn" class="add-datalist-btn" ng-click="addGuestToDatalist()">Add Guest</button>
+					<button type="button" id="guestlist-btn" class="add-datalist-btn" ng-click="addGuestToDatalist()" ng-blur="onGuestInputUnfocus()">Add Guest</button>
 					<p class="event-guestlist-status"></p>
 				</div>
 			</div>

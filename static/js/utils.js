@@ -76,6 +76,14 @@ function validEventType(value) {
     return validEventName(value);
 }
 
+function validGuest(value) {
+    return validEventName(value);
+}
+
+function validAddress(address) {
+    return validEventname(address) && address.length > 3;
+}
+
 /* I love ternary operators because they turn at least like several lines of code into 1 and they are readable as well as maintainable , at least in my opinion */
 function notAllDigits(value) {
     return (config.regexp.allNumbers.test(value)) ? false : true; 
