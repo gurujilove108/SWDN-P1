@@ -29,8 +29,10 @@ controllers.controller('EventController',  ['$scope', '$location', function ($sc
 	$scope.eventEndDateInput 	= jQuery("#event-datetime-end");
 	$scope.eventAddressInput 	= jQuery("#event-address");
 
-	$scope.startDate;
-	$scope.endDate;
+	$scope.startDateTimestamp;
+	$scope.endDateTimestamp;
+
+	$scope.allEvents = [];
 
 	/* validation functions */
 	$scope.checkEventNameValid = function() {
@@ -120,6 +122,66 @@ controllers.controller('EventController',  ['$scope', '$location', function ($sc
 		}
 	}
 
+	$scope.checkStartDateValid = function() {
+		if (defined($scope.eventDateStart)) {
+			$scope.startDateTimestamp = new Date($scope.eventDateStart).getTime();
+
+			if ($scope.startDateTimestamp <= Date.now()) {
+				$scope.startDateStatus.text("Event start date can not be in the past").css("color", "red");
+				$scope.isStartDateValid = false;
+
+			} else {
+				$scope.startDateStatus.text("Start date is valid").css("color", "green");
+				$scope.isStartDateValid = true;
+			}
+
+		} else {
+			$scope.startDateStatus.text("Please provide a valid start date").css("color", "red");
+			$scope.isStartDateValid = false;
+		}
+	};
+
+	$scope.checkEndDateValid = function() {
+
+		if (! defined($scope.eventDateEnd))
+			$scope.endDateStatus.text("Please provide a valid end date").css("color", "red");
+
+		if ( ! $scope.isStartDateValid) {
+			$scope.endDateStatus.text("Please provide a valid start date before entering an end date").css("color", "red");
+			$scope.setFocus($scope.eventStartDateInput);
+
+		} else if ($scope.isStartDateValid) {
+
+			if (defined($scope.eventDateEnd)) {
+				$scope.endDateTimestamp = new Date($scope.eventDateEnd).getTime();
+
+				if ($scope.endDateTimestamp > $scope.startDateTimestamp) {
+					$scope.endDateStatus.text("End date is valid").css("color", "green");
+					$scope.isEndDateValid = true;
+
+				} else {
+					$scope.endDateStatus.text("End date can not be equal to or less than the start date").css("color", "red");
+					$scope.isEndDateValid = false;
+				}
+			}
+
+		} else {
+			$scope.endDateStatus.text("Please provide a valid start date").css("color", "red");
+			$scope.isEndDateValid = false;
+		}
+	};
+
+	$scope.checkEventAddressValid = function() {
+		if (defined($scope.address) && $scope.address.length >= 3) {
+			$scope.isAddressValid = true;
+			$scope.eventAddressStatus.text("Address is valid").css("color", "green");
+
+		} else {
+			$scope.isAddressValid = false;
+			$scope.eventAddressStatus.text("Address is invalid").css("color", "red");
+		}
+	};
+
 	/* focus, change, unfocus functions*/
 	$scope.onEventNameFocus = function() {
 		$scope.checkEventNameValid();
@@ -169,12 +231,49 @@ controllers.controller('EventController',  ['$scope', '$location', function ($sc
 		$scope.checkGuestlistValid();
 	};
 
+	$scope.onEventStartDateFocus = function() {
+		$scope.checkStartDateValid();
+	};
+
+	$scope.onEventStartDateChange = function() {
+		$scope.checkStartDateValid();
+	};
+
+	$scope.onEventStartDateUnfocus = function() {
+		$scope.checkStartDateValid();
+	};
+
+	$scope.onEventEndDateFocus = function() {
+		$scope.checkEndDateValid();
+	};
+
+	$scope.onEventEndDateChange = function() {
+		$scope.checkEndDateValid();
+	};
+
+	$scope.onEventEndDateUnfocus = function() {
+		$scope.checkEndDateValid();
+	};
+
+	$scope.onAddressFocus = function() {
+		$scope.checkEventAddressValid();
+	};
+
+	$scope.onAddressChange = function() {
+		$scope.checkEventAddressValid();
+	};
+
+	$scope.onAddressUnfocus = function() {
+		$scope.checkEventAddressValid();
+	};
+
 	$scope.addGuestToDatalist = function() {
 		if ($scope.isGuestValid) {
 			$scope.guestlist.append("<option value='%s'>".replace("%s", $scope.currentGuest));
 			$scope.currentGuest = "";
 			$scope.guestlistInput.val('');
 			$scope.checkGuestInputValid();
+			$scope.setFocus($scope.guestlistInput);
 		} 
 	};
 
@@ -184,6 +283,7 @@ controllers.controller('EventController',  ['$scope', '$location', function ($sc
 			$scope.eventType = "";
 			$scope.eventTypeInput.val('');
 			$scope.checkEventTypeValid();
+			$scope.setFocus($scope.eventTypeInput);
 		} 
 	};
 
@@ -192,74 +292,35 @@ controllers.controller('EventController',  ['$scope', '$location', function ($sc
 	};
 
 	$scope.checkPath = function() {
-
 		if ($location.path() === "/create_event") {
 			$scope.setFocus($scope.eventNameInput);
 			$scope.onEventNameFocus();
 		}
 	};
 
-	$scope.checkPath();
+	$scope.checkPath();	
 
-	// $scope.createEvent = function() {
-		
-	// 	if ($scope.formValid()) {
-	// 		$scope.sendGapiCreateForm();
-	// 	}
-	// };		
-
-	// $scope.checkDates = function() {
-
-	// 	if ($scope.startDate <= Date.now()) {
-	// 		$scope.eventFormErrors.push({error: "The start date can not be in the past"});
-	// 		return false;
-	// 	}
-
-	// 	else if ($scope.startDate >= $scope.endDate) {
-	// 		$scope.eventFormErrors.push({error: "The start date can not be past the end date"});
-	// 		return false;
-	// 	}
-
-	// 	return true;
-	// };
-
-	// $scope.guestlistValid = function() {
-	// 	return jQuery("#guestlist").children().length > 0;
-	// };
-
-	// $scope.eventTypesValid = function() {
-	// 	return jQuery("#eventtype").children().length > 0;
-	// };
-
-	// $scope.onEventStartDateChange = function() {
-	// 	$scope.startDate = new Date($scope.eventDateStart).getTime();
-	// 	log("startdate = " + $scope.startDate);
-	// };
-
-	// $scope.onEventEndDateChange = function() {
-	// 	$scope.endDate = new Date($scope.eventDateEnd).getTime();
-	// 	log("end date = " + $scope.endDate);
-	// };
-
-	// $scope.deleteEventInfo = function() {
-	// 	jQuery(".event-info-row").remove();
-	// };
-
-	$scope.showMessageBox = function(stringProperty) {
+	$scope.showBox = function(stringProperty) {
 		jQuery(stringProperty).removeClass("hidden");
 	};
 
-	$scope.closeMessageBox = function(stringProperty) {
+	$scope.closeBox = function(stringProperty) {
 		jQuery(stringProperty).addClass("hidden");
 	};
 
-	/*
-	 * Method to create the form rpc object to pass in to our create event api method
-	 * Note that the keys in the object we pass to the user endpoint api must have the same keynames in the rpc object that is being accepted by the api endpoint 
-    */
+	$scope.createEvent = function() {
+		if ($scope.formValid()) {
+			$scope.sendGapiCreateForm();
+		}
+	};
+
+	$scope.formValid = function() {
+		return $scope.isGuestlistValid && $scope.isStartDateValid && $scope.isEndDateValid && $scope.isAddressValid && $scope.isEventNameValid && $scope.isEventHostValid;
+	};
+
 	$scope.sendGapiCreateForm = function() {
-    	var guestlistChildren 	= jQuery("#guestlist").children();
-    	var eventTypesChildren 	= jQuery("#eventtype").children();
+    	var guestlistChildren 	= $scope.guestlist.children();
+    	var eventTypesChildren 	= $scope.eventTypeList.children();
     	var numGuests 			= guestlistChildren.length;
     	var numEventTypes 		= eventTypesChildren.length;
     	var guestMessage 		= jQuery("#guest-message").val();
@@ -268,40 +329,34 @@ controllers.controller('EventController',  ['$scope', '$location', function ($sc
     	var i;
 
 		var formObject = {
-			event_name:  jQuery("#event-name-input").val(),
-			event_host:  jQuery("#event-host").val(),
-			event_start: $scope.startDate,
-			event_end:   $scope.endDate,
-			event_address: 	 $scope.address 
+			event_name		: $scope.eventName,
+			event_host		: $scope.eventHost,
+			event_start		: $scope.startDateTimestamp,
+			event_end		: $scope.endDateTimestamp,
+			event_address	: $scope.address 
 		};
 
 		/* Creating an array of guests to store in the Event database from the datalist in the create event form */
-		
 		if (numGuests > 0) {
-	
 			for (i=0, guests=[]; i < numGuests; i++) {
 				current_guest = guestlistChildren[i].value;
 				guests.push(current_guest);
 			}
-
 			formObject.event_guestlist = guests;
 		}
 
 		/* Same thing as above except with the eventtype list*/ 
     	if (numEventTypes > 0) {
-      
 			for (i=0, event_types=[]; i < numEventTypes; i++) {
 				current_event_type = eventTypesChildren[i].value;
 				event_types.push(current_event_type);
 			}
-
 			formObject.event_types = event_types;
 		}
 
 		/* Since guestmessage is not required we only add it if there is a message */
 		if (guestMessage.length > 0)
 			formObject.event_guestmessage = guestMessage;
-
 		else
 			formObject.event_guestmessage = "No current message for this event at this time";
 
@@ -309,8 +364,7 @@ controllers.controller('EventController',  ['$scope', '$location', function ($sc
 		request.execute(function(response){
 
 			if (response.hasOwnProperty("successful") && response.successful === "1") {
-
-				$scope.showMessageBox("#event-create-success");
+				$scope.showBox("#event-create-success");
 				jQuery("#eventname").text($scope.eventName);
 			}
 		});
@@ -327,22 +381,13 @@ controllers.controller('EventController',  ['$scope', '$location', function ($sc
 	*/
 	$scope.createDataList = function(database_list, index, id) {
 
-		/* 
-		 * The guestlist and event types list are required by default so I shouldn't have to check for this, but Im going to anyway, because certain lists are requird
-		 * The length will always be greater than 0, so in the else statement Im still going to provide output that doesnt break anthing but lets the tester know something is wrong with the code
-		 */
 		if (database_list.hasOwnProperty("length") && database_list.length > 0) {
 			var datalist_input = "<input list='%s'>".replace("%s", id+index); 
 			var datalist = "<datalist id='%s'>".replace("%s", id+index);
-
-			/* Iterate through all objects in the list from the db */
+			
 			database_list.forEach(function(element, index) {
-
-				/* Add each value from the list as an option alement to the datalist because a datalist uses html option elements so an option element is what we hve to add*/
 				datalist += "<option value='%s'>".replace("%s", element);
 			});
-
-			/* Here we close off the datalist otherwise it wouldnt be valid html*/
 			datalist += "</datalist>";
 
 			return {input: datalist_input, datalist: datalist};
@@ -361,8 +406,6 @@ controllers.controller('EventController',  ['$scope', '$location', function ($sc
 		var request = gapi.client.user_endpoint.all_events();
 
 		request.execute(function(response){
-			log(response);
-			/* if there are no events then there will be no events object in response we will add a msg to the events.html page to link them to create an event */
 			if ( ! response.hasOwnProperty("events")) {
 				jQuery(".no-events").text('There are currently no events, to create an event click');
 				jQuery('.no-events').append(" <a href='/#/create_event'>create an event</a>");
@@ -370,7 +413,6 @@ controllers.controller('EventController',  ['$scope', '$location', function ($sc
 
 				/* Iterate through the events from our db */
 				response.events.forEach(function(element1, index) { 
-
 					element1.event_start = new Date(parseInt(element1.event_start));
 					element1.event_end = new Date(parseInt(element1.event_end));
 

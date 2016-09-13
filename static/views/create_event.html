@@ -3,9 +3,9 @@
 		<form class="create-event-form" ng-submit="createEvent()">
 			
 			<!-- Successful account creation message appears here -->
-			<div id="event-create-success" class="alert alert-success hidden">
+			<div id="event-create-success" class="alert alert-success hidden col-xs-12 text-center">
 				<Strong id="eventname"></Strong><p>has successfully been created. You can view the event <a href="/#/events">Here</a></p>
-				<button class="btn success-event-btn" ng-click="closeMessageBox('#event-create-success')">Got It</button>
+				<button type="button" class="btn btn-primary success-event-btn" ng-click="closeBox('#event-create-success')">Got It</button>
 			</div>
 
 			<!-- header row -->
@@ -97,9 +97,9 @@
 				<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
 					<label for="event-datetime-end">Event End Date and Time</label>
 				    <input id="event-datetime-end" type="datetime-local" class="form-control" placeholder="event date and Time"
-				    	ng-focus="onEventDateEndFocus()"
-				    	ng-change="onEventDateEndChange()"
-				    	ng-blur="onEventDateEndUnfocus()"
+				    	ng-focus="onEventEndDateFocus()"
+				    	ng-change="onEventEndDateChange()"
+				    	ng-blur="onEventEndDateUnfocus()"
 				    	ng-model="eventDateEnd"
 				    	required>
 				    <p class="event-datetime-end-status"></p>	
@@ -127,7 +127,7 @@
 			</div>
 			<div class="row">
 				<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-center">
-					<button class="btn btn-primary create-account-button">Create Event</button>
+					<button class="btn btn-primary create-account-button" ng-disabled="!formValid()">Create Event</button>
 				</div> 
 			</div>
 		</form>
