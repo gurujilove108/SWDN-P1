@@ -39,31 +39,36 @@ controllers.controller('SignupController', ['$scope', '$location', function ($sc
 	$scope.is_password_valid 		= false;
 	$scope.is_phone_valid			= false;
 	$scope.is_employer_valid		= false;
+	$scope.username_exists 			= false;
 
-	$scope.accountNameExists = function() {
+	// $scope.accountNameExists = function() {
 
-		var request = gapi.client.user_endpoint.user_exists({username: $scope.account_name});
-
-		request.execute(function(response) {
-			if (response.exists === "true") {
-				$scope.$account_name_status.text($scope.account_name_exists_error).css("color", "red");
-				$scope.is_account_name_valid = false;
-				$scope.setFocus("account_name");
-			}
-		});
-	};
+	// 	if ( ! $scope.username_exists) {
+	// 		var request = gapi.client.user_endpoint.user_exists({username: $scope.account_name});
+	// 		request.execute(function(response) {
+	// 			if (response.exists === "true") {
+	// 				$scope.$account_name_status.text($scope.account_name_exists_error).css("color", "red");
+	// 				$scope.is_account_name_valid = false;
+	// 				$scope.username_exists = true;
+	// 			}
+	// 		});
+	// 	}
+	// };
 
 	$scope.onAccountNameFocus = function() {
 
-		if ( ! $scope.is_account_name_valid)
+		if ( ! validAccountName($scope.account_name)) {
 			$scope.$account_name_status.text($scope.account_name_error).css("color", "red");
-		
-		$scope.accountNameExists();
+			$scope.is_account_name_valid = false;
+		} else {
+			$scope.$account_name_status.text($scope.account_name_valid_msg).css("color", "green");
+			$scope.is_account_name_valid = false;
+		}
 	};
 
 	$scope.onAccountNameChange = function() {
 
-		if (validAccountName($scope.account_name)) {
+		if (validAccountName($scope.account_name) ) {
 			$scope.$account_name_status.text($scope.account_name_valid_msg).css("color", "green");
 			$scope.is_account_name_valid = true;
 
@@ -77,18 +82,6 @@ controllers.controller('SignupController', ['$scope', '$location', function ($sc
 	/* Also, if this event is called and account name is not valid then we put the focus back on the account name */
 	$scope.onAccountNameUnfocus = function() {
 
-		$scope.accountNameExists();
-
-		if (!$scope.is_account_name_valid) {
-			$scope.$account_name_status.text($scope.account_name_error).css("color", "red");
-			$scope.setFocus("account_name");
-		}
-
-		else if ($scope.is_account_name_valid) {
-			$scope.$account_name_status.text($scope.account_name_valid_msg).css("color", "green");
-		}
-
-		
 	};
 
 	$scope.onEmailFocus = function() {
@@ -118,13 +111,10 @@ controllers.controller('SignupController', ['$scope', '$location', function ($sc
 	/* I'm going to make it the same with all inputs so that if they unfocus then the focus stays on that input*/
 	$scope.onEmailUnfocus = function() {
 
-		if ( !$scope.is_email_valid && $scope.is_account_name_valid) {
+		if ( ! $scope.is_email_valid) {
 			$scope.$email_status.text($scope.email_error).css("color", "red");
 			$scope.setFocus("email-signup");
 		}
-
-		else 
-			$scope.setFocus("password-signup");
 	};
 
 	$scope.onPasswordFocus = function() {
@@ -168,7 +158,7 @@ controllers.controller('SignupController', ['$scope', '$location', function ($sc
 	 		$scope.$phone_status.text($scope.phone_valid_msg).css("color", "green");
 			$scope.is_phone_valid = true;
 
-	 	} else if ( ( ! validPhone($scope.phone_number)) && $scope.phone_number.length > 0) {
+	 	} else if (( ! validPhone($scope.phone_number)) && $scope.phone_number.length > 0) {
 	 		$scope.$phone_status.text($scope.phone_error).css("color", "red");
 			$scope.is_phone_valid = false;
 
@@ -213,10 +203,10 @@ controllers.controller('SignupController', ['$scope', '$location', function ($sc
 	  		password 	 : 	jQuery("#password-signup").val()	 	
 	  	};
 
-	  	if (validPhone($scope.phone_number))
+	  	if ($scope.is_password_valid)
 	  		rpcObj.phone = $scope.phone_number;
 
-	  	if (validEmployer($scope.employer))
+	  	if ($scope.is_employer_valid)
 	  		rpcObj.employer = $scope.employer;
 
 	  	return rpcObj;
@@ -231,7 +221,7 @@ controllers.controller('SignupController', ['$scope', '$location', function ($sc
 	* That on my next project, well maybe if I have time.
 	*/
 	$scope.submitSignupForm = function() {
-
+		log("form submitting")
 	  	if ($scope.allFieldsValid()) {
 	  		var rpcFormObject = $scope.collectFormObject();
 	  		var request = $scope.getUserSignupEndpointRequest(rpcFormObject);

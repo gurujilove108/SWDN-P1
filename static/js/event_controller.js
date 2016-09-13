@@ -327,6 +327,8 @@ controllers.controller('EventController',  ['$scope', '$location', function ($sc
     	var current_guest;
     	var current_event_type;
     	var i;
+    	var guests;
+    	var event_types;
 
 		var formObject = {
 			event_name		: $scope.eventName,

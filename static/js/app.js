@@ -5,19 +5,19 @@ var app = angular.module('swdnP1App', ['swdnP1AppControllers', 'ngRoute', 'ui.bo
 /* routing configuration for production */
 var routeConfig = function($routeProvider) {
     $routeProvider.when('/events', {
-        templateUrl: '/views/events.html',
+        templateUrl: '/html/events.min.html',
         controller: 'EventController'
     });
     $routeProvider.when('/create_event', {
-        templateUrl: '/views/create_event.html',
+        templateUrl: '/html/create_event.min.html',
         controller: 'EventController'
     });
     $routeProvider.when('/login', {
-        templateUrl: '/views/login.html',
+        templateUrl: '/html/login.min.html',
         controller: 'LoginController'
     });
     $routeProvider.when('/signup', {
-        templateUrl: '/views/signup.html',
+        templateUrl: '/html/signup.min.html',
         controller: 'SignupController'
     });
     $routeProvider.otherwise({
