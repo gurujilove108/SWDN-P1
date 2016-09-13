@@ -1,6 +1,7 @@
 
 /* Ok guys, since the login is not required, please don't give me grief about it, I just wanted to test out some functionality */
 /* I know that normally Iwould just let them enter a username and password and if their validthen log them in, but i am just playing around with this one and I know it's a huge security flaw. When I actually do implement login with oauth, I will change this */
+/* The loginis not completely functional yet but the autofocus has been implemented */
 controllers.controller('LoginController', ['$scope', '$location', function ($scope, $location) {
 	
 	$scope.account_name_valid 		= false;
@@ -98,16 +99,12 @@ controllers.controller('LoginController', ['$scope', '$location', function ($sco
 
 	$scope.onAccountNameUnfocus = function() {
 
-		if (validAccountName($scope.account_name))
+		if (validAccountName($scope.account_name) && ! $scope.account_name_valid)
 			$scope.accountNameExists();
 
 	};
 
 	$scope.onPasswordFocus = function() {
-
-		if ( ! $scope.account_name_valid) {
-			$scope.setFocus("account-name-login")
-		}
 
 		if ( ! validPassword($scope.password)) {
 			$scope.account_password_status.text("Password is currently invalid").css("color", "red");
@@ -116,7 +113,7 @@ controllers.controller('LoginController', ['$scope', '$location', function ($sco
 
 	$scope.onPasswordChange = function() {
 		
-		if (validPassword($scope.password) && ! $scope.account_password_valid && $scope.account_name_valid){
+		if (validPassword($scope.password)){
 			$scope.account_password_status.text("Password is valid");
 
 		} else {
@@ -127,10 +124,10 @@ controllers.controller('LoginController', ['$scope', '$location', function ($sco
 	$scope.onPasswordUnfocus = function() {
 
 		if ( ! validPassword($scope.password)) {
-			$scope.setFocus("login-password");
 			$scope.account_password_status.text("Password is currently Invalid").css("color", "red");
 		} else {
-			$scope.passwordMatchesAccountName();
+			if ( ! $scope.account_password_valid)
+				$scope.passwordMatchesAccountName();
 		}
 	};
 

@@ -14,21 +14,7 @@
 					<h1 class="create-event-title">Create an Event</h1>
 				</div>
 			</div>
-
-			<!-- Error messages appears here -->
-			<div class="row">
-				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-left">
-					<div id="errors" class="alert alert-warning hidden">
-						<Strong id="error-msg">Errors need fixing</Strong>
-						<ul id="error_list" class="event-form-errors">
-							<li ng-repeat="error in eventFormErrors">{{error.error}}</li>
-						</ul>
-						<button type="button" class="btn close-error-btn" ng-click="closeMessageBox('#errors')">Ok Got It!</button>
-					</div>
-				</div>
-			</div>
 			
-
 			<!-- form events inputs row -->
 			<div class="row form-group inputs">
 
@@ -38,8 +24,7 @@
 				    <input id="event-name-input" type="text" class="form-control" placeholder="event name"
 				    	ng-change="onEventNameChange()"
 				    	ng-model="eventName"
-				    	required
-				    	autofocus>
+				    	required>
 				</div>
 
 				<!-- event host input -->

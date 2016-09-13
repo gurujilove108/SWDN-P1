@@ -7,35 +7,25 @@ controllers.controller('EventController',  ['$scope', '$location', function ($sc
 	/* Host just has to be more than 0 characters */
 	$scope.isEventHostValid = false;
 
-	/* Here we want to store the error message element because I have a feeling the website will be using it alot and its much more efficient to store it one time than to have to store it everytime there is an error. I like effiency and speed! */
-	$scope.eventFormErrors 	= [];
-
 	/* When these are set they will be set to the correct date timestamps in milliseconds since it's javascript and timesamps in js are in millisecond so to get them into seconds just multiply by a 1000 */
 	$scope.startDate;
 	$scope.endDate;
 
-	$scope.allEvents = []; /* ng-repeat only works if the data is already set which is the worst thing in the world, from now on I'm going to combine angular with knockout because this is ridiculous, excuse me for being frustrated */
+	/* The form will be able to be submitted if numErrors is 0 */
+	$scope.numErrors = 0;
 
 	$scope.createEvent = function() {
-		$scope.eventFormErrors = [];
-		var isFormValid = $scope.createEventFormValid();
 		
-		if ($scope.eventFormErrors.length === 0)
+		if ($scope.numErrors === 0) {
 			$scope.sendGapiCreateForm();
-
-		else {
-			$scope.showMessageBox("#errors");
 		}
 	};		
 
 	$scope.createEventFormValid = function() {
 		var validForm = true;
-		var errorObject;
 
 		if ( ! $scope.isEventNameValid) {
-			error_object = {error: "Event Name must be at least 1 character"};
-			$scope.eventFormErrors.push(error_object);
-			validForm = false;
+			jQuery(".event-type-status").text("Event Name must be at least 1 character long").css("color", "red");
 		}
 
 		if ( ! $scope.isEventHostValid) {
@@ -88,11 +78,27 @@ controllers.controller('EventController',  ['$scope', '$location', function ($sc
 
 	/* Functions that validate required input fields when their input is changed */
 	$scope.onEventNameChange = function() {
-		$scope.isEventNameValid = ($scope.eventName.length > 0) ? true : false;
+		if ($scope.eventName.length == 0) 
+			jQuery('.event-name-status').text("Event name must be at least 1 character").css("color", "red");
+		else {
+			jQuery('.event-name-status').text("Event name valid").css("color", "green");
+
+		}
 	};
 
 	$scope.onEventHostChange = function() {
-		$scope.isEventHostValid = ($scope.eventHost.length > 0) ? true : false;
+		if ($scope.eventHost.length == 0) {
+			jQuery('.event-host-status').text("Event name must be at least 1 character").css("color", "red");
+		} else {
+
+		}
+	};
+
+	$scope.eventTypeInputOnChange = function() {
+		if ($scope.eventHost.length == 0) {
+			jQuery('.event-host-status').text("Event name must be at least 1 character").css("color", "red");
+
+		}
 	};
 
 	$scope.guestlistValid = function() {
@@ -252,12 +258,18 @@ controllers.controller('EventController',  ['$scope', '$location', function ($sc
 		log("map loaded");
 	};
 
-	/* 
-	 * This method fetches all of the events from the db, organizes them into html and then displays them on the page
-     * Because I had so much troube with ng-repeat which would have made my life a whole lot easier in solving this problem,
-     * I had the pleasure of learning a new templating system called mustache.js but in the next project I will make sure
-     * To get ng-repeat working
-	*/
+	$scope.checkPath = function() {
+
+		if ($location.path() === "/create_event")
+			$scope.setFocus("event-name-input");
+	};
+
+	$scope.setFocus = function(element_id) {
+		jQuery("#" + element_id).focus();
+	};
+
+	$scope.checkPath();
+
 	$scope.loadAllEventsOntoPage = function() {
 
 		/* Declare our variables here so we dont have to keep re-creating objects which is more effient */
@@ -303,5 +315,4 @@ controllers.controller('EventController',  ['$scope', '$location', function ($sc
 			}
 		});
 	};
-	$scope.loadAllEventsOntoPage();
 }]);
