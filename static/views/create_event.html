@@ -20,20 +20,26 @@
 
 				<!-- event name input -->
 				<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-					<label for="event-name-input" class="create-event-label">Event Name <i class="event-name-status"></i></label>
+					<label for="event-name-input" class="create-event-label">Event Name</label>
 				    <input id="event-name-input" type="text" class="form-control" placeholder="event name"
+				    	ng-focus="onEventNameFocus()"
 				    	ng-change="onEventNameChange()"
+				    	ng-blur="onEventNameUnfocus()"
 				    	ng-model="eventName"
 				    	required>
+				    <p class="event-name-status"></p>
 				</div>
 
 				<!-- event host input -->
 				<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-					<label for="event-host">Event host <i class="event-host-status"></i></label>
-				    <input type="text" class="form-control" id="event-host" placeholder="event host"
+					<label for="event-host-input">Event host</label>
+				    <input id="event-host-input" type="text" class="form-control" placeholder="event host"
+				    	ng-focus="onEventHostfocus()"
 				    	ng-change="onEventHostChange()"
+				    	ng-blur="onEventHostUnfocus()"
 				    	ng-model="eventHost"
-				    	required>	
+				    	required>
+				    <p class="event-host-status"></p>	
 				</div>
 				
 			</div>
@@ -44,24 +50,30 @@
 					the user can add several categories that the event type matches
 				-->
 				<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-					<label for="event-type" class="create-event-label">Event Type <i class="event-type-status"></i></label>
+					<label for="event-type-input" class="create-event-label">Event Type <i class="event-type-status"></i></label>
 			    	<small id="event-type-help" class="form-text text-muted" style="display:block"> - At least one event type is required -</small>
-				    <input id="event-type" type="text" class="form-control" placeholder="enter event type" list="eventtype"
-				    	ng-change="eventTypeInputOnChange()"
+				    <input id="event-type-input" type="text" class="form-control" placeholder="enter event type" list="eventtype"
+				    	ng-focus="onEventTypeFocus()"
+				    	ng-change="onEventTypeChange()"
+				    	ng-blur="onEventTypeUnfocus()"
 				    	ng-model="eventType">
-				    <datalist id="eventtype"></datalist>
-					<button type="button" id="event-type-btn" class="add-datalist-btn" ng-click="addToDatalist('event-type', 'eventtype')">Add Event Type</button>
+				    <datalist id="eventtypes-list"></datalist>
+					<button type="button" id="event-type-btn" class="add-datalist-btn" ng-click="addEventTypeToDatalist()" ng-blur="onEventTypeUnfocus()">Add Event Type</button>
+					<p class="event-eventtypes-status"></p>
 				</div>
 
 				<!-- event guest list input -->
 				<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-					<label for="event-guestlist" class="guestlist-label">Guest List</label>
+					<label for="event-guest-input" class="guestlist-label">Guest List</label>
 			    	<small id="guestlist-help" class="form-text text-muted" style="display:block"> - At least one guest is required -</small>
-					<input id="event-guestlist" class="guestlist form-control" list="guestlist" placeholder="enter guest"
-						ng-change="guestInputOnChange()"
+					<input id="event-guest-input" class="guestlist form-control" list="guestlist" placeholder="enter guest"
+						ng-focus="onGuestInputFocus()"
+						ng-change="onGuestInputChange()"
+						ng-blur="onGuestInputUnfocus()"
 						ng-model="currentGuest">
 				    <datalist id="guestlist"></datalist>
-					<button type="button" id="guestlist-btn" class="add-datalist-btn" ng-click="addToDatalist('event-guestlist', 'guestlist')">Add Guest</button>
+					<button type="button" id="guestlist-btn" class="add-datalist-btn" ng-click="addGuestToDatalist()">Add Guest</button>
+					<p class="event-guestlist-status"></p>
 				</div>
 			</div>
 
@@ -70,32 +82,41 @@
 				<!-- Datetime start input -->
 				<!-- Just like the input type=email, the ng-change on this input=datetime-local will only fire when the date is valid, that iswhen we store it and convert it to a timestamp -->
 				<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-					<label for="event-datetime-start">Event Start Date and Time <i class="event-datetime-start-status"></i></label>
-				    <input type="datetime-local" class="form-control" id="event-datetime-start" placeholder="event date and Time"
-				    	ng-change="onEventStartDateChange()"  
+					<label for="event-datetime-start">Event Start Date and Time</label>
+				    <input id="event-datetime-start" type="datetime-local" class="form-control" placeholder="event date and Time"
+				    	ng-focus="onEventStartDateFocus()"
+				    	ng-change="onEventStartDateChange()"
+				    	ng-blur="onEventStartDateUnfocus()"  
 				    	ng-model="eventDateStart"
-				    	required>	
+				    	required>
+				    <p class="event-datetime-start-status"></p>	
 				</div>
 
 				<!-- Datetime end input -->
 				<!-- Just like the input type=email, the ng-change on this input=datetime-local will only fire when the date is valid, that iswhen we store it and convert it to a timestamp -->
 				<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-					<label for="event-datetime-end">Event End Date and Time<i class="event-datetime-end-status"></i></label>
-				    <input type="datetime-local" class="form-control" id="event-datetime-end" placeholder="event date and Time"
-				    	ng-change="onEventEndDateChange()"
+					<label for="event-datetime-end">Event End Date and Time</label>
+				    <input id="event-datetime-end" type="datetime-local" class="form-control" placeholder="event date and Time"
+				    	ng-focus="onEventDateEndFocus()"
+				    	ng-change="onEventDateEndChange()"
+				    	ng-blur="onEventDateEndUnfocus()"
 				    	ng-model="eventDateEnd"
-				    	required>	
+				    	required>
+				    <p class="event-datetime-end-status"></p>	
 				</div>
 			</div>
 			<div class="row form-group">
 			
 				<!-- Location -->
 				<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-					<label for="address">Event Address<i class="event-address"></i></label>
-				    <input type="text" class="form-control" id="address" placeholder="event address"
+					<label for="event-address">Event Address</label>
+				    <input id="event-address" type="text" class="form-control" placeholder="event address"
+				    	ng-focus="onAddressFocus()"
 				    	ng-change="onAddressChange()"
+				    	ng-blur="onAddressUnfocus()"
 				    	ng-model="address"
-				    	required>	
+				    	required>
+				    <p class="event-address-status"></p>	
 				</div>
 			</div>
 			<div class="row form-group">

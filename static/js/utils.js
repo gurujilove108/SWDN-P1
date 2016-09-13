@@ -63,10 +63,20 @@ function validEmployer(employer_value) {
  * just doesn't make any sense and can't be valid
 */
 function validEventName(value) {
-    return value.length > 0 && notAllDigits(value);
+    return defined(value) && value.length > 0 && notAllDigits(value);
 }
 
-/* I love ternary operators because they turn at lest like several lines of code into 1 and they are readable as well as maintainable , at least in my opinion */
+/* I'm just going to do the same thing with the valid EventName so instead of calling validEventname on the host value I'm going to make a validHost function that just calls validEventName so the code can be more self documenting */
+function validHost(value) {
+    return validEventName(value);
+}
+
+/* same concept as above*/
+function validEventType(value) {
+    return validEventName(value);
+}
+
+/* I love ternary operators because they turn at least like several lines of code into 1 and they are readable as well as maintainable , at least in my opinion */
 function notAllDigits(value) {
     return (config.regexp.allNumbers.test(value)) ? false : true; 
 }
