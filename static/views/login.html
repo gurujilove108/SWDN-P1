@@ -1,14 +1,11 @@
 <form id="login-form" class="login-form" ng-submit="submitLoginForm()">
-  
-    <!-- Erro Message Container -->
-    <div class="form-group">
-      <div class="error-box hidden"></div>
-    </div>
 
     <!-- Account name input -->
     <div class="form-group">
-      <label for="account-name-login">Account Name</label><i class="account-name-login-status"></i>
+      <label for="account-name-login">Account Name </label> <i class="account-name-login-status"> </i>
       <input type="text" class="form-control" id="account-name-login" placeholder="Enter Account Name" 
+        ng-focus="onAccountNameFocus()"
+        ng-blur="onAccountNameUnfocus()"
         ng-change="onAccountNameChange()" 
         ng-model="account_name" 
         required
@@ -19,6 +16,8 @@
     <div class="form-group">
       <label for="login-password">Password </label> <i class="password-login-status"> </i>
       <input type="password" class="form-control" id="login-password" autocomplete="name" placeholder="Password" 
+        ng-focus="onPasswordFocus()"
+        ng-blur="onPasswordUnfocus()"
         ng-change="onPasswordChange()" 
         ng-model="password" 
         required>
@@ -30,7 +29,8 @@
       with the signup form   
     -->
     <div class="form-group">
-      <button type="submit" class="btn btn-login">Login</button>
+      <button id="btn-login" type="submit" class="btn btn-primary btn-login" ng-disabled="!formValidated()">Login</button>
+      <a href="/#/signup" class="btn btn-success">Sign Up</a>
     </div>
 </form>
 

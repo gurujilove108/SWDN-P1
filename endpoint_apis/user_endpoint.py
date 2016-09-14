@@ -8,8 +8,6 @@ from request_models.user_rpc_messages   import *
 
 EMAIL_SCOPE = endpoints.EMAIL_SCOPE
 API_EXPLORER_CLIENT_ID = endpoints.API_EXPLORER_CLIENT_ID
-logging.info(API_EXPLORER_CLIENT_ID)
-logging.info(EMAIL_SCOPE)
 
 @endpoints.api(name="user_endpoint", version="v1", allowed_client_ids=[WEB_CLIENT_ID, API_EXPLORER_CLIENT_ID], scopes=[EMAIL_SCOPE], description="Endpoint for managing user login and signup")
 class UserEndpoint(remote.Service):
@@ -64,10 +62,23 @@ class UserEndpoint(remote.Service):
         events_list = EventsList(events=events)
         return events_list
 
-
-
+    @endpoints.method(UsernameExistsRequest,UsernameExistsResponse,path="user_exists", http_method="POST", name="user_exists")
+    def user_exists(self, username_object):
+        logging.info(username_object)
+        if User.exists(username_object.username):
+            return UsernameExistsResponse(exists = "true")
+        else:
+            return UsernameExistsResponse(exists = "false")
     
 
+    @endpoints.method(PasswordMatchRequest,PasswordMatchResponse,path="check_password_match", http_method="POST", name="check_password_match")
+    def check_password_match(self, user_object):
+        logging.info(user_object)
+        if User.match(user_object.username, user_object.password):
+            return PasswordMatchResponse(match = "true")
+        else:
+            return PasswordMatchResponse(match="false")
+    
 """ 
 For a void return type, use message_types.VoidMessage
 """

@@ -6,8 +6,8 @@ class User(ndb.Expando):
     account_name = ndb.StringProperty(required=True)
     email = ndb.StringProperty(required=True)
     password = ndb.StringProperty(required=True)        
-    phone = ndb.StringProperty(required=True)
-    employer = ndb.StringProperty(required=True)
+    phone = ndb.StringProperty()
+    employer = ndb.StringProperty()
 
     @classmethod
     def store_user(cls, user_data):
@@ -28,6 +28,11 @@ class User(ndb.Expando):
     @classmethod 
     def exists(cls, account_name):
         query = User.query(User.account_name == account_name)
+        return query.get() != None
+
+    @classmethod
+    def match(cls, username, passwd):
+        query = User.query(User.account_name == username and User.password == passwd)
         return query.get() != None
 
 

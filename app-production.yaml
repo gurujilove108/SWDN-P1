@@ -11,8 +11,8 @@ handlers:
 - url: /js
   static_dir: dist/js
 
-- url: /views
-  static_dir: dist/views
+- url: /html
+  static_dir: dist/html
 
 - url: /img
   static_dir: static/img
